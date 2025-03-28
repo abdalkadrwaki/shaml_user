@@ -1,0 +1,25 @@
+@import "bootstrap/dist/css/bootstrap.min.css";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+[x-cloak] {
+    display: none;
+}
+
+.nav-pills .nav-link {
+    background-color: #1e3a8a; /* لون bg-blue-900 */
+    color: white !important; /* تأكد من أن النص أبيض */
+    opacity: 1 !important; /* تأكد من عدم وجود شفافية */
+}
+
+.nav-pills .nav-link.active {
+    background-color: #3b82f6; /* لون مختلف للزر النشط (مثلاً blue-500) */
+    color: white !important;
+}
+
+/* إذا كنت تستخدم dark mode */
+.dark .nav-pills .nav-link {
+    background-color: #1e3a8a;
+    color: white !important;
+}

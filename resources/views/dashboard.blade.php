@@ -27,7 +27,9 @@
             </div>
         </div>
     @endif
-  
+    @include('transfer.create')
+
+
     </div>
 
 </div>

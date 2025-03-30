@@ -28,8 +28,8 @@
         </div>
     @endif
 
-
-    
+    <livewire:currency-rates />
+  
 
     </div>
 

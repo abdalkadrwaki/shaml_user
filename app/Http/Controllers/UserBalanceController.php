@@ -60,4 +60,5 @@ class UserBalanceController extends Controller
         // إرسال البيانات إلى الـ View
         return view('dashboard', compact('balances', 'balance_in_usd_'));
     }
+
 }

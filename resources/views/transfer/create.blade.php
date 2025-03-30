@@ -88,7 +88,7 @@
                 </div>
 
                 <div class="tab-pane fade" id="pills-SYP" role="tabpanel" aria-labelledby="pills-SYP-tab">
-                 
+                    @include('Transfer.syp')
                 </div>
             </div>
         </div>

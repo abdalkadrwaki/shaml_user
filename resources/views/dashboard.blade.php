@@ -28,8 +28,8 @@
         </div>
     @endif
 
-    <livewire:currency-rates />
-  
+
+    <livewire:user-balances />
 
     </div>
 

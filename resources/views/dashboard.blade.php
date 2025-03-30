@@ -1362,6 +1362,11 @@ document.head.appendChild(style);
                                     throw new Error(data.error);
                                 }
 
+                                // التأكد من وجود بيانات الصورة
+                                if (!data.image_data) {
+                                    throw new Error('لم يتم استلام بيانات الصورة.');
+                                }
+
                                 transferData_syp = {
                                     movementNumber: data.movement_number,
                                     recipientName: data.recipient_name,
@@ -1433,23 +1438,23 @@ document.head.appendChild(style);
                             }
 
                             const data = `
-                      *  شركة الشامل  *
-                     ━━━━━━━━━━━━━━━━━━━━━━
-                      *رقم الإشعار:*  ${transferData_syp.movementNumber}
-                      *كلمة السر:*  ${transferData_syp.password}
-                     ━━━━━━━━━━━━━━━━━━━━━━
-                      *اسم المستفيد:*  ${transferData_syp.recipientName}
-                     - ${transferData_syp.destination}
-                     ━━━━━━━━━━━━━━━━━━━━━━
-                      *المبلغ المستلم:*  ${transferData_syp.sentAmount} ${transferData_syp.sent_currency}
-                     ━━━━━━━━━━━━━━━━━━━━━━
-                     * الوجهه*
-                     ${transferData_syp.Office_name}
-                     ━━━━━━━━━━━━━━━━━━━━━━
-                     ${transferData_syp.user_address}
-                     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-                      *الملاحظة:*  ${transferData_syp.note}
-                     ━━━━━━━━━━━━━━━━━━
+                    *  شركة الشامل  *
+                    ━━━━━━━━━━━━━━━━━━━━━━
+                    *رقم الإشعار:*  ${transferData_syp.movementNumber}
+                    *كلمة السر:*  ${transferData_syp.password}
+                    ━━━━━━━━━━━━━━━━━━━━━━
+                    *اسم المستفيد:*  ${transferData_syp.recipientName}
+                    - ${transferData_syp.destination}
+                    ━━━━━━━━━━━━━━━━━━━━━━
+                    *المبلغ المستلم:*  ${transferData_syp.sentAmount} ${transferData_syp.sent_currency}
+                    ━━━━━━━━━━━━━━━━━━━━━━
+                    *الوجهة:*
+                    ${transferData_syp.Office_name}
+                    ━━━━━━━━━━━━━━━━━━━━━━
+                    ${transferData_syp.user_address}
+                    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+                    *الملاحظة:*  ${transferData_syp.note}
+                    ━━━━━━━━━━━━━━━━━━━━━━
                             `;
 
                             navigator.clipboard.writeText(data)

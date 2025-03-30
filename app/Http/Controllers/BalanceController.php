@@ -7,7 +7,6 @@ use App\Models\Currency;
 use App\Models\FriendRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Str;
 
 class BalanceController extends Controller
 {
@@ -20,29 +19,21 @@ class BalanceController extends Controller
         $balanceInUsd = 0;
 
         $currencies = Currency::all();
-
         foreach ($currencies as $currency) {
-            // تحويل اسم العملة إلى صيغة snake_case
-            $currencyKey = Str::snake(strtolower($currency->name_en));
+            $currencyName = $currency->name_en;
 
-            $column1 = "{$currencyKey}_1";
-            $column2 = "{$currencyKey}_2";
-
-            // التحقق من وجود الأعمدة في الجدول
-            if (!Schema::hasColumn('friend_requests', $column1) ||
-                !Schema::hasColumn('friend_requests', $column2)) {
+            if (!Schema::hasColumn('friend_requests', "{$currencyName}_1") ||
+                !Schema::hasColumn('friend_requests', "{$currencyName}_2")) {
                 continue;
             }
 
-            // حساب الرصيد كمرسل
             $senderBalance = FriendRequest::where('receiver_id', $userId)
-                ->whereNotNull($column1)
-                ->sum($column1);
+                ->whereNotNull("{$currencyName}_1")
+                ->sum("{$currencyName}_1");
 
-            // حساب الرصيد كمستقبل
             $receiverBalance = FriendRequest::where('sender_id', $userId)
-                ->whereNotNull($column2)
-                ->sum($column2);
+                ->whereNotNull("{$currencyName}_2")
+                ->sum("{$currencyName}_2");
 
             $totalBalance = $senderBalance + $receiverBalance;
 
@@ -55,7 +46,7 @@ class BalanceController extends Controller
             }
         }
 
-        // معالجة رصيد الدولار بشكل منفصل
+        // حساب رصيد الدولار
         $usdSenderBalance = FriendRequest::where('receiver_id', $userId)
             ->whereNotNull('balance_in_usd_2')
             ->sum('balance_in_usd_2');

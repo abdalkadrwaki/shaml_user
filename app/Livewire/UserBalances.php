@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\Currency;
 use App\Models\FriendRequest;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Schema;  
 class UserBalances extends Component
 {
     public $balances = [];

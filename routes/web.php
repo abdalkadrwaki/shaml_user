@@ -14,8 +14,7 @@ use App\Http\Controllers\Transfers\RxchangeTransfersController;
 use App\Http\Controllers\Transfers\RxchangeReceivedTransferController;
 use App\Http\Controllers\SubUserController;
 use App\Http\Controllers\TransferReportController; // Route لتسجيل الخروج
-use App\Http\Controllers\UserBalanceController;
-
+use App\Http\Controllers\BalanceController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -40,13 +39,12 @@ Route::middleware([
 
 
 
-    Route::get('/user-balances', [UserBalanceController::class, 'index'])->name('user-balances.index');
 
     /// حساب فرعي
  //Route::get('/sub-users/create', [SubUserController::class, 'create'])->name('sub-users.create');
  //Route::post('/sub-users', [SubUserController::class, 'store']);
  Route::get('dashboard', [TransferController::class, 'create'])->name('dashboard');
-
+ Route::get('/balances', [BalanceController::class, 'index'])->name('balances.index');
  // مسارات نقل الأموال
 
  Route::post('dashboard/transfer/submit', [TransferController::class, 'store'])->name('dashboard.transfer.submit');

@@ -33,7 +33,7 @@
 
 
 
-            <livewire:user-balances />
+       
 
 
 
@@ -51,7 +51,7 @@
             <div class="flex-wrap -p-8 d-flex justify-content-between">
                 <!-- Currency Rates Section -->
                 <div wire:poll.600ms style="flex: 2 8 45%;">
-                    <livewire:currency-rates />
+
                 </div>
 
                 <!-- Main Card Container -->

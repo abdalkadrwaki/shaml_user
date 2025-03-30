@@ -14,7 +14,7 @@ use App\Http\Controllers\Transfers\RxchangeTransfersController;
 use App\Http\Controllers\Transfers\RxchangeReceivedTransferController;
 use App\Http\Controllers\SubUserController;
 use App\Http\Controllers\TransferReportController; // Route لتسجيل الخروج
-
+use App\Http\Controllers\UserBalanceController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -39,6 +39,8 @@ Route::middleware([
 
 
 
+
+    Route::get('/dashboard', [UserBalanceController::class, 'dashboard'])->name('dashboard');
  /// حساب فرعي
  //Route::get('/sub-users/create', [SubUserController::class, 'create'])->name('sub-users.create');
  //Route::post('/sub-users', [SubUserController::class, 'store']);

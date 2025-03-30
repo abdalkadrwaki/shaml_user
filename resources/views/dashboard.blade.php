@@ -31,6 +31,8 @@
 
 
 
+
+
     <div>
         <div class="flex gap-4 justify-between mt-4">
             @foreach ($balances as $key => $balanceData)
@@ -100,17 +102,6 @@
             @endif
         </div>
     </div>
-
-
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-@endif
 
 <!-- Main Content Section -->
 <div class="flex-wrap -p-8 d-flex justify-content-between">

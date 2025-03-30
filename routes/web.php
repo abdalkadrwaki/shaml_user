@@ -41,7 +41,7 @@ Route::middleware([
 
 
     Route::get('/dashboard', [UserBalanceController::class, 'dashboard'])->name('dashboard');
- /// حساب فرعي
+    /// حساب فرعي
  //Route::get('/sub-users/create', [SubUserController::class, 'create'])->name('sub-users.create');
  //Route::post('/sub-users', [SubUserController::class, 'store']);
  Route::get('dashboard', [TransferController::class, 'create'])->name('dashboard');

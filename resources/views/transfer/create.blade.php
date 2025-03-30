@@ -73,22 +73,22 @@
                 <!-- Transfer Tab Content -->
                 <div class="tab-pane fade" id="pills-send-request" role="tabpanel"
                     aria-labelledby="pills-send-request-tab">
-                    @include('Transfer.transfer')
+
                 </div>
 
 
                 <div class="tab-pane fade" id="pills-payment-voucher" role="tabpanel"
                     aria-labelledby="pills-payment-voucher-tab">
-                    @include('Transfer.exchange')
+
                 </div>
 
                 <!-- Approval Tab Content -->
                 <div class="tab-pane fade" id="pills-approval" role="tabpanel" aria-labelledby="pills-approval-tab">
-                    @include('Transfer.approval')
+
                 </div>
 
                 <div class="tab-pane fade" id="pills-SYP" role="tabpanel" aria-labelledby="pills-SYP-tab">
-                    @include('Transfer.syp')
+                 
                 </div>
             </div>
         </div>

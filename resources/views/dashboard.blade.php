@@ -32,7 +32,7 @@
 
 
 
-
+    <livewire:user-balances />
 
     @if ($errors->any())
     <div class="alert alert-danger">

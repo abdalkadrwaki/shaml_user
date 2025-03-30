@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\Currency;
 use App\Models\FriendRequest;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Schema;
 class UserBalances extends Component
 {
     public $balances = [];
@@ -24,25 +24,27 @@ class UserBalances extends Component
         foreach ($currencies as $currency) {
             $currencyName = $currency->name_en;
 
-            // جلب الرصيد من عمود sender_id
+            // تأكد من أن الأعمدة موجودة قبل تنفيذ الاستعلام
+            if (!Schema::hasColumn('friend_requests', "{$currencyName}_1") || !Schema::hasColumn('friend_requests', "{$currencyName}_2")) {
+                continue; // تخطي العملة إذا لم تكن الأعمدة موجودة
+            }
+
             $senderBalance = FriendRequest::where('receiver_id', $userId)
                 ->whereNotNull("{$currencyName}_1")
                 ->sum("{$currencyName}_1");
 
-            // جلب الرصيد من عمود receiver_id
             $receiverBalance = FriendRequest::where('sender_id', $userId)
                 ->whereNotNull("{$currencyName}_2")
                 ->sum("{$currencyName}_2");
 
-            // جمع الأرصدة المرسلة والمستقبلة
             $totalBalance = $senderBalance + $receiverBalance;
 
-            // تخزين الرصيد مع كائن العملة بدون حساب الرصيد بالدولار
             $this->balances[$currency->name_ar . '_' . $currency->name_en] = [
                 'currency' => $currency,
                 'balance' => $totalBalance,
             ];
         }
+
 
         // حساب رصيد الدولار باستخدام نفس الشروط
         $usdSenderBalance = FriendRequest::where('receiver_id', $userId)

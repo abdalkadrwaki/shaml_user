@@ -29,7 +29,7 @@
     @endif
 
 
-    <livewire:user-balances />
+    @include('transfer.create')
 
     </div>
 

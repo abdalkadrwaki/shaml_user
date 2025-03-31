@@ -424,7 +424,7 @@
          alert('⚠️ لا توجد صورة متاحة للتنزيل!');
          return;
      }
-     const link = document.createElement('h');
+     const link = document.createElement('a');
      let fileName = globalMovementNumber ? `${globalMovementNumber}.png` : 'transfer_receipt.png';
      link.href = `data:image/png;base64,${globalImageData}`;
      link.download = fileName;

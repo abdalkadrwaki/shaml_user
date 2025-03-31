@@ -52,7 +52,7 @@ Route::middleware([
 
  // تحويل السوري
  Route::get('dashboard', [TransfersypController::class, 'create'])->name('dashboard');
- Route::post('dashboard/transfer/submit', [TransfersypController::class, 'sypstore'])->name('syp.submit');
+ Route::post('dashboard/transfer/submit', [TransfersypController::class, 'sypstore'])->name('dashboard.transfersyp.submit');
 
  Route::get('get-exchange-rate', [ExchangeController::class, 'getExchangeRate'])->name('exchange.getRate');
  Route::get('/get-exchange-rate', [TransfersypController::class, 'getExchangeRate']);

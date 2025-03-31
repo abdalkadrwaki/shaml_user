@@ -1,5 +1,5 @@
 <div class="p-4 bg-custom-gray2 shadow-md rounded-md ">
-    <form id="transfer-form_syp" method="POST" action="{{ route('syp.submit') }}">
+    <form id="transfer-form_syp" method="POST" action="{{ route('dashboard.transfersyp.submit') }}">
         @csrf
 
         <!-- بيانات المستفيد -->

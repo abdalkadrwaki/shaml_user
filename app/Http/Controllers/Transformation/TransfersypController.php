@@ -104,8 +104,7 @@ class TransfersypController extends Controller
      */
     public function sypstore(Request $request)
     {
-        Gate::authorize('manage-Lessons');
-
+    
         try {
             $validated = $request->validate([
                 'recipient_name'     => 'required|string|max:255',

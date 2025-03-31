@@ -43,7 +43,7 @@ class TransfersypController extends Controller
     public function getExchangeRate(Request $request)
     {
         $destinationId = $request->input('destination_id');
-        $userId        = auth()->id();
+        $userId        = Auth::id();
 
         Log::debug("User ID: {$userId} - Destination ID: {$destinationId}");
 
@@ -119,10 +119,10 @@ class TransfersypController extends Controller
             ]);
 
             $totalAmount = $validated['sent_amount'] + ($validated['fees'] ?? 0);
-            $validated['user_id'] = auth()->id();
+            $validated['user_id'] = Auth::id();
 
             // التحقق من رصيد المستخدم
-            if (!BalanceService::checkBalanceLimit(auth()->id(), $validated['sent_currency'], $totalAmount, true)) {
+            if (!BalanceService::checkBalanceLimit(Auth::id(), $validated['sent_currency'], $totalAmount, true)) {
                 return response()->json(['error' => 'تجاوز الحد المسموح به للرصيد'], 422);
             }
 
@@ -172,7 +172,7 @@ class TransfersypController extends Controller
                 $friendRequest,
                 $validated['sent_currency'],
                 $totalAmount,
-                (auth()->id() === $friendRequest->sender_id),
+                (Auth::id() === $friendRequest->sender_id),
                 $validated['destination']
             );
 
@@ -195,7 +195,7 @@ class TransfersypController extends Controller
                 'fees'              => $validated['fees'] ?? 0,
                 'exchange_rate'     => $computedRate,
                 'note'              => $validated['note'] ?? null,
-                'user_id'           => auth()->id(),
+                'user_id'           => Auth::id(),
                 'password'          => str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT)
 
             ]);
@@ -211,8 +211,8 @@ class TransfersypController extends Controller
                 'transfer_id'     => $transfer->id,
                 'movement_number' => $transfer->movement_number,
                 'recipient_name'  => $transfer->recipient_name,
-                'sent_amount'     => $transfer->sent_amount,
-                'sent_currency'   => ' (' . $transfer->currency->name_ar . ')',
+                $mslm = $transfer->sent_amount,
+                'received_currency'   => ' (' . $transfer->currency->name_ar . ')',
                 'password'        => $transfer->password,
                 'destination'     => optional($transfer->destinationUser)->state_user . ' - ' . optional($transfer->destinationUser)->country_user,
                 'Office_name'     => optional($transfer->destinationUser)->Office_name,
@@ -227,7 +227,7 @@ class TransfersypController extends Controller
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Transfer Error: ' . $e->getMessage(), [
-                'user'  => auth()->id(),
+                'user'  => Auth::id(),
                 'trace' => $e->getTraceAsString()
             ]);
             event(new UndefinedErrorOccurred($e));

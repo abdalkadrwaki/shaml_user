@@ -115,7 +115,7 @@
 
                 <!-- Approval Tab Content -->
                 <div class="tab-pane fade" id="pills-approval" role="tabpanel" aria-labelledby="pills-approval-tab">
-
+                    <x-TransferFormapproval :currencies="$currencies" :destinations="$destinations" />
                 </div>
 
                 <div class="tab-pane fade" id="pills-SYP" role="tabpanel" aria-labelledby="pills-SYP-tab">
@@ -138,7 +138,7 @@
     const messages = document.querySelectorAll('.message');
 
     if (messages.length === 0) {
-      
+
         return;
     }
 

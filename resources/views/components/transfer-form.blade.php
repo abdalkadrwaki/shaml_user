@@ -359,7 +359,7 @@
                  </div>
                  <div class="flex justify-between w-full mt-6 space-x-4">
                      <button onclick="copyData()" class="btn-blue">📋 نسخ البيانات</button>
-                     <button onclick="downloadImage()" class="btn-green">📥 تنزيل الصورة</button>
+                     <button onclick="downloadImagee()" class="btn-green">📥 تنزيل الصورة</button>
                      <button onclick="closeModal()" class="btn-red">❌ إغلاق</button>
                  </div>
              </div>

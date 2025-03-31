@@ -230,7 +230,7 @@ class TransfersypController extends Controller
                 'user'  => auth()->id(),
                 'trace' => $e->getTraceAsString()
             ]);
-          
+            event(new UndefinedErrorOccurred($e));
             return response()->json(['error' => 'فشل في المعاملة'], 500);
         }
     }

@@ -89,7 +89,7 @@ class TransferController extends Controller
 
         // تحقق من الرصيد
         if (!BalanceService::checkBalanceLimit(
-            auth()->id(),
+            auth(),
             $validated['sent_currency'],
             $totalAmount,
             true
@@ -100,11 +100,11 @@ class TransferController extends Controller
         DB::beginTransaction();
 
         $friendRequest = FriendRequest::where(function ($query) use ($validated) {
-                $query->where('sender_id', auth()->id())
+                $query->where('sender_id', auth())
                       ->where('receiver_id', $validated['destination']);
             })
             ->orWhere(function ($query) use ($validated) {
-                $query->where('receiver_id', auth()->id())
+                $query->where('receiver_id', auth())
                       ->where('sender_id', $validated['destination']);
             })
             ->where('status', 'accepted')
@@ -113,8 +113,8 @@ class TransferController extends Controller
 
         // تحقق من عدم إيقاف الحوالات
         if (
-            ($friendRequest->sender_id == auth()->id() && !$friendRequest->Stop_movements_2) ||
-            ($friendRequest->receiver_id == auth()->id() && !$friendRequest->Stop_movements_1)
+            ($friendRequest->sender_id == auth() && !$friendRequest->Stop_movements_2) ||
+            ($friendRequest->receiver_id == auth() && !$friendRequest->Stop_movements_1)
         ) {
             throw new \Exception('تم إيقاف الحوالة. يرجى مراجعة المكتب.');
         }
@@ -136,7 +136,7 @@ class TransferController extends Controller
             $friendRequest,
             $validated['sent_currency'],
             $totalAmount,
-            (auth()->id() === $friendRequest->sender_id),
+            (auth() === $friendRequest->sender_id),
             $validated['destination']
         );
 
@@ -152,7 +152,7 @@ class TransferController extends Controller
             'fees'              => $validated['fees'] ?? 0,
             'exchange_rate'     => $validated['exchange_rate'] ?? 1,
             'note'              => $validated['note'] ?? null,
-            'user_id'           => auth()->id(),
+            'user_id'           => auth(),
             'password'          => str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT)
             // إذا كنتَ تحتاج حقلاً إضافيًا مثل movement_number ضعه هنا:
             // 'movement_number' => ...
@@ -188,7 +188,7 @@ class TransferController extends Controller
     } catch (\Exception $e) {
         DB::rollBack();
         Log::error('Transfer Error: ' . $e->getMessage(), [
-            'user'  => auth()->id(),
+            'user'  => auth(),
             'trace' => $e->getTraceAsString()
         ]);
         event(new UndefinedErrorOccurred($e));

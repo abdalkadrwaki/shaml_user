@@ -19,7 +19,7 @@ class ExchangeController extends Controller
 {
     public function create()
     {
-      
+
 
         // تحميل العملات النشطة من قاعدة البيانات
         $currencies = Currency::activeCurrencies();
@@ -27,7 +27,7 @@ class ExchangeController extends Controller
         // تحميل الأصدقاء المسموح لهم باستلام الحوالات
         $destinations = FriendService::loadDestinations();
 
-        return view('transfer.exchange', compact('currencies'));
+        return view('dashboard', compact('currencies'));
     }
 
     public function getBalance(Request $request)

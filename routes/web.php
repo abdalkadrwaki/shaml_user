@@ -55,7 +55,7 @@ Route::middleware([
  Route::post('syp/submit', [TransfersypController::class, 'sypstore'])->name('syp.submit');
 
  Route::get('get-exchange-rate', [ExchangeController::class, 'getExchangeRate'])->name('exchange.getRate');
- Route::get('dashboard', [TransfersypController::class, 'getExchangeRate']);
+ Route::get('/get-exchange-rate', [TransfersypController::class, 'getExchangeRate']);
  // مسارات الموافقات
 
  Route::get('approval', [ApprovalController::class, 'create'])->name('approval.create');

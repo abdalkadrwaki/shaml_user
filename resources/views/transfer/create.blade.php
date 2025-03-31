@@ -1,5 +1,5 @@
 
-
+<livewire:user-balances />
 
 
 
@@ -12,7 +12,7 @@
         </ul>
     </div>
 @endif
-<livewire:user-balances />
+
 <!-- Main Content Section -->
 <div class="flex-wrap -p-8 d-flex justify-content-between">
     <!-- Currency Rates Section -->

@@ -138,7 +138,7 @@
     const messages = document.querySelectorAll('.message');
 
     if (messages.length === 0) {
-        console.warn("لا توجد عناصر بالصفحة تحتوي على الصنف .message");
+      
         return;
     }
 

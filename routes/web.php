@@ -62,7 +62,7 @@ Route::middleware([
  Route::post('approval/submit', [ApprovalController::class, 'storeApproval'])->name('approval.submit');
 
  // مسارات صرافة
- Route::get('dashboard', [ExchangeController::class, 'create'])->name('exchange.create');
+ Route::get('exchange', [ExchangeController::class, 'create'])->name('exchange.create');
  Route::post('exchange/submit', [ExchangeController::class, 'storeExchange'])->name('exchange.submit');
  Route::post('/exchange/get-balance', [ExchangeController::class, 'getBalance'])->name('exchange.getBalance');
 

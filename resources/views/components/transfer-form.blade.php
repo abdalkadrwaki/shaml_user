@@ -406,6 +406,19 @@
  }
 
  // دالة تنزيل الصورة
+ function downloadImagee() {
+     if (!receiptImage) { // تم تغيير اسم المتغير
+         alert('⚠️ لا توجد صورة متاحة!');
+         return;
+     }
+
+     const link = document.createElement('a');
+     link.href = `data:image/png;base64,${receiptImage}`; // استخدام المتغير الجديد
+     link.download = `${globalMovementNumber || 'receipt'}.png`;
+     document.body.appendChild(link);
+     link.click();
+     document.body.removeChild(link);
+ }
 
  // إضافة أنماط الأزرار
  const style = document.createElement('style');

@@ -162,7 +162,7 @@ class TransferController extends Controller
 
         // إنشاء صورة الحوالة
         $imageService = new GenerateTransferImageService();
-        $imageData    = $imageService->generateTransferImage($transfer->id);
+        $imageDataa    = $imageService->generateTransferImage($transfer->id);
 
         DB::commit();
 
@@ -177,7 +177,7 @@ class TransferController extends Controller
             'destination'     => optional($transfer->destinationUser)->state_user . ' - ' . optional($transfer->destinationUser)->country_user,
             'Office_name'     => optional($transfer->destinationUser)->Office_name,
             'user_address'    => optional($transfer->destinationUser)->user_address,
-            'image_data'      => $imageData,
+            'image_data'      => $imageDataa,
             'message'         => 'تم إنشاء الحوالة بنجاح'
         ]);
 

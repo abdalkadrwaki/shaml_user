@@ -284,169 +284,165 @@
     });
 </script>
 <script>
-    // تعريف متغيرات عامة لتخزين بيانات الحوالة
- let transferData = {};
- let receiptImage = ''; // تم تغيير الاسم من globalImageData إلى receiptImage
- let globalMovementNumber = '';
+    (function(){
+        // تعريف متغيرات خاصة بالكود الأول
+        let transferData = {};
+        let receiptImage = '';
+        let globalMovementNumber = '';
 
- // تعريف حدث الإرسال للفورم
- document.getElementById('transfer-form').addEventListener('submit', async function (e) {
-     e.preventDefault();
+        document.getElementById('transfer-form').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const form = e.target;
+            const formData = new FormData(form);
+            const submitBtn = form.querySelector('button[type="submit"]');
 
-     const form = e.target;
-     const formData = new FormData(form);
-     const submitBtn = form.querySelector('button[type="submit"]');
+            // تعطيل الزر أثناء المعالجة
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '🔄 جاري الإرسال...';
 
-     // تعطيل الزر أثناء المعالجة
-     submitBtn.disabled = true;
-     submitBtn.innerHTML = '🔄 جاري الإرسال...';
+            try {
+                const response = await fetch(form.action, {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json'
+                    }
+                });
+                const data = await response.json();
+                if (data.error) throw new Error(data.error);
 
-     try {
-         // إرسال البيانات إلى الخادم
-         const response = await fetch(form.action, {
-             method: 'POST',
-             body: formData,
-             headers: {
-                 'X-Requested-With': 'XMLHttpRequest',
-                 'Accept': 'application/json'
-             }
-         });
+                // حفظ بيانات الحوالة
+                transferData = {
+                    movementNumber: data.movement_number,
+                    recipientName: data.recipient_name,
+                    recipientMobile: data.recipient_mobile,
+                    destination: data.destination,
+                    sentAmount: data.sent_amount,
+                    sent_currency: data.sent_currency,
+                    password: data.password,
+                    Office_name: data.Office_name,
+                    user_address: data.user_address,
+                    note: data.note || 'لا توجد ملاحظات'
+                };
 
-         const data = await response.json();
+                receiptImage = data.receipt_image; // تم تغيير الاسم من image_data
+                globalMovementNumber = data.movement_number;
 
-         if (data.error) {
-             throw new Error(data.error);
-         }
+                showImageModal(receiptImage);
 
-         // حفظ بيانات الحوالة من الاستجابة
-         transferData = {
-             movementNumber: data.movement_number,
-             recipientName: data.recipient_name,
-             recipientMobile: data.recipient_mobile,
-             destination: data.destination,
-             sentAmount: data.sent_amount,
-             sent_currency: data.sent_currency,
-             password: data.password,
-             Office_name: data.Office_name,
-             user_address: data.user_address,
-             note: data.note || 'لا توجد ملاحظات'
-         };
+            } catch (error) {
+                alert(`❌ خطأ: ${error.message}`);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = '📩 إرسال الحوالة';
+            }
+        });
 
-         // تخزين بيانات الإيصال (تم تغيير اسم المتغير)
-         receiptImage = data.receipt_image; // كان image_data
-         globalMovementNumber = data.movement_number;
+        // دالة عرض نافذة الإيصال المنبثقة
+        function showImageModal(imageData) {
+            const modal = document.createElement('div');
+            modal.innerHTML = `
+                <div id="imageModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-90">
+                    <div class="relative w-full max-w-3xl p-6 bg-white rounded-lg shadow-2xl">
+                        <div class="overflow-hidden border-4 border-blue-900 rounded-lg shadow-lg">
+                            <img src="data:image/png;base64,${imageData}" alt="إيصال الحوالة" class="w-full h-auto">
+                        </div>
+                        <div class="flex justify-between w-full mt-6 space-x-4">
+                            <button onclick="firstTransfer.copyData()" class="btn-blue">📋 نسخ البيانات</button>
+                            <button onclick="firstTransfer.downloadImage()" class="btn-green">📥 تنزيل الصورة</button>
+                            <button onclick="firstTransfer.closeModal()" class="btn-red">❌ إغلاق</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
 
-         // عرض نافذة الإيصال
-         showImageModal(receiptImage);
+        // دالة إغلاق النافذة المنبثقة
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            if (modal) modal.remove();
+            document.getElementById('transfer-form').reset();
+        }
 
-     } catch (error) {
-         alert(`❌ خطأ: ${error.message}`);
-     } finally {
-         // إعادة تفعيل الزر
-         submitBtn.disabled = false;
-         submitBtn.innerHTML = '📩 إرسال الحوالة';
-     }
- });
+        // دالة نسخ البيانات
+        function copyData() {
+            if (!transferData.movementNumber) {
+                alert('⚠️ لا توجد بيانات متاحة للنسخ!');
+                return;
+            }
+            const data = `
+     *  شركة الشامل  *
+     ━━━━━━━━━━━━━━━━━━━━━━
+     * رقم الإشعار: ${transferData.movementNumber}
+     * كلمة السر: ${transferData.password}
+     ━━━━━━━━━━━━━━━━━━━━━━
+     * اسم المستفيد: ${transferData.recipientName}
+     - ${transferData.destination}
+     ━━━━━━━━━━━━━━━━━━━━━━
+     * المبلغ المستلم: ${transferData.sentAmount} ${transferData.sent_currency}
+     ━━━━━━━━━━━━━━━━━━━━━━
+     * الوجهة: ${transferData.Office_name}
+     ━━━━━━━━━━━━━━━━━━━━━━
+     ${transferData.user_address}
+     ━━━━━━━━━━━━━━━━━━━━━━
+     * الملاحظة: ${transferData.note}
+     ━━━━━━━━━━━━━━━━━━━━━━`;
+            navigator.clipboard.writeText(data)
+                .then(() => alert('✅ تم نسخ البيانات بنجاح!'))
+                .catch(() => alert('❌ فشل في النسخ!'));
+        }
 
- // دالة عرض نافذة الإيصال المنبثقة
- function showImageModal(imageData) {
-     const modal = document.createElementt('div');
-     modal.innerHTML = `
-         <div id="imageModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-90">
-             <div class="relative w-full max-w-3xl p-6 bg-white rounded-lg shadow-2xl">
-                 <div class="overflow-hidden border-4 border-blue-900 rounded-lg shadow-lg">
-                     <img src="data:image/png;base64,${imageData}" alt="إيصال الحوالة" class="w-full h-auto">
-                 </div>
-                 <div class="flex justify-between w-full mt-6 space-x-4">
-                     <button onclick="copyData()" class="btn-blue">📋 نسخ البيانات</button>
-                     <button onclick="downloadImagee()" class="btn-green">📥 تنزيل الصورة</button>
-                     <button onclick="closeModal()" class="btn-red">❌ إغلاق</button>
-                 </div>
-             </div>
-         </div>
-     `;
-     document.body.appendChild(modal);
- }
+        // دالة تنزيل الصورة
+        function downloadImage() {
+            if (!receiptImage) {
+                alert('⚠️ لا توجد صورة متاحة!');
+                return;
+            }
+            const link = document.createElement('a');
+            link.href = `data:image/png;base64,${receiptImage}`;
+            link.download = `${globalMovementNumber || 'receipt'}.png`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
 
- // دالة إغلاق النافذة المنبثقة
- function closeModal() {
-     const modal = document.getElementById('imageModal');
-     if (modal) modal.remove();
-     document.getElementById('transfer-form').reset();
- }
+        // إضافة أنماط الأزرار
+        const style = document.createElement('style');
+        style.innerHTML = `
+            .btn-blue {
+                background: linear-gradient(to right, #3b82f6, #1d4ed8);
+                color: white; padding: 10px 20px;
+                border-radius: 8px; border: none;
+                font-size: 16px; cursor: pointer;
+                transition: transform 0.2s;
+            }
+            .btn-green {
+                background: linear-gradient(to right, #10b981, #047857);
+                color: white; padding: 10px 20px;
+                border-radius: 8px; border: none;
+                font-size: 16px; cursor: pointer;
+                transition: transform 0.2s;
+            }
+            .btn-red {
+                background: linear-gradient(to right, #ef4444, #b91c1c);
+                color: white; padding: 10px 20px;
+                border-radius: 8px; border: none;
+                font-size: 16px; cursor: pointer;
+                transition: transform 0.2s;
+            }
+            .btn-blue:hover, .btn-green:hover, .btn-red:hover {
+                transform: scale(1.05);
+            }
+        `;
+        document.head.appendChild(style);
 
- // دالة نسخ البيانات
- function copyData() {
-     if (!transferData.movementNumber) {
-         alert('⚠️ لا توجد بيانات متاحة للنسخ!');
-         return;
-     }
-
-     const data = `
- *  شركة الشامل  *
- ━━━━━━━━━━━━━━━━━━━━━━
- * رقم الإشعار: ${transferData.movementNumber}
- * كلمة السر: ${transferData.password}
- ━━━━━━━━━━━━━━━━━━━━━━
- * اسم المستفيد: ${transferData.recipientName}
- - ${transferData.destination}
- ━━━━━━━━━━━━━━━━━━━━━━
- * المبلغ المستلم: ${transferData.sentAmount} ${transferData.sent_currency}
- ━━━━━━━━━━━━━━━━━━━━━━
- * الوجهة: ${transferData.Office_name}
- ━━━━━━━━━━━━━━━━━━━━━━
- ${transferData.user_address}
- ━━━━━━━━━━━━━━━━━━━━━━
- * الملاحظة: ${transferData.note}
- ━━━━━━━━━━━━━━━━━━━━━━`;
-
-     navigator.clipboard.writeText(data)
-         .then(() => alert('✅ تم نسخ البيانات بنجاح!'))
-         .catch(() => alert('❌ فشل في النسخ!'));
- }
-
- // دالة تنزيل الصورة
- function downloadImagee() {
-     if (!receiptImage) { // تم تغيير اسم المتغير
-         alert('⚠️ لا توجد صورة متاحة!');
-         return;
-     }
-
-     const link = document.createElementt('a');
-     link.href = `data:image/png;base64,${receiptImage}`; // استخدام المتغير الجديد
-     link.download = `${globalMovementNumber || 'receipt'}.png`;
-     document.body.appendChild(link);
-     link.click();
-     document.body.removeChild(link);
- }
-
- // إضافة أنماط الأزرار
- const style = document.createElement('style');
- style.innerHTML = `
-     .btn-blue {
-         background: linear-gradient(to right, #3b82f6, #1d4ed8);
-         color: white; padding: 10px 20px;
-         border-radius: 8px; border: none;
-         font-size: 16px; cursor: pointer;
-         transition: transform 0.2s;
-     }
-     .btn-green {
-         background: linear-gradient(to right, #10b981, #047857);
-         color: white; padding: 10px 20px;
-         border-radius: 8px; border: none;
-         font-size: 16px; cursor: pointer;
-         transition: transform 0.2s;
-     }
-     .btn-red {
-         background: linear-gradient(to right, #ef4444, #b91c1c);
-         color: white; padding: 10px 20px;
-         border-radius: 8px; border: none;
-         font-size: 16px; cursor: pointer;
-         transition: transform 0.2s;
-     }
-     .btn-blue:hover, .btn-green:hover, .btn-red:hover {
-         transform: scale(1.05);
-     }
- `;
- document.head.appendChild(style);
- </script>
+        // تصدير الدوال المطلوبة ضمن كائن firstTransfer
+        window.firstTransfer = {
+            copyData: copyData,
+            downloadImage: downloadImage,
+            closeModal: closeModal
+        };
+    })();
+    </script>

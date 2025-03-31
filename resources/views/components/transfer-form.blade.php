@@ -350,7 +350,7 @@
 
  // دالة عرض نافذة الإيصال المنبثقة
  function showImageModal(imageData) {
-     const modal = document.createElement('div');
+     const modal = document.createElementt('div');
      modal.innerHTML = `
          <div id="imageModal" class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-90">
              <div class="relative w-full max-w-3xl p-6 bg-white rounded-lg shadow-2xl">
@@ -412,7 +412,7 @@
          return;
      }
 
-     const link = document.createElement('a');
+     const link = document.createElementt('a');
      link.href = `data:image/png;base64,${receiptImage}`; // استخدام المتغير الجديد
      link.download = `${globalMovementNumber || 'receipt'}.png`;
      document.body.appendChild(link);

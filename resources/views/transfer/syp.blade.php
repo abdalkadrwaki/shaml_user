@@ -233,7 +233,7 @@
     });
 </script>
 
-</script>
+
 
 <script>
     let transferData_syp = {};

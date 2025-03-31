@@ -18,7 +18,7 @@ use App\Services\FriendService;
 use App\Jobs\GenerateTransferImageJob;
 use App\Events\TransferCountUpdated;
 use Carbon\Carbon;
-
+use App\Events\UndefinedErrorOccurred;
 // عند تحديث العداد (مثلاً بعد حفظ عملية جديدة في قاعدة البيانات)
 
 
@@ -68,7 +68,7 @@ class TransferController extends Controller
      */
     public function store(Request $request)
 {
-   
+
 
     try {
         $validated = $request->validate([
@@ -85,7 +85,7 @@ class TransferController extends Controller
         ]);
 
         $totalAmount = $validated['sent_amount'] + ($validated['fees'] ?? 0);
-        $validated['user_id'] = auth()->id();
+        $validated['user_id'] = auth();
 
         // تحقق من الرصيد
         if (!BalanceService::checkBalanceLimit(
@@ -191,7 +191,7 @@ class TransferController extends Controller
             'user'  => auth()->id(),
             'trace' => $e->getTraceAsString()
         ]);
-
+        event(new UndefinedErrorOccurred($e));
         return response()->json(['error' => 'فشل في المعاملة: ' . $e->getMessage()], 500);
     }
 }

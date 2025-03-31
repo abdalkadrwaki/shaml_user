@@ -27,7 +27,7 @@ class ExchangeController extends Controller
         // تحميل الأصدقاء المسموح لهم باستلام الحوالات
         $destinations = FriendService::loadDestinations();
 
-        return view('dashboard', compact('currencies'));
+        return view('dashboard', compact('currencies', 'destinations'));
     }
 
     public function getBalance(Request $request)

@@ -104,7 +104,7 @@
                     <!-- Transfer Tab Content -->
                     <div class="tab-pane fade" id="pills-send-request" role="tabpanel"
                         aria-labelledby="pills-send-request-tab">
-                        @include('Transfer.transfer', ['currencies' => $currencies, 'destinations' => $destinations])
+                        @each('Transfer.transfer', $currencies, 'currency')
 
                     </div>
 

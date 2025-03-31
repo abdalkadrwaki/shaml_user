@@ -29,9 +29,8 @@ class TransfersypController extends Controller
     {
         $currencies   = Currency::activeCurrencies();
         $destinations = FriendService::loadDestinations();
-        // في حالة عدم وجود قيمة مبدئية لسعر الصرف
-        $exchangeRate = null;
-        
+        $exchangeRate = null; // أو قيمة افتراضية مناسبة
+
         return view('dashboard', compact('currencies', 'destinations', 'exchangeRate'));
     }
 

@@ -107,10 +107,9 @@
                     <x-transfer-form :currencies="$currencies" :destinations="$destinations" />
                 </div>
 
-
                 <div class="tab-pane fade" id="pills-payment-voucher" role="tabpanel"
                     aria-labelledby="pills-payment-voucher-tab">
-
+                    <x-TransferForm_exchange :currencies="$currencies" :destinations="$destinations" />
                 </div>
 
                 <!-- Approval Tab Content -->

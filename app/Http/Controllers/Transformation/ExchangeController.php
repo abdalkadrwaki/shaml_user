@@ -19,9 +19,7 @@ class ExchangeController extends Controller
 {
     public function create()
     {
-        if (Gate::denies('manage-Lessons')) {
-            abort(403, 'ليس لديك الصلاحية للوصول إلى هذه الصفحة.');
-        }
+      
 
         // تحميل العملات النشطة من قاعدة البيانات
         $currencies = Currency::activeCurrencies();

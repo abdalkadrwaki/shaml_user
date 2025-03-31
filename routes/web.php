@@ -51,7 +51,7 @@ Route::middleware([
  Route::get('/get-destination-address', [TransferController::class, 'getDestinationAddress']);
 
  // تحويل السوري
- Route::get('syp', [TransfersypController::class, 'create'])->name('syp.create');
+ Route::get('dashboard', [TransfersypController::class, 'create'])->name('dashboard');
  Route::post('syp/submit', [TransfersypController::class, 'sypstore'])->name('syp.submit');
 
  Route::get('get-exchange-rate', [ExchangeController::class, 'getExchangeRate'])->name('exchange.getRate');

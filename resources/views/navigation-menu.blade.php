@@ -35,13 +35,13 @@
 
                         <!-- Dropdown Content -->
                         <div class="absolute hidden bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-lg rounded-md mt-1 space-y-2 w-48 group-hover:block">
-                            <x-nav-link href="{{ route('link1') }}" :active="request()->routeIs('link1')">
+                            <x-nav-link href="" :active="request()->routeIs('')">
                                 {{ __('الرابط 1') }}
                             </x-nav-link>
-                            <x-nav-link href="{{ route('link2') }}" :active="request()->routeIs('link2')">
+                            <x-nav-link href="" :active="request()->routeIs('')">
                                 {{ __('الرابط 2') }}
                             </x-nav-link>
-                            <x-nav-link href="{{ route('link3') }}" :active="request()->routeIs('link3')">
+                            <x-nav-link href="" :active="request()->routeIs('')">
                                 {{ __('الرابط 3') }}
                             </x-nav-link>
                         </div>

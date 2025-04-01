@@ -15,12 +15,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ReceivedTransferController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-        // حماية ضد هجمات التكرار
-        $this->middleware('throttle:10,1')->only(['verifyPassword', 'deliverTransfer']);
-    }
+   
 
     /**
      * دالة لاسترجاع نسخة الكاش الخاصة بالمستخدم

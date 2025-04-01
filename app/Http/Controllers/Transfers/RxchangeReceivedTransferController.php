@@ -18,9 +18,7 @@ class RxchangeReceivedTransferController extends Controller
      */
     public function index(Request $request)
     {
-        if (!Auth::check()) {
-            abort(403, 'يجب تسجيل الدخول للوصول إلى هذه الصفحة.');
-        }
+
 
         // استخدام paginate لتحميل مجموعة محدودة من السجلات في كل صفحة
         $receivedTransfers = Transfer::with(['currency', 'sender'])
@@ -38,9 +36,7 @@ class RxchangeReceivedTransferController extends Controller
      */
     public function getTransfersData(Request $request)
     {
-        if (!Auth::check()) {
-            return response()->json(['error' => 'غير مصرح'], 403);
-        }
+
 
         // في حال كانت البيانات ضخمة قد يكون من الأفضل استخدام Pagination أو Chunking
         $receivedTransfers = Transfer::with(['currency', 'sender'])
@@ -58,9 +54,7 @@ class RxchangeReceivedTransferController extends Controller
      */
     public function destroy($id)
     {
-        if (!Auth::check()) {
-            return response()->json(['error' => 'غير مصرح'], 403);
-        }
+     
 
         $transfer = Transfer::findOrFail($id);
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8d03fd8c7e833ee92186b620e08897c4",
+    "content-hash": "99807c594124d557aeb0c3dc0b59e18c",
     "packages": [
         {
             "name": "bacon/bacon-qr-code",
@@ -1157,53 +1157,6 @@
                 }
             ],
             "time": "2025-02-03T10:55:03+00:00"
-        },
-        {
-            "name": "hafizulislamhfz/dy-toast",
-            "version": "v1.0.2",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/hafizulislamhfz/dy-toast.git",
-                "reference": "e272c96a759b8e9393b5036bf11fdf3446638477"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/hafizulislamhfz/dy-toast/zipball/e272c96a759b8e9393b5036bf11fdf3446638477",
-                "reference": "e272c96a759b8e9393b5036bf11fdf3446638477",
-                "shasum": ""
-            },
-            "type": "package",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Hafizulislamhfz\\DyToast\\Providers\\ToastServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "files": [
-                    "src/Helpers/toast.php"
-                ],
-                "psr-4": {
-                    "Hafizulislamhfz\\DyToast\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Hafizul Islam",
-                    "email": "hafizulislamhfz@gmail.com"
-                }
-            ],
-            "description": "A dynamic toast notification package for Laravel",
-            "support": {
-                "issues": "https://github.com/hafizulislamhfz/dy-toast/issues",
-                "source": "https://github.com/hafizulislamhfz/dy-toast/tree/v1.0.2"
-            },
-            "time": "2025-03-25T17:51:44+00:00"
         },
         {
             "name": "khaled.alshamaa/ar-php",

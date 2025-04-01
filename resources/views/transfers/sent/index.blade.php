@@ -1,8 +1,9 @@
-<x-teacher-layout>
+<x-app-layout>
     <x-slot name="header">
-        <!-- يمكنك وضع العنوان هنا -->
-    </x-slot>
 
+    </x-slot>
+    <div class="py-6 mt-1">
+    <div class="container p-6">
     @php
         // مصفوفة لتحويل الحالة الإنجليزية إلى العربية مع إعدادات اللون (لون الخلفية ولون النص)
         $statusMapping = [
@@ -381,4 +382,4 @@
         });
     </script>
 
-</x-teacher-layout>
+</x-app-layout>

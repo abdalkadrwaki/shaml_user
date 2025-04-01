@@ -103,7 +103,7 @@
             </div>
             <div class="col-md-6">
                 <label for="received_amount_syp" class="form-label">المبلغ المستلم</label>
-                <input type="text" id="received_amount_syp" name="received_amount"
+                <input type="text" id="" name="received_amount"
                     class="form-control number-only bg-gray-200  rounded-md  border-gray-300 received_amount_syp" value="" readonly>
                 @error('received_amount')
                     <span class="text-danger">{{ $message }}</span>

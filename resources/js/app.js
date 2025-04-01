@@ -20,7 +20,7 @@ import Swal from 'sweetalert2';
 // ملفاتك الخاصة
 import './bootstrap'; // إذا كان لديك تهيئات إضافية
 window.Swal = Swal;
-let table = new DataTable('#myTable');
+let table = new DataTable('.myTable');
 
 // تعريف دالة تهيئة Select2
 function initializeSelect2(container = document) {

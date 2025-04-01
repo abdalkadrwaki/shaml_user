@@ -62,11 +62,11 @@
                                 </x-nav-link>
                                 <x-nav-link href="" :active="request()->routeIs('')"
                                     class="px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-blue-700 hover:text-gray-100">
-                                    {{ __('الرابط 2') }}
+                                    {{ __(' اعتماد صادر') }}
                                 </x-nav-link>
                                 <x-nav-link href="" :active="request()->routeIs('')"
                                     class="px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-blue-700 hover:text-gray-100">
-                                    {{ __('الرابط 3') }}
+                                    {{ __(' قص صادر ') }}
                                 </x-nav-link>
                             </div>
                         </div>

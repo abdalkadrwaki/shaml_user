@@ -14,6 +14,8 @@ import 'select2/dist/js/select2.min.js'; // تم تصحيح اسم الملف
 import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
 import 'datatables.net-bs5';
 import Swal from 'sweetalert2';
+import 'select2';
+
 
 // ملفاتك الخاصة
 import './bootstrap'; // إذا كان لديك تهيئات إضافية

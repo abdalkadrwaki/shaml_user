@@ -1,4 +1,4 @@
-require('alpinejs'); // تحميل Alpine.js
+
 
 // تضمين jQuery
 import $ from 'jquery';

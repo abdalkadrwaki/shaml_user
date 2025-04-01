@@ -8,12 +8,20 @@ use Illuminate\View\Component;
 
 class TransferFormExchange extends Component
 {
+    public $currencies;
+    public $destinations;
+
     /**
      * Create a new component instance.
+     *
+     * @param  mixed  $currencies
+     * @param  mixed  $destinations
+     * @return void
      */
-    public function __construct()
+    public function __construct($currencies, $destinations)
     {
-        //
+        $this->currencies = $currencies;
+        $this->destinations = $destinations;
     }
 
     /**

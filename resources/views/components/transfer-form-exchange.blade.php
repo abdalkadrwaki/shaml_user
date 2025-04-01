@@ -1,5 +1,6 @@
+
 <div class="p-4 rounded bg-custom-gray">
-    <!-- عرض الأخطاء إن وجدت -->
+    <!-- عرض الأخطاء إن وجدت عبر التنبيه -->
     <form action="{{ route('exchange.submit') }}" method="POST">
         @csrf
 
@@ -7,19 +8,17 @@
         <div class="mb-3 row">
             <div class="col-md-12">
                 <label for="destination_exchange" class="form-label">الجهة</label>
-                <select id="destination_exchange" name="destination_exchange" class="form-select js-example-basic-single"
-                    required>
+                <select id="destination_exchange" name="destination_exchange" class="form-select js-example-basic-single" required>
                     <option value="">اختر الجهة</option>
                     @foreach ($destinations as $destination)
-                        <option value="{{ $destination['id'] }}"
-                            {{ old('destination') == $destination['id'] ? 'selected' : '' }}>
-                            {{ $destination['Office_name'] }} - {{ $destination['state_user'] }} -
-                            {{ $destination['country_user'] }}
+                        <option value="{{ $destination['id'] }}" {{ old('destination') == $destination['id'] ? 'selected' : '' }}>
+                            {{ $destination['Office_name'] }} - {{ $destination['state_user'] }} - {{ $destination['country_user'] }}
                             {{ number_format($destination['balance'], 0) }}
                         </option>
                     @endforeach
                 </select>
                 @error('destination_exchange')
+                    <!-- في حال وجود خطأ، يتم تخزينه في الجلسة أو يمكنك طباعته مباشرة -->
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
             </div>
@@ -28,12 +27,11 @@
         <!-- اختيار العملة المرسلة ومبلغ البيع -->
         <div class="mb-3 row">
             <div class="col-md-6">
-                <label for="sent_currency_exchange" class="form-label"> بيع العملة</label>
+                <label for="sent_currency_exchange" class="form-label">بيع العملة</label>
                 <select id="sent_currency_exchange" class="form-select" name="sent_currency" required>
-                    <option value="" disabled selected> بيع العملة</option>
+                    <option value="" disabled selected>بيع العملة</option>
                     @foreach ($currencies as $currency)
-                        <option value="{{ $currency['name_en'] }}"
-                            {{ old('sent_currency') == $currency['name_en'] ? 'selected' : '' }}>
+                        <option value="{{ $currency['name_en'] }}" {{ old('sent_currency') == $currency['name_en'] ? 'selected' : '' }}>
                             {{ $currency['name_ar'] }}
                         </option>
                     @endforeach
@@ -58,12 +56,11 @@
         <!-- اختيار العملة المستلمة ومبلغ الشراء -->
         <div class="mb-3 row">
             <div class="col-md-6">
-                <label for="received_currency_exchange" class="form-label"> شراء العملة</label>
+                <label for="received_currency_exchange" class="form-label">شراء العملة</label>
                 <select id="received_currency_exchange" class="form-select" name="received_currency" required>
                     <option value="" disabled selected>اختر العملة المستلمة</option>
                     @foreach ($currencies as $currency)
-                        <option value="{{ $currency['name_en'] }}"
-                            {{ old('received_currency') == $currency['name_en'] ? 'selected' : '' }}>
+                        <option value="{{ $currency['name_en'] }}" {{ old('received_currency') == $currency['name_en'] ? 'selected' : '' }}>
                             {{ $currency['name_ar'] }}
                         </option>
                     @endforeach
@@ -124,8 +121,10 @@
     </form>
 </div>
 
-<!-- جافاسكريبت جلب الرصيد عند تغيير العملة المرسلة -->
+<!-- تضمين مكتبة dy-toast JS -->
+<script src="{{ asset('vendor/dy-toast/dy-toast.js') }}"></script>
 
+<!-- جافاسكريبت جلب الرصيد عند تغيير العملة المرسلة -->
 <script>
     document.getElementById('sent_currency_exchange').addEventListener('change', function() {
         const currency = this.value; // العملة المحددة
@@ -151,12 +150,15 @@
                 if (data.error) {
                     balanceErrorDiv.style.display = 'block';
                     sentAmountInput.value = '';
+                    // إظهار رسالة الخطأ باستخدام dy-toast
+                    DyToast.error(data.error);
                 } else {
                     sentAmountInput.value = data.balance;
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
+                DyToast.error("حدث خطأ أثناء جلب الرصيد.");
             });
     });
 </script>
@@ -197,8 +199,9 @@
             }
         };
 
-        return (exchangeRates[sentCurrency] && exchangeRates[sentCurrency][receivedCurrency]) ?
-            exchangeRates[sentCurrency][receivedCurrency] : 1;
+        return (exchangeRates[sentCurrency] && exchangeRates[sentCurrency][receivedCurrency])
+            ? exchangeRates[sentCurrency][receivedCurrency]
+            : 1;
     }
 </script>
 
@@ -278,22 +281,18 @@
             const destinationSelect = document.getElementById('destination_exchange');
 
             const sentCurrencyOption = sentCurrencySelect?.querySelector(`option[value="${sentCurrency}"]`);
-            const receivedCurrencyOption = receivedCurrencySelect?.querySelector(
-                `option[value="${receivedCurrency}"]`);
-            const destinationOption = destinationSelect?.querySelector(
-                `option[value="{{ session('exchange')['destination_exchange'] }}"]`);
+            const receivedCurrencyOption = receivedCurrencySelect?.querySelector(`option[value="${receivedCurrency}"]`);
+            const destinationOption = destinationSelect?.querySelector(`option[value="{{ session('exchange')['destination_exchange'] }}"]`);
 
-            const sentCurrencyNameAr = sentCurrencyOption ? sentCurrencyOption.textContent.split(' - ')[0] :
-                sentCurrency;
-            const receivedCurrencyNameAr = receivedCurrencyOption ? receivedCurrencyOption.textContent.split(' - ')[
-                0] : receivedCurrency;
+            const sentCurrencyNameAr = sentCurrencyOption ? sentCurrencyOption.textContent.split(' - ')[0] : sentCurrency;
+            const receivedCurrencyNameAr = receivedCurrencyOption ? receivedCurrencyOption.textContent.split(' - ')[0] : receivedCurrency;
             const destinationData = destinationOption ? destinationOption.textContent.split(' - ') : [];
             const officeName = destinationData[0] || "غير محدد";
             const state = destinationData[1] || "";
             const country = destinationData[2] ? destinationData[2].trim().split(' ')[0] : "";
 
             Swal.fire({
-                title: 'تم إرسال  بنجاح',
+                title: 'تم إرسال الحوالة بنجاح',
                 html: `
                     <div class="font-cairo max-w-full mx-auto" style="direction: rtl;">
                         <div class="grid grid-cols-1 sm:grid-cols-4 gap-2 mb-3 p-2 bg-gradient-to-br from-gray-50 to-gray-100 rounded-xl shadow-lg">
@@ -335,6 +334,15 @@
                     confirmButton: 'px-3 py-1 text-white bg-blue-600 rounded-lg shadow hover:bg-blue-700 transition duration-300'
                 }
             });
+        });
+    </script>
+@endif
+
+<!-- إظهار تنبيه الخطأ باستخدام dy-toast في حال وجود خطأ في الجلسة -->
+@if (session('error'))
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            DyToast.error("{{ session('error') }}");
         });
     </script>
 @endif

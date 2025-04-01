@@ -41,36 +41,36 @@
                     </x-nav-link>
 
                     <!-- Dropdown Menu -->
-                
-<div class="relative group">
-    <button
-        class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-800 bg-white hover:bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-0.5 focus:ring-indigo-500 transition duration-150 ease-in-out">
-        <span>حركات صادرة</span>
-    </button>
+                    <div class="relative">
+                        <button
+                            class="inline-flex items-center px-4 py-2 mt-3 text-sm font-medium text-gray-800 bg-white hover:bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-0.5 focus:ring-indigo-500 transition duration-150 ease-in-out">
 
-    <!-- Dropdown Content -->
-    <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-md w-52 mt-1 z-10 border border-gray-100">
-        <div class="py-2 space-y-1">
-            <x-nav-link href=""
-                :active="request()->routeIs('')"
-                class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 border-b border-gray-100 last:border-b-0 transition-colors">
-                الرابط 1
-            </x-nav-link>
-
-            <x-nav-link href=""
-                :active="request()->routeIs('')"
-                class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 border-b border-gray-100 last:border-b-0 transition-colors">
-                الرابط 2
-            </x-nav-link>
-
-            <x-nav-link href=""
-                :active="request()->routeIs('')"
-                class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 border-b border-gray-100 last:border-b-0 transition-colors">
-                الرابط 3
-            </x-nav-link>
-        </div>
-    </div>
-</div>
+                            <svg class="text-indigo-500 transition-transform duration-300 group-hover:text-indigo-600"
+                                xmlns="http://www.w3.org/2000/svg" height="14" width="14" viewBox="0 0 512 512">
+                                <path fill="#075ef2"
+                                    d="M208 32c0-17.7 14.3-32 32-32l32 0c17.7 0 32 14.3 32 32l0 140.9 122-70.4c15.3-8.8 34.9-3.6 43.7 11.7l16 27.7c8.8 15.3 3.6 34.9-11.7 43.7L352 256l122 70.4c15.3 8.8 20.6 28.4 11.7 43.7l-16 27.7c-8.8 15.3-28.4 20.6-43.7 11.7L304 339.1 304 480c0 17.7-14.3 32-32 32l-32 0c-17.7 0-32-14.3-32-32l0-140.9L86 409.6c-15.3 8.8-34.9 3.6-43.7-11.7l-16-27.7c-8.8-15.3-3.6-34.9 11.7-43.7L160 256 38 185.6c-15.3-8.8-20.5-28.4-11.7-43.7l16-27.7C51.1 98.8 70.7 93.6 86 102.4l122 70.4L208 32z" />
+                            </svg>
+                            <span>{{ __(' حركات صادرة') }}</span>
+                        </button>
+                        <div class="w-40 py-1">
+                            <!-- Dropdown Content -->
+                            <div
+                                class="absolute hidden bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-lg rounded-md mt-1 space-y-2 w-48 group-hover:block">
+                                <x-nav-link href="" :active="request()->routeIs('')"
+                                    class="px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-blue-700 hover:text-gray-100">
+                                    {{ __('الرابط 1') }}
+                                </x-nav-link>
+                                <x-nav-link href="" :active="request()->routeIs('')"
+                                    class="px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-blue-700 hover:text-gray-100">
+                                    {{ __('الرابط 2') }}
+                                </x-nav-link>
+                                <x-nav-link href="" :active="request()->routeIs('')"
+                                    class="px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-blue-700 hover:text-gray-100">
+                                    {{ __('الرابط 3') }}
+                                </x-nav-link>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 

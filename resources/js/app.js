@@ -22,9 +22,8 @@ import './bootstrap'; // إذا كان لديك تهيئات إضافية
 window.Swal = Swal;
 
 new DataTable('.myTable', {
-    paging: false,
-    scrollCollapse: true,
-    scrollY: '50vh'
+    scrollX: true,
+    scrollY: 200
 });
 // تعريف دالة تهيئة Select2
 function initializeSelect2(container = document) {

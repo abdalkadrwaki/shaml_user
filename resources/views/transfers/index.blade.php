@@ -199,13 +199,6 @@
 
     {{-- يمكنك تفعيل DataTables هنا أو في ملف جافاسكربت منفصل --}}
 
-        <script>
-            $(document).ready(function() {
-                $('.myTable').DataTable({
-                    // أي إعدادات إضافية تريدها
-                });
-            });
-        </script>
-
+       
 
 </x-app-layout>

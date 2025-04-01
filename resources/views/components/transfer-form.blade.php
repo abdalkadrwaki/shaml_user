@@ -111,7 +111,7 @@
         <!-- الأجور وسعر الصرف -->
         <div class="mb-3 row">
             <div class="col-md-6">
-                <label for="fees_transfer_transfer" class="form-label">الأجور</label>
+                <label for="fees_transfer" class="form-label">الأجور</label>
                 <input type="text" id="fees_transfer" name="fees"
                     class="form-control number-only  rounded-md  border-gray-300" value="{{ old('fees', 1) }}"
                     step="0.01">

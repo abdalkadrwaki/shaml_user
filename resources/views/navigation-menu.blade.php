@@ -41,37 +41,36 @@
                     </x-nav-link>
 
                     <!-- Dropdown Menu -->
-                    <div class="relative group">
-                        <button
-                            class="inline-flex items-center px-4 py-2 mt-3 text-sm font-medium text-gray-800 bg-white hover:bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-0.5 focus:ring-indigo-500 transition duration-150 ease-in-out">
-                            <span>حركات صادرة</span>
-                        </button>
+                
+<div class="relative group">
+    <button
+        class="inline-flex items-center px-4 py-2 text-sm font-medium text-gray-800 bg-white hover:bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-0.5 focus:ring-indigo-500 transition duration-150 ease-in-out">
+        <span>حركات صادرة</span>
+    </button>
 
-                        <!-- Dropdown Content -->
-                        <div class="absolute hidden group-hover:block bg-white shadow-md rounded-md w-48 mt-1 z-10">
-                            <!-- يمكنك استخدام ul/li أو div لكل رابط -->
-                            <div class="py-1 space-y-3">
-                                <x-nav-link href=""
-                                            :active="request()->routeIs('')"
-                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-700 hover:text-white">
-                                    الرابط 1
-                                </x-nav-link>
+    <!-- Dropdown Content -->
+    <div class="absolute hidden group-hover:block bg-white shadow-lg rounded-md w-52 mt-1 z-10 border border-gray-100">
+        <div class="py-2 space-y-1">
+            <x-nav-link href=""
+                :active="request()->routeIs('')"
+                class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 border-b border-gray-100 last:border-b-0 transition-colors">
+                الرابط 1
+            </x-nav-link>
 
-                                <x-nav-link href=""
-                                            :active="request()->routeIs('')"
-                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-700 hover:text-white">
-                                    الرابط 2
-                                </x-nav-link>
+            <x-nav-link href=""
+                :active="request()->routeIs('')"
+                class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 border-b border-gray-100 last:border-b-0 transition-colors">
+                الرابط 2
+            </x-nav-link>
 
-                                <x-nav-link href=""
-                                            :active="request()->routeIs('')"
-                                            class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-700 hover:text-white">
-                                    الرابط 3
-                                </x-nav-link>
-                            </div>
-                        </div>
-                    </div>
-
+            <x-nav-link href=""
+                :active="request()->routeIs('')"
+                class="block px-4 py-2.5 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 border-b border-gray-100 last:border-b-0 transition-colors">
+                الرابط 3
+            </x-nav-link>
+        </div>
+    </div>
+</div>
                 </div>
             </div>
 

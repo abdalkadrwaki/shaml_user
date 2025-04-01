@@ -55,13 +55,13 @@
                         <!-- Dropdown Content -->
                         <div
                             class="absolute hidden bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-lg rounded-md mt-1 space-y-2 w-48 group-hover:block">
-                            <x-nav-link href="" :active="request()->routeIs('')">
+                            <x-nav-link href="" :active="request()->routeIs('')"  class="px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-blue-700 hover:text-gray-100">
                                 {{ __('الرابط 1') }}
                             </x-nav-link>
-                            <x-nav-link href="" :active="request()->routeIs('')">
+                            <x-nav-link href="" :active="request()->routeIs('')" class="px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-blue-700 hover:text-gray-100">
                                 {{ __('الرابط 2') }}
                             </x-nav-link>
-                            <x-nav-link href="" :active="request()->routeIs('')">
+                            <x-nav-link href="" :active="request()->routeIs('')" class="px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-blue-700 hover:text-gray-100">
                                 {{ __('الرابط 3') }}
                             </x-nav-link>
                         </div>

@@ -8,24 +8,32 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // يحتوي على Popper.
 
 // Select2 (يعتمد على jQuery)
 import 'select2/dist/css/select2.min.css';
-import 'select2/dist/js/select2.min.js'; // تم تصحيح اسم الملف
+import 'select2/dist/js/select2.min.js';
 
 // DataTables (يعتمد على jQuery و Bootstrap 5)
 import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
 import 'datatables.net-bs5';
 import Swal from 'sweetalert2';
 
-
-
 // ملفاتك الخاصة
 import './bootstrap'; // إذا كان لديك تهيئات إضافية
 window.Swal = Swal;
-window.$ = window.jQuery = $; // جعل jQuery متاحًا عالميًا
 
-
+// تعريف دالة تهيئة Select2
+function initializeSelect2(container = document) {
+    $(container).find('.select2').each(function() {
+        if (!$(this).hasClass("select2-hidden-accessible")) {
+            $(this).select2({
+                placeholder: "اختر الخيار",
+                allowClear: true,
+                language: "ar" // إضافة الدعم العربي
+            });
+        }
+    });
+}
 
 document.addEventListener('DOMContentLoaded', function() {
-    // التأكد من جعل jQuery متاحًا عالميًا إذا لم يكن كذلك
+    // التأكد من جعل jQuery متاحًا عالميًا
     if (window.$ === undefined || window.jQuery === undefined) {
         window.$ = window.jQuery = $;
     }
@@ -40,7 +48,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 responsive: true,
                 dom: '<"top"lf>rt<"bottom"ip>',
                 initComplete: function() {
-                    // إعادة تهيئة Select2 داخل الجدول بعد التحميل
                     initializeSelect2(this.api().table().container());
                 }
             });
@@ -59,8 +66,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // دالة تفعيل التبويب
             const activateTab = (tabId) => {
-                const tabTrigger = document.querySelector(`[data-bs-toggle="pill"][data-bs-target="${tabId}"],
-                                                         [data-bs-toggle="tab"][data-bs-target="${tabId}"]`);
+                const tabTrigger = document.querySelector(`[data-bs-toggle="pill"][data-bs-target="${tabId}"], [data-bs-toggle="tab"][data-bs-target="${tabId}"]`);
                 if (tabTrigger) {
                     new bootstrap.Tab(tabTrigger).show();
 
@@ -96,6 +102,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // 5. تهيئة جميع المكونات
     const initializeAll = () => {
+        initializeSelect2(); // تهيئة Select2 أولاً
         initializeDataTables();
         handleBootstrapTabs();
 
@@ -103,43 +110,36 @@ document.addEventListener('DOMContentLoaded', function() {
         if (typeof bootstrap !== 'undefined') {
             // تهيئة Popovers
             const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-            popoverTriggerList.map(function (popoverTriggerEl) {
-                return new bootstrap.Popover(popoverTriggerEl);
-            });
+            popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl));
 
             // تهيئة Tooltips
             const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.map(function (tooltipTriggerEl) {
-                return new bootstrap.Tooltip(tooltipTriggerEl);
-            });
+            tooltipTriggerList.map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
         }
     };
 
-    // 6. التنفيذ مع تأخير بسيط لضمان تحميل DOM بالكامل
-    setTimeout(initializeAll, 50);
+    // التنفيذ مع تأخير بسيط لضمان تحميل DOM بالكامل
+    setTimeout(initializeAll, 100);
 
-    // 7. إعادة التهيئة عند تغيير المحتوى الديناميكي (مثل AJAX)
+    // إعادة التهيئة عند تغيير المحتوى الديناميكي (مثل AJAX)
     document.addEventListener('contentLoaded', function(e) {
         initializeSelect2(e.detail.content);
     });
 
 }, { once: true }); // التشغيل لمرة واحدة فقط
 
-// 8. حدث مخصص لإعادة التهيئة على المحتوى الديناميكي
-function reloadDynamicContent(content) {
-    const event = new CustomEvent('contentLoaded', { detail: { content } });
-    document.dispatchEvent(event);
-}
-// جعل الدالة متاحة عالميًا لاستدعائها من أي مكان
-window.reloadDynamicContent = reloadDynamicContent;
+// حدث مخصص لإعادة التهيئة على المحتوى الديناميكي
+window.reloadDynamicContent = function(content) {
+    document.dispatchEvent(new CustomEvent('contentLoaded', { detail: { content } }));
+};
 
 // إضافة الحدث لجميع الحقول التي تحتوي على الكلاس 'number-only'
 document.querySelectorAll('.number-only').forEach(function (input) {
     input.addEventListener('input', function () {
-        // حذف أي شيء غير الأرقام والنقطة العشرية
         this.value = this.value.replace(/[^0-9.]/g, '');
     });
 });
+
 
 // عند تغيير الخيار في الـ Select
 $('#destination_transfer').change(function () {

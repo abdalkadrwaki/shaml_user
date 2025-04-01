@@ -11,13 +11,16 @@ import 'select2/dist/css/select2.min.css';
 import 'select2/dist/js/select2.min.js';
 
 // DataTables (يعتمد على jQuery و Bootstrap 5)
-import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
+
+import DataTable from 'datatables.net-dt';
+
 import 'datatables.net-bs5';
 import Swal from 'sweetalert2';
 
 // ملفاتك الخاصة
 import './bootstrap'; // إذا كان لديك تهيئات إضافية
 window.Swal = Swal;
+let table = new DataTable('#myTable');
 
 // تعريف دالة تهيئة Select2
 function initializeSelect2(container = document) {

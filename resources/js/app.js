@@ -1,145 +1,31 @@
-// jQuery أولاً (أساسي لمعظم المكتبات)
+require('alpinejs'); // تحميل Alpine.js
+
+// تضمين jQuery
 import $ from 'jquery';
-window.$ = window.jQuery = $; // جعله متاحًا عالميًا
 
-// Bootstrap CSS + JS
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // يحتوي على Popper.js
 
-// Select2 (يعتمد على jQuery)
-import 'select2/dist/css/select2.min.css';
-import 'select2/dist/js/select2.min.js';
+// تضمين Select2
+import 'select2/dist/js/select2.min';
 
-// DataTables (يعتمد على jQuery و Bootstrap 5)
-import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
+// تضمين DataTables مع Bootstrap 5
 import 'datatables.net-bs5';
+
+
+import 'select2/dist/css/select2.min.css';
+import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
 import Swal from 'sweetalert2';
 
-// ملفاتك الخاصة
-import './bootstrap'; // إذا كان لديك تهيئات إضافية
+// لجعلها متاحة بشكل عام (اختياري)
 window.Swal = Swal;
 
-// تعريف دالة تهيئة Select2
-function initializeSelect2(container = document) {
-    $(container).find('.select2').each(function() {
-        if (!$(this).hasClass("select2-hidden-accessible")) {
-            $(this).select2({
-                placeholder: "اختر الخيار",
-                allowClear: true,
-                language: "ar" // إضافة الدعم العربي
-            });
-        }
-    });
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    // التأكد من جعل jQuery متاحًا عالميًا
-    if (window.$ === undefined || window.jQuery === undefined) {
-        window.$ = window.jQuery = $;
-    }
-
-    // 3. تهيئة DataTables مع الدعم العربي
-    const initializeDataTables = () => {
-        try {
-            $('.data-table').DataTable({
-                language: {
-                    url: '//cdn.datatables.net/plug-ins/1.13.1/i18n/ar.json'
-                },
-                responsive: true,
-                dom: '<"top"lf>rt<"bottom"ip>',
-                initComplete: function() {
-                    initializeSelect2(this.api().table().container());
-                }
-            });
-        } catch (error) {
-            console.error('DataTables Initialization Error:', error);
-        }
-    };
-
-    // 4. إدارة تبويبات Bootstrap مع الحفظ في localStorage
-    const handleBootstrapTabs = () => {
-        try {
-            const pageKey = window.location.pathname;
-            const tabLinks = document.querySelectorAll('[data-bs-toggle="pill"], [data-bs-toggle="tab"]');
-
-            if (!tabLinks.length) return;
-
-            // دالة تفعيل التبويب
-            const activateTab = (tabId) => {
-                const tabTrigger = document.querySelector(`[data-bs-toggle="pill"][data-bs-target="${tabId}"], [data-bs-toggle="tab"][data-bs-target="${tabId}"]`);
-                if (tabTrigger) {
-                    new bootstrap.Tab(tabTrigger).show();
-
-                    // إعادة تهيئة العناصر داخل المحتوى الجديد
-                    const targetContent = document.querySelector(tabId);
-                    if (targetContent) {
-                        initializeSelect2(targetContent);
-                        $(targetContent).find('.data-table').DataTable()?.draw();
-                    }
-                }
-            };
-
-            // استعادة التبويب المحفوظ أو تفعيل الأول
-            const savedTab = localStorage.getItem(`activeTab_${pageKey}`);
-            if (savedTab && document.querySelector(savedTab)) {
-                activateTab(savedTab);
-            } else if (tabLinks[0]) {
-                const firstTabId = tabLinks[0].getAttribute('data-bs-target');
-                activateTab(firstTabId);
-            }
-
-            // حفظ التبويب عند التغيير
-            tabLinks.forEach(link => {
-                link.addEventListener('shown.bs.tab', function(e) {
-                    const targetId = e.target.getAttribute('data-bs-target');
-                    localStorage.setItem(`activeTab_${pageKey}`, targetId);
-                });
-            });
-        } catch (error) {
-            console.error('Bootstrap Tabs Error:', error);
-        }
-    };
-
-    // 5. تهيئة جميع المكونات
-    const initializeAll = () => {
-        initializeSelect2(); // تهيئة Select2 أولاً
-        initializeDataTables();
-        handleBootstrapTabs();
-
-        // تهيئة أدوات Bootstrap الأخرى إن وجدت
-        if (typeof bootstrap !== 'undefined') {
-            // تهيئة Popovers
-            const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
-            popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl));
-
-            // تهيئة Tooltips
-            const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-            tooltipTriggerList.map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl));
-        }
-    };
-
-    // التنفيذ مع تأخير بسيط لضمان تحميل DOM بالكامل
-    setTimeout(initializeAll, 100);
-
-    // إعادة التهيئة عند تغيير المحتوى الديناميكي (مثل AJAX)
-    document.addEventListener('contentLoaded', function(e) {
-        initializeSelect2(e.detail.content);
-    });
-
-}, { once: true }); // التشغيل لمرة واحدة فقط
-
-// حدث مخصص لإعادة التهيئة على المحتوى الديناميكي
-window.reloadDynamicContent = function(content) {
-    document.dispatchEvent(new CustomEvent('contentLoaded', { detail: { content } }));
-};
 
 // إضافة الحدث لجميع الحقول التي تحتوي على الكلاس 'number-only'
 document.querySelectorAll('.number-only').forEach(function (input) {
     input.addEventListener('input', function () {
+        // حذف أي شيء غير الأرقام والنقطة العشرية
         this.value = this.value.replace(/[^0-9.]/g, '');
     });
 });
-
 
 // عند تغيير الخيار في الـ Select
 $('#destination_transfer').change(function () {
@@ -168,7 +54,6 @@ $('#destination_transfer').change(function () {
         $('#destination_address_container').hide();
     }
 });
-
 $(document).ready(function () {
     $('#destination_syp').on('change', function () {
         var destinationId = $(this).val();
@@ -221,7 +106,6 @@ $('#destination_syp').change(function () {
         $('#destination_address_container_syp').hide();
     }
 });
-
 $(document).ready(function () {
     // عند الضغط على زر تعديل المبلغ
     $('.update-btn').click(function () {
@@ -483,6 +367,10 @@ $(document).ready(function () {
     });
 });
 
+
+
+
+// تفعيل Select2 و DataTables عند تحميل الصفحة
 $(document).ready(function () {
     // تفعيل Select2
     $('.js-example-basic-single').select2({
@@ -515,6 +403,70 @@ $(document).ready(function () {
     });
 
 });
+
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    // معرّف فريد للصفحة (مثلاً مسار الـ URL)
+    const pageKey = window.location.pathname;
+
+    // دالة تهيئة Select2
+    const initializeSelect2 = (context = document) => {
+        // إن كان هناك تهيئة سابقة لأي عنصر، قم بتدميرها لتجنب الأخطاء
+        $(context).find('.js-example-basic-single').each(function () {
+            if ($(this).data('select2')) {
+                $(this).select2('destroy');
+            }
+        });
+        // تهيئة جديدة
+        $(context).find('.js-example-basic-single').select2();
+    };
+
+    // تهيئة Select2 عند تحميل الصفحة
+    initializeSelect2();
+
+    // دالة لتفعيل تبويب
+    const activateTab = (tabId) => {
+        const tabTrigger = document.querySelector(`[data-bs-target="${tabId}"]`);
+        if (tabTrigger) {
+            new bootstrap.Tab(tabTrigger).show();
+        }
+    };
+
+    // استعادة التبويب المخزن
+    let savedTab = localStorage.getItem(`activeTab_${pageKey}`);
+
+    // إذا لم يكن هناك تبويب محفوظ، فعل أول تبويب في القائمة
+    const tabLinks = document.querySelectorAll('[data-bs-toggle="pill"]');
+    if (!tabLinks.length) return; // لا توجد تبويبات أساسًا
+
+    if (savedTab) {
+        activateTab(savedTab);
+    } else {
+        // تفعيل أول تبويب إن لم يكن هناك تبويب مخزن
+        const firstTab = tabLinks[0];
+        if (firstTab) {
+            new bootstrap.Tab(firstTab).show();
+        }
+    }
+
+    // عند إتمام تفعيل التبويب (shown.bs.tab)، احفظ التبويب الجديد وأعد تهيئة Select2
+    tabLinks.forEach(link => {
+        link.addEventListener('shown.bs.tab', (e) => {
+            const targetId = e.target.getAttribute('data-bs-target');
+            localStorage.setItem(`activeTab_${pageKey}`, targetId);
+
+            // إعادة تهيئة Select2 في محتوى التبويب الجديد فقط
+            const tabContent = document.querySelector(targetId);
+            if (tabContent) {
+                initializeSelect2(tabContent);
+            }
+        });
+    });
+});
+
+
+
 
 
 /*

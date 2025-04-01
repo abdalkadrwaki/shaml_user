@@ -106,7 +106,7 @@
         <div class="mb-3 row">
             <div class="col-md-12">
                 <label for="destination_approval" class="form-label">الجهة</label>
-                <select id="destination" name="destination" class="form-select js-example-basic-single" required>
+                <select id="destination_approval" name="destination" class="form-select js-example-basic-single" required>
                     <option value="">اختر الجهة</option>
                     @foreach ($destinations as $destination)
                         <option value="{{ $destination['id'] }}"

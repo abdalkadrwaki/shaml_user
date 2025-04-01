@@ -29,7 +29,7 @@
         <!-- اختيار الجهة -->
         <div class="mb-3 row">
             <div  class="col-md-12" >
-                <label for="destination" class="form-label">الجهة</label>
+                <label for="destination_transfer" class="form-label">الجهة</label>
                 <select id="destination_transfer" name="destination"
                     class="form-select js-example-basic-single rounded-md  border-gray-300" required>
                     <option value="">اختر الجهة</option>

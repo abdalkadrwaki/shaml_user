@@ -130,10 +130,10 @@
 
     <div class="container mt-4">
         <div class="bg-white p-4 rounded-lg shadow-lg">
-            <table class=" myTable  display"
+            <table class=" myTable table-auto w-full border border-gray-300 rounded-lg shadow-md overflow-hidden display"
                 style="direction: rtl;">
                 <thead class="bg-gray-200 text-gray-700 text-center">
-                    <tr>
+                    <tr class="display">
                         <th class="py-3 px-4 border-b text-center  w-72">الجهة المستقبلة</th>
                         <th class="py-3 px-4 border-b text-center">رقم إشعار</th>
                         <th class="py-3 px-4 border-b text-center">المستفيد</th>

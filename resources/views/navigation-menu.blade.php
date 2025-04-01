@@ -50,7 +50,7 @@
                         <!-- Dropdown Content -->
                         <div class="absolute hidden group-hover:block bg-white shadow-md rounded-md w-48 mt-1 z-10">
                             <!-- يمكنك استخدام ul/li أو div لكل رابط -->
-                            <div class="py-1 space-y-1">
+                            <div class="py-1 space-y-3">
                                 <x-nav-link href=""
                                             :active="request()->routeIs('')"
                                             class="block px-4 py-2 text-sm text-gray-700 hover:bg-blue-700 hover:text-white">

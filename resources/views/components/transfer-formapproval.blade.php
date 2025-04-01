@@ -105,7 +105,7 @@
         <!-- اختيار الجهة -->
         <div class="mb-3 row">
             <div class="col-md-12">
-                <label for="destination" class="form-label">الجهة</label>
+                <label for="destination_approval" class="form-label">الجهة</label>
                 <select id="destination" name="destination" class="form-select js-example-basic-single" required>
                     <option value="">اختر الجهة</option>
                     @foreach ($destinations as $destination)
@@ -127,7 +127,7 @@
         <!-- اختيار العملة والمبلغ -->
         <div class="mb-3 row">
             <div class="col-md-6">
-                <label for="sent_currency" class="form-label">العملة المرسلة</label>
+                <label for="sent_currency_approval" class="form-label">العملة المرسلة</label>
                 <select id="sent_currency_approval" class="form-select" name="sent_currency" required>
                     <option value="">اختر العملة المرسلة</option>
                     @foreach ($currencies as $currency)
@@ -142,7 +142,7 @@
                 <span id="sent_currency_error" class="text-danger"></span>
             </div>
             <div class="col-md-6">
-                <label for="sent_amount" class="form-label">المبلغ المرسل</label>
+                <label for="sent_amount_approval" class="form-label">المبلغ المرسل</label>
                 <input type="text" id="sent_amount_approval" class="form-control number-only" name="sent_amount"
                     min="0.01" step="0.01" required>
                 @error('sent_amount')
@@ -150,12 +150,13 @@
                 @enderror
                 <span id="sent_amount_error" class="text-danger"></span>
             </div>
+
         </div>
 
         <!-- الملاحظة -->
         <div class="mb-3 row">
             <div class="col-md-12">
-                <label for="note" class="form-label">ملاحظة</label>
+                <label for="note_approval" class="form-label">ملاحظة</label>
                 <textarea id="note_approval" class="form-control" name="note"></textarea>
                 <span id="note_error" class="text-danger"></span>
             </div>

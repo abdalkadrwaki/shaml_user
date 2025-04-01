@@ -130,7 +130,7 @@
 
     <div class="container mt-4">
         <div class="bg-white p-4 rounded-lg shadow-lg">
-            <table class=" myTable table-auto w-full border border-gray-300 rounded-lg shadow-md overflow-hidden display"
+            <table class=" myTable  display"
                 style="direction: rtl;">
                 <thead class="bg-gray-200 text-gray-700 text-center">
                     <tr>

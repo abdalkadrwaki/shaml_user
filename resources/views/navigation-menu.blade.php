@@ -23,6 +23,29 @@
                     <x-nav-link href="{{ route('destinations.index') }}" :active="request()->routeIs('destinations.index')">
                         {{ __('مكاتب') }}
                     </x-nav-link>
+
+                    <!-- Dropdown Menu -->
+                    <div class="relative">
+                        <button class="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
+                            {{ __('قائمة منسدلة') }}
+                            <svg class="ms-2 -me-0.5 size-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 15L12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9" />
+                            </svg>
+                        </button>
+
+                        <!-- Dropdown Content -->
+                        <div class="absolute hidden bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-lg rounded-md mt-1 space-y-2 w-48 group-hover:block">
+                            <x-nav-link href="{{ route('link1') }}" :active="request()->routeIs('link1')">
+                                {{ __('الرابط 1') }}
+                            </x-nav-link>
+                            <x-nav-link href="{{ route('link2') }}" :active="request()->routeIs('link2')">
+                                {{ __('الرابط 2') }}
+                            </x-nav-link>
+                            <x-nav-link href="{{ route('link3') }}" :active="request()->routeIs('link3')">
+                                {{ __('الرابط 3') }}
+                            </x-nav-link>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -225,3 +248,8 @@
         </div>
     </div>
 </nav>
+<style>
+    .relative:hover .group-hover\:block {
+        display: block;
+    }
+</style>

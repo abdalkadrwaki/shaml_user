@@ -20,8 +20,12 @@ import Swal from 'sweetalert2';
 // ملفاتك الخاصة
 import './bootstrap'; // إذا كان لديك تهيئات إضافية
 window.Swal = Swal;
-let table = new DataTable('.myTable');
 
+new DataTable('.myTable', {
+    paging: false,
+    scrollCollapse: true,
+    scrollY: '50vh'
+});
 // تعريف دالة تهيئة Select2
 function initializeSelect2(container = document) {
     $(container).find('.select2').each(function() {

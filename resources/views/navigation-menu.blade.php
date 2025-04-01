@@ -41,10 +41,9 @@
                     </x-nav-link>
 
                     <!-- Dropdown Menu -->
-                    <div class="relative">
+                    <div class="relative group">
                         <button
                             class="inline-flex items-center px-4 py-2 mt-3 text-sm font-medium text-gray-800 bg-white hover:bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-0.5 focus:ring-indigo-500 transition duration-150 ease-in-out">
-
                             <svg class="text-indigo-500 transition-transform duration-300 group-hover:text-indigo-600"
                                 xmlns="http://www.w3.org/2000/svg" height="14" width="14" viewBox="0 0 512 512">
                                 <path fill="#075ef2"
@@ -52,21 +51,23 @@
                             </svg>
                             <span>{{ __(' حركات صادرة') }}</span>
                         </button>
-                        <div class="w-40 py-1">
+
                         <!-- Dropdown Content -->
-                        <div class="absolute hidden bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-lg rounded-md mt-1 space-y-2 w-48 group-hover:block">
-                            <x-nav-link href="" :active="request()->routeIs('')"  class="px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-blue-700 hover:text-gray-100">
-                                {{ __('الرابط 1') }}
-                            </x-nav-link>
-                            <x-nav-link href="" :active="request()->routeIs('')" class="px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-blue-700 hover:text-gray-100">
-                                {{ __('الرابط 2') }}
-                            </x-nav-link>
-                            <x-nav-link href="" :active="request()->routeIs('')" class="px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-blue-700 hover:text-gray-100">
-                                {{ __('الرابط 3') }}
-                            </x-nav-link>
+                        <div class="absolute left-0 mt-1 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md hidden group-hover:block z-10">
+                            <div class="py-1 space-y-2">
+                                <x-nav-link href="" :active="request()->routeIs('')" class="block px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-blue-700 hover:text-gray-100">
+                                    {{ __('الرابط 1') }}
+                                </x-nav-link>
+                                <x-nav-link href="" :active="request()->routeIs('')" class="block px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-blue-700 hover:text-gray-100">
+                                    {{ __('الرابط 2') }}
+                                </x-nav-link>
+                                <x-nav-link href="" :active="request()->routeIs('')" class="block px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-blue-700 hover:text-gray-100">
+                                    {{ __('الرابط 3') }}
+                                </x-nav-link>
+                            </div>
                         </div>
                     </div>
-                    </div>
+
                 </div>
             </div>
 

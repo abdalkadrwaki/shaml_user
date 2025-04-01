@@ -52,13 +52,13 @@
                             </svg>
                             <span>{{ __(' حركات صادرة') }}</span>
                         </button>
-                        <div class="w-40 py-1">
+                        <div class=" w-32py-1">
                             <!-- Dropdown Content -->
                             <div
                                 class="absolute hidden bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 shadow-lg rounded-md mt-1 space-y-2 w-48 group-hover:block">
                                 <x-nav-link href="{{ route('transfers.sent.index') }}" :active="request()->routeIs('transfers.sent.index')"
                                     class="px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-blue-700 hover:text-gray-100">
-                                    {{ __('الرابط 1') }}
+                                    {{ __(' حركات صادرة ') }}
                                 </x-nav-link>
                                 <x-nav-link href="" :active="request()->routeIs('')"
                                     class="px-4 py-2 text-sm text-gray-700 rounded-md hover:bg-blue-700 hover:text-gray-100">

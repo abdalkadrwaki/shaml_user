@@ -201,7 +201,7 @@
 
         <script>
             $(document).ready(function() {
-                $('#myTable').DataTable({
+                $('.myTable').DataTable({
                     // أي إعدادات إضافية تريدها
                 });
             });

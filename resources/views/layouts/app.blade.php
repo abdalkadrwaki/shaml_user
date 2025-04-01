@@ -13,8 +13,6 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 <!-- Bootstrap CSS -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
-
 <!-- Bootstrap JS -->
 
         <!-- Scripts -->
@@ -49,14 +47,6 @@
         @stack('modals')
 
         @livewireScripts
-        <!-- تحميل CSS الخاص بـ Select2 -->
-
-<!-- تحميل jQuery إذا لم يكن محمّلاً بالفعل -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
-<!-- تحميل JavaScript الخاص بـ Select2 -->
-<script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </body>
 </html>

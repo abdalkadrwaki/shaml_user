@@ -25,9 +25,7 @@ class SentTransfersController extends Controller
      */
     public function index()
     {
-        if (Gate::denies('manage-Lessons')) {
-            abort(403, 'ليس لديك الصلاحية للوصول إلى هذه الصفحة.');
-        }
+
 
         // استخدام الترقيم لتحسين الأداء
         $transfers = Transfer::with(['currency', 'recipient', 'receivedCurrency'])
@@ -49,10 +47,7 @@ class SentTransfersController extends Controller
      */
     public function getTransfersData()
     {
-        if (Gate::denies('manage-Lessons')) {
-            abort(403, 'ليس لديك الصلاحية للوصول إلى هذه الصفحة.');
-        }
-
+       
         // استخدام التحديد الجزئي للبيانات لتحسين الأداء
         $transfers = Transfer::with('currency')
             ->where('user_id', Auth::id())

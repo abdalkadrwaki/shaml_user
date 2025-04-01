@@ -14,7 +14,7 @@ import 'select2/dist/js/select2.min.js'; // تم تصحيح اسم الملف
 import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
 import 'datatables.net-bs5';
 import Swal from 'sweetalert2';
-import 'select2';
+
 
 
 // ملفاتك الخاصة
@@ -22,16 +22,7 @@ import './bootstrap'; // إذا كان لديك تهيئات إضافية
 window.Swal = Swal;
 window.$ = window.jQuery = $; // جعل jQuery متاحًا عالميًا
 
-// تعريف دالة تهيئة Select2
-function initializeSelect2(container = document) {
-    // استخدام jQuery للبحث عن العناصر داخل الحاوية المحددة
-    $(container).find('.select2').each(function() {
-        // التأكد من أن العنصر لم يُهيأ مسبقًا
-        if (!$(this).hasClass("select2-hidden-accessible")) {
-            $(this).select2();
-        }
-    });
-}
+
 
 document.addEventListener('DOMContentLoaded', function() {
     // التأكد من جعل jQuery متاحًا عالميًا إذا لم يكن كذلك

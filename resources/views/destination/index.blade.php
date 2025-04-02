@@ -134,7 +134,7 @@
                             <thead class="text-center text-gray-700 bg-gray-200">
                                 <tr class="text-center">
                                     <th class="px-3 py-2 text-center border-b" >#</th>
-                                    <th class="px-3 py-2 text-center border-b" >اسم المكتب</th>
+                                    <th class="px-3 py-2 text-center border-b w-32" >اسم المكتب</th>
                                     <th class="px-3 py-2 text-center border-b" >محدودية الرصيد</th>
                                     <th class="px-3 py-2 text-center border-b" >  كلمه السر الحركات</th>
                                     <th class="px-3 py-2 text-center border-b" >الوارد</th>
@@ -214,7 +214,7 @@
                                                 <div class="flex items-center justify-center w-full space-x-2 ">
                                                     <input type="text" name="password"
                                                         class="w-full px-3 py-2 text-base border border-gray-300 rounded-md shadow-sm form-control password-input focus:outline-none focus:ring-2 focus:ring-blue-500 number-only"
-                                                      
+
                                                         value="{{ $request->password_usd_1 }}"
                                                         data-id="{{ $request->id }}" required>
                                                     <button

@@ -125,7 +125,7 @@ Route::middleware([
 
 
 
- Route::get('/transfers/sentrxchangeTransfers', [RxchangeTransfersController::class, 'index'])
+ Route::get('/transfers/rxchangeTransfers', [RxchangeTransfersController::class, 'index'])
      ->name('transfers.sentrxchange');
 
  Route::get('/transfers/sentrxchange/data', [RxchangeTransfersController::class, 'getTransfersData'])

@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Validator;
 
 class ReceivedTransferController extends Controller
 {
-   
+
 
     /**
      * دالة لاسترجاع نسخة الكاش الخاصة بالمستخدم
@@ -41,9 +41,7 @@ class ReceivedTransferController extends Controller
 
     public function index(Request $request)
     {
-        if (!Auth::check()) {
-            abort(403, 'يجب تسجيل الدخول للوصول إلى هذه الصفحة.');
-        }
+       
 
         if (Gate::denies('manage-Lessons')) {
             abort(403, 'ليس لديك الصلاحية للوصول إلى هذه الصفحة.');

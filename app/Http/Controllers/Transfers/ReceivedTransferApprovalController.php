@@ -18,9 +18,7 @@ class ReceivedTransferApprovalController extends Controller
      */
     public function index(Request $request)
     {
-        if (!Auth::check()) {
-            abort(403, 'يجب تسجيل الدخول للوصول إلى هذه الصفحة.');
-        }
+       
 
         // يُمكنك إضافة صلاحيات إضافية هنا إذا لزم الأمر
 

@@ -265,8 +265,6 @@ class RxchangeTransfersController extends Controller
      */
     private function authorizeUser()
     {
-        if (!Auth::check()) {
-            abort(403, 'يجب تسجيل الدخول للوصول إلى هذه الصفحة.');
-        }
+        
     }
 }

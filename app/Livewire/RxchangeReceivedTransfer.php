@@ -38,9 +38,7 @@ class RxchangeReceivedTransfer extends Component
 
     public function mount()
     {
-        if (!Auth::check()) {
-            abort(403, 'يجب تسجيل الدخول للوصول إلى هذه الصفحة.');
-        }
+       
     }
 
     public function render()

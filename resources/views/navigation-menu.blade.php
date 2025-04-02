@@ -42,7 +42,7 @@
                             </svg>
                             <span>{{ __(' حركات صادرة') }}</span>
                         </button>
-                        <div class=" w-40 py-1">
+
                             <!-- Dropdown Content -->
                             <div
                                 class="absolute hidden bg-white dark:bg-gray-800   shadow-lg rounded-md mt-1 space-y-2    w-32     group-hover:block">
@@ -59,7 +59,7 @@
                                     {{ __(' قص صادر ') }}
                                 </x-nav-link>
                             </div>
-                        </div>
+                       
                     </div>
 
                     <x-nav-link href="{{ route('student.friend-request') }}" :active="request()->routeIs('student.friend-request')">

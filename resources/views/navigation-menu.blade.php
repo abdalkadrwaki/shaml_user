@@ -57,15 +57,15 @@
                             <div
                                 class="absolute hidden bg-white dark:bg-gray-800   shadow-lg rounded-md mt-1 space-y-2    w-32     group-hover:block">
                                 <x-nav-link href="{{ route('transfers.sent.index') }}" :active="request()->routeIs('transfers.sent.index')"
-                                    class="px-4 py-2 text-sm  rounded-md hover:bg-gray-300 hover:text-gray-100 ">
+                                    class="px-4 py-2 text-sm  rounded-md hover:bg-gray-300 hover:text-gray-100 no-underline ">
                                     {{ __(' حركات صادرة ') }}
                                 </x-nav-link>
                                 <x-nav-link href="" :active="request()->routeIs('')"
-                                    class="px-4 py-2 text-sm  rounded-md hover:bg-gray-300 hover:text-gray-100 focus:outline-none">
+                                    class="px-4 py-2 text-sm  rounded-md hover:bg-gray-300 hover:text-gray-100 no-underline">
                                     {{ __(' اعتماد صادر') }}
                                 </x-nav-link>
                                 <x-nav-link href="" :active="request()->routeIs('')"
-                                    class="px-4 py-2 text-sm  rounded-md hover:bg-gray-300 hover:text-gray-100 focus:outline-none">
+                                    class="px-4 py-2 text-sm  rounded-md hover:bg-gray-300 hover:text-gray-100 no-underline">
                                     {{ __(' قص صادر ') }}
                                 </x-nav-link>
                             </div>

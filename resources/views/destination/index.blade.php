@@ -3,7 +3,7 @@
         <!-- العنوان يمكن أن يكون هنا -->
     </x-slot>
 
-    <div class="container mt-4 card" style="width: 98%" >
+    <div class="container mt-4 " style="width: 98%" >
         <div class="card-body">
         <!-- تبويبات التنقل بين الجداول -->
         <ul class="p-1 mb-3  nav nav-pills mt-7 justify-content-center" id="pills-tab"

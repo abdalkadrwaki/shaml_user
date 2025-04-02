@@ -3,7 +3,7 @@
 
     </x-slot>
 
-    <div>
+    <div class="container mt-4 " style="width: 98%" >
 
             <livewire:friend-request-component />
 

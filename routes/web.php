@@ -125,20 +125,20 @@ Route::middleware([
 
 
 
- Route::get('/transfers/rxchangeTransfers', [RxchangeTransfersController::class, 'index'])
-     ->name('transfers.rxchange');
+ Route::get('/transfers/sentrxchangeTransfers', [RxchangeTransfersController::class, 'index'])
+     ->name('transfers.sentrxchange');
 
- Route::get('/transfers/rxchange/data', [RxchangeTransfersController::class, 'getTransfersData'])
-     ->name('transfers.rxchange.data');
+ Route::get('/transfers/sentrxchange/data', [RxchangeTransfersController::class, 'getTransfersData'])
+     ->name('transfers.sentrxchange.data');
 
- Route::delete('/transfers/rxchange/{id}', [RxchangeTransfersController::class, 'destroy'])
-     ->name('transfers.rxchange.destroy');
+ Route::delete('/transfers/sentrxchange/{id}', [RxchangeTransfersController::class, 'destroy'])
+     ->name('transfers.sentrxchange.destroy');
 
- Route::get('/transfers/rxchange/{id}/print', [RxchangeTransfersController::class, 'printImage'])
-     ->name('transfers.rxchange.print');
+ Route::get('/transfers/sentrxchange/{id}/print', [RxchangeTransfersController::class, 'printImage'])
+     ->name('transfers.sentrxchange.print');
 
- Route::get('/transfers/rxchange/{id}/details', [RxchangeTransfersController::class, 'getTransferDetails'])
-     ->name('transfers.rxchange.details');
+ Route::get('/transfers/sentrxchange/{id}/details', [RxchangeTransfersController::class, 'getTransferDetails'])
+     ->name('transfers.sentrxchange.details');
 
 
  ///وارد القص

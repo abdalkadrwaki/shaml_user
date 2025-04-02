@@ -27,7 +27,8 @@ class RxchangeTransfersController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('transfers.rxchangeTransfers', compact('receivedTransfers'));
+            return view('transfers.sentrxchangeTransfers', compact('receivedTransfers'));
+
     }
 
     /**

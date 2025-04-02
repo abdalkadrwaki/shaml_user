@@ -143,7 +143,7 @@
                                     <th class="px-3 py-2 text-center border-b" >إخفاء الحساب</th>
                                     <th class="px-3 py-2 text-center border-b" >إيقاف الرابط</th>
                                     <th class="px-3 py-2 text-center border-b" >إيقاف سوري</th>
-                                    <th class="px-3 py-2 text-center border-b" >شريحة  سوري</th>
+
                                     <th class="px-3 py-2 text-center border-b" >إدارة الأجور</th>
                                 </tr>
                             </thead>
@@ -404,9 +404,9 @@
                                                 {{ 'غير متوفر' }}
                                             @endif
                                         </td>
-                                        <td class="py-0.5 px-3 border-b text-center">
+                                    <!--    <td class="py-0.5 px-3 border-b text-center">
                                             @if ($request->sender_id === Auth::id())
-                                                <!-- تفعيل/إلغاء تفعيل Slice_type_1 -->
+
                                                 <div class="flex items-center justify-center w-full space-x-2">
                                                     <button
                                                         class="toggle-stop-btn p-1 text-white font-semibold rounded-lg shadow-lg
@@ -418,7 +418,7 @@
                                                     </button>
                                                 </div>
                                             @elseif ($request->receiver_id === Auth::id())
-                                                <!-- الشريحة الاولى/الشريحة الثانية  الشريحة الاولى Slice_type_2 -->
+                                              
                                                 <div class="flex items-center justify-center w-full space-x-2">
                                                     <button
                                                         class="toggle-stop-btn p-1 text-white font-semibold rounded-lg shadow-lg
@@ -432,7 +432,7 @@
                                             @else
                                                 {{ 'غير متوفر' }}
                                             @endif
-                                        </td>
+                                        </td>-->
                                         <td class="text-center bg-gray-100 border-b">
                                             <a href="{{ route('destination.wages', ['id' => encrypt($request->receiver_id)]) }}"
                                                 class="w-full btn">

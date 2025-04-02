@@ -41,11 +41,8 @@ class ReceivedTransferController extends Controller
 
     public function index(Request $request)
     {
-       
 
-        if (Gate::denies('manage-Lessons')) {
-            abort(403, 'ليس لديك الصلاحية للوصول إلى هذه الصفحة.');
-        }
+
 
         $page = $request->get('page', 1);
         $version = $this->getUserTransfersVersion();

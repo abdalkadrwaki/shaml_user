@@ -1,5 +1,5 @@
 {{-- resources/views/transfers/received.blade.php --}}
-<x-teacher-layout>
+<x-app-layout>
     <x-slot name="header ">
         <h2 class="font-semibold text-xl text-gray-800 leading-tight">
             الحوالات الواردة
@@ -681,4 +681,4 @@
         });
     </script>
 
-</x-teacher-layout>
+</x-app-layout>

@@ -1,4 +1,4 @@
-<x-teacher-layout>
+<x-app-layout>
     <x-slot name="header">
         <!-- يمكنك وضع العنوان هنا -->
     </x-slot>
@@ -321,4 +321,4 @@
             });
         </script>
     </div>
-</x-teacher-layout>
+</x-app-layout>

@@ -94,9 +94,9 @@
                         </div>
 
                     </div>
-                    <x-nav-link href="{{ route('student.friend-request') }}" :active="request()->routeIs('student.friend-request')">
+                    <x-nav-link href="{{ route('student.friend-request') }}" :active="request()->routeIs('student.friend-request')" class="no-underline">
                         <button
-                            class="inline-flex items-center px-4 py-2 mt-1.5 text-sm font-medium text-gray-800 bg-white hover:bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-0.5 focus:ring-indigo-500 transition duration-150 ease-in-out no-underline">
+                            class="inline-flex items-center px-4 py-2 mt-1.5 text-sm font-medium text-gray-800 bg-white hover:bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-0.5 focus:ring-indigo-500 transition duration-150 ease-in-out ">
 
                             <svg class="text-indigo-500 transition-transform duration-300 group-hover:text-indigo-600"
                                 xmlns="http://www.w3.org/2000/svg" height="14" width="14" viewBox="0 0 512 512">
@@ -107,9 +107,9 @@
                         </button>
                     </x-nav-link>
 
-                    <x-nav-link href="{{ route('destinations.index') }}" :active="request()->routeIs('destinations.index')">
+                    <x-nav-link href="{{ route('destinations.index') }}" :active="request()->routeIs('destinations.index')" class="no-underline">
                         <button
-                        class="inline-flex items-center px-4 py-2 mt-1.5 text-sm font-medium text-gray-800 bg-white hover:bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-0.5 focus:ring-indigo-500 transition duration-150 ease-in-out no-underline">
+                        class="inline-flex items-center px-4 py-2 mt-1.5 text-sm font-medium text-gray-800 bg-white hover:bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-0.5 focus:ring-indigo-500 transition duration-150 ease-in-out">
 
                         <svg class="text-indigo-500 transition-transform duration-300 group-hover:text-indigo-600"
                             xmlns="http://www.w3.org/2000/svg" height="14" width="14" viewBox="0 0 512 512">

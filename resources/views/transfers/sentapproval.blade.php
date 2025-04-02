@@ -1,4 +1,4 @@
-<x-teacher-layout>
+<x-app-layout>
     <x-slot name="header">
         <!-- يمكنك وضع العنوان هنا -->
     </x-slot>
@@ -178,7 +178,7 @@
                 </tbody>
             </table>
             <!-- روابط الترقيم (Pagination) -->
-         
+
         </div>
     </div>
 
@@ -273,4 +273,5 @@
             document.body.removeChild(link);
         }
     </script>
-</x-teacher-layout>
+</x-app-layout>
+

@@ -44,7 +44,7 @@
         @endif
 
         <div class="bg-white p-4 rounded-lg shadow-lg">
-            <table class="tebl table-auto w-full border border-gray-300  shadow-md overflow-hidden"
+            <table class=" myTable table-auto w-full border border-gray-300  shadow-md overflow-hidden"
                 style="direction: rtl;">
                 <thead class="bg-gray-200 text-gray-700 ">
                     <tr>

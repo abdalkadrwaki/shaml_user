@@ -18,7 +18,7 @@
 
     <div class="container mt-4">
         <div class="bg-white p-4 rounded-lg shadow-lg">
-            <table class="tebl table-auto w-full border border-gray-300 rounded-lg shadow-md overflow-hidden" style="direction: rtl;">
+            <table class="myTable table-auto w-full border border-gray-300 rounded-lg shadow-md overflow-hidden" style="direction: rtl;">
                 <thead class="bg-gray-200 text-gray-700 text-center">
                     <tr>
                         <th class="py-3 px-4 text-center w-48">الجهة</th>

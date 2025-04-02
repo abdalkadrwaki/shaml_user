@@ -16,7 +16,7 @@
 
     <div class="container mt-4">
         <div class="p-4 bg-white rounded-lg shadow-lg">
-            <table class="w-full overflow-hidden border border-gray-300 rounded-lg shadow-md table-auto tebl"
+            <table class="w-full myTable overflow-hidden border border-gray-300 rounded-lg shadow-md table-auto tebl"
                 style="direction: rtl;">
                 <thead class="text-center text-gray-700 bg-gray-200">
                     <tr>

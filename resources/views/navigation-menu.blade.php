@@ -54,7 +54,7 @@
                                     class="px-4 py-2 text-sm  rounded-md hover:bg-gray-300 hover:text-gray-100 no-underline ">
                                     {{ __(' اعتماد صادر') }}
                                 </x-nav-link>
-                                <x-nav-link href="{{ route('transfers.rxchangeTransfers') }}" :active="request()->routeIs('transfers.rxchangeTransfers')"
+                                <x-nav-link href="{{ route('transfers.sentrxchange') }}" :active="request()->routeIs('transfers.sentrxchange')"
                                     class="px-4 py-2 text-sm  rounded-md hover:bg-gray-300 hover:text-gray-100 no-underline ">
                                     {{ __(' قص صادر ') }}
                                 </x-nav-link>

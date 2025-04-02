@@ -61,11 +61,11 @@
                                     {{ __(' حركات صادرة ') }}
                                 </x-nav-link>
                                 <x-nav-link href="" :active="request()->routeIs('')"
-                                    class="px-4 py-2 text-sm  rounded-md hover:bg-gray-300 hover:text-gray-100">
+                                    class="px-4 py-2 text-sm  rounded-md hover:bg-gray-300 hover:text-gray-100 focus:outline-none">
                                     {{ __(' اعتماد صادر') }}
                                 </x-nav-link>
                                 <x-nav-link href="" :active="request()->routeIs('')"
-                                    class="px-4 py-2 text-sm  rounded-md hover:bg-gray-300 hover:text-gray-100">
+                                    class="px-4 py-2 text-sm  rounded-md hover:bg-gray-300 hover:text-gray-100 focus:outline-none">
                                     {{ __(' قص صادر ') }}
                                 </x-nav-link>
                             </div>

@@ -27,7 +27,7 @@ class RxchangeTransfersController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate(10);
 
-        return view('transfers.RxchangeTransfers', compact('receivedTransfers'));
+        return view('transfers.rxchangeTransfers', compact('receivedTransfers'));
     }
 
     /**
@@ -265,6 +265,6 @@ class RxchangeTransfersController extends Controller
      */
     private function authorizeUser()
     {
-        
+
     }
 }

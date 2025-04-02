@@ -126,19 +126,19 @@ Route::middleware([
 
 
  Route::get('/transfers/rxchangeTransfers', [RxchangeTransfersController::class, 'index'])
-     ->name('transfers.sentrxchange');
+     ->name('transfers.rxchange');
 
- Route::get('/transfers/sentrxchange/data', [RxchangeTransfersController::class, 'getTransfersData'])
-     ->name('transfers.sentrxchange.data');
+ Route::get('/transfers/rxchange/data', [RxchangeTransfersController::class, 'getTransfersData'])
+     ->name('transfers.rxchange.data');
 
- Route::delete('/transfers/sentrxchange/{id}', [RxchangeTransfersController::class, 'destroy'])
-     ->name('transfers.sentrxchange.destroy');
+ Route::delete('/transfers/rxchange/{id}', [RxchangeTransfersController::class, 'destroy'])
+     ->name('transfers.rxchange.destroy');
 
- Route::get('/transfers/sentrxchange/{id}/print', [RxchangeTransfersController::class, 'printImage'])
-     ->name('transfers.sentrxchange.print');
+ Route::get('/transfers/rxchange/{id}/print', [RxchangeTransfersController::class, 'printImage'])
+     ->name('transfers.rxchange.print');
 
- Route::get('/transfers/sentrxchange/{id}/details', [RxchangeTransfersController::class, 'getTransferDetails'])
-     ->name('transfers.sentrxchange.details');
+ Route::get('/transfers/rxchange/{id}/details', [RxchangeTransfersController::class, 'getTransferDetails'])
+     ->name('transfers.rxchange.details');
 
 
  ///وارد القص

@@ -73,7 +73,7 @@
         @if (request()->hasAny(['currency', 'from_date', 'to_date']))
             <div class="bg-white p-4 rounded-lg shadow-lg mt-3">
                 <table id="myTable"
-                    class=" myTable table-bordered table-striped w-full border border-gray-300 shadow-md overflow-hidden"
+                    class="table-bordered table-striped w-full border border-gray-300 shadow-md overflow-hidden"
                    >
                     <thead class="bg-gray-200 text-gray-700 text-center">
                         <tr>

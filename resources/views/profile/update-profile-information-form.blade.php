@@ -10,19 +10,19 @@
     <x-slot name="form">
         <!-- Profile Photo -->
         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
-            <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
+            <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-6">
                 <!-- Profile Photo File Input -->
                 <input type="file" id="photo" class="hidden"
-                       wire:model.live="photo"
-                       x-ref="photo"
-                       x-on:change="
-                           photoName = $refs.photo.files[0].name;
-                           const reader = new FileReader();
-                           reader.onload = (e) => {
-                               photoPreview = e.target.result;
-                           };
-                           reader.readAsDataURL($refs.photo.files[0]);
-                       " />
+                            wire:model.live="photo"
+                            x-ref="photo"
+                            x-on:change="
+                                    photoName = $refs.photo.files[0].name;
+                                    const reader = new FileReader();
+                                    reader.onload = (e) => {
+                                        photoPreview = e.target.result;
+                                    };
+                                    reader.readAsDataURL($refs.photo.files[0]);
+                            " />
 
                 <x-label for="photo" value="{{ __('Photo') }}" />
 
@@ -53,14 +53,14 @@
         @endif
 
         <!-- Name -->
-        <div class="col-span-6 sm:col-span-4">
+        <div class="col-span-6 sm:col-span-6">
             <x-label for="name" value="{{ __('Name') }}" />
             <x-input id="name" type="text" class="mt-1 block w-full" wire:model="state.name" required autocomplete="name" />
             <x-input-error for="name" class="mt-2" />
         </div>
 
         <!-- Email -->
-        <div class="col-span-6 sm:col-span-4">
+        <div class="col-span-6 sm:col-span-6">
             <x-label for="email" value="{{ __('Email') }}" />
             <x-input id="email" type="email" class="mt-1 block w-full" wire:model="state.email" required autocomplete="username" />
             <x-input-error for="email" class="mt-2" />
@@ -68,6 +68,7 @@
             @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::emailVerification()) && ! $this->user->hasVerifiedEmail())
                 <p class="text-sm mt-2 dark:text-white">
                     {{ __('Your email address is unverified.') }}
+
                     <button type="button" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" wire:click.prevent="sendEmailVerification">
                         {{ __('Click here to re-send the verification email.') }}
                     </button>
@@ -82,48 +83,58 @@
         </div>
 
         <!-- User Address -->
-        <div class="col-span-6 sm:col-span-4">
+        <div class="col-span-6 sm:col-span-6">
             <x-label for="user_address" value="{{ __('User Address') }}" />
             <x-input id="user_address" type="text" class="mt-1 block w-full" wire:model="state.user_address" required />
             <x-input-error for="user_address" class="mt-2" />
         </div>
 
         <!-- Country User -->
-        <div class="col-span-6 sm:col-span-4">
+        <div class="col-span-6 sm:col-span-6">
             <x-label for="country_user" value="{{ __('Country') }}" />
             <x-input id="country_user" type="text" class="mt-1 block w-full" wire:model="state.country_user" required />
             <x-input-error for="country_user" class="mt-2" />
         </div>
 
         <!-- State User -->
-        <div class="col-span-6 sm:col-span-4">
+        <div class="col-span-6 sm:col-span-6">
             <x-label for="state_user" value="{{ __('State') }}" />
             <x-input id="state_user" type="text" class="mt-1 block w-full" wire:model="state.state_user" required />
             <x-input-error for="state_user" class="mt-2" />
         </div>
 
-        <!-- Link Number -->
-        <div class="col-span-6 sm:col-span-4 flex items-end space-x-2">
-            <div class="flex-grow">
-                <x-label for="link_number" value="{{ __('Link Number') }}" />
-                <x-input id="link_number" type="text" class="mt-1 block w-full" wire:model="state.link_number" required minlength="16" />
-                <x-input-error for="link_number" class="mt-2" />
-            </div>
-            <div class="flex flex-col space-y-2">
-                <x-button type="button" class="whitespace-nowrap" onclick="copyLinkNumber()">
+        <!-- Link Number مع الأزرار -->
+        <div class="col-span-6 sm:col-span-6" x-data="{ generateNumber() { return Math.floor(1000000000000000 + Math.random() * 9000000000000000).toString().slice(0,16); } }">
+            <x-label for="link_number" value="{{ __('Link Number') }}" />
+            <div class="flex gap-2">
+                <x-input id="link_number"
+                         type="text"
+                         class="mt-1 block w-full"
+                         wire:model="state.link_number"
+                         required
+                         minlength="16"
+                         pattern="\d{16}"
+                         title="16 digits required"/>
+
+                <x-button type="button"
+                          class="mt-1"
+                          x-on:click="navigator.clipboard.writeText(document.getElementById('link_number').value)">
                     {{ __('Copy') }}
                 </x-button>
-                <x-button type="button" class="whitespace-nowrap" onclick="generateLinkNumber()">
+
+                <x-button type="button"
+                          class="mt-1"
+                          x-on:click="document.getElementById('link_number').value = generateNumber()">
                     {{ __('Generate') }}
                 </x-button>
             </div>
+            <x-input-error for="link_number" class="mt-2" />
         </div>
 
-        <!-- Office Name (العنصر الأخير) -->
-        <div class="col-span-6 sm:col-span-4">
+        <!-- Office Name بعرض كامل -->
+        <div class="col-span-6">
             <x-label for="Office_name" value="{{ __('Office Name') }}" />
-            <!-- تحويل الحقل إلى textarea ليستوعب المحتوى الطويل -->
-            <textarea id="Office_name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" wire:model="state.Office_name" required></textarea>
+            <x-input id="Office_name" type="text" class="mt-1 block w-full" wire:model="state.Office_name" required />
             <x-input-error for="Office_name" class="mt-2" />
         </div>
     </x-slot>
@@ -139,25 +150,14 @@
     </x-slot>
 </x-form-section>
 
-<!-- JavaScript Functions -->
+@push('scripts')
 <script>
-    function copyLinkNumber() {
-        const input = document.getElementById('link_number');
-        input.select();
-        input.setSelectionRange(0, 99999); // For mobile devices
-        document.execCommand("copy");
-        alert("{{ __('Copied: ') }}" + input.value);
-    }
-
-    function generateLinkNumber() {
-        const input = document.getElementById('link_number');
-        let number = '';
-        // توليد رقم عشوائي مكون من 16 رقم
-        while (number.length < 16) {
-            number += Math.floor(Math.random() * 10);
+document.addEventListener('alpine:init', () => {
+    Alpine.data('copyNumber', () => ({
+        copyToClipboard() {
+            navigator.clipboard.writeText(this.$refs.linkNumber.value);
         }
-        input.value = number;
-        // تحديث القيمة في Livewire إذا كنت تستخدمه
-        @this.set('state.link_number', number);
-    }
+    }));
+});
 </script>
+@endpush

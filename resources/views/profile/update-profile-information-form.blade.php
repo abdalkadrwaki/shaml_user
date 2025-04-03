@@ -13,16 +13,16 @@
             <div x-data="{photoName: null, photoPreview: null}" class="col-span-6 sm:col-span-4">
                 <!-- Profile Photo File Input -->
                 <input type="file" id="photo" class="hidden"
-                            wire:model.live="photo"
-                            x-ref="photo"
-                            x-on:change="
-                                    photoName = $refs.photo.files[0].name;
-                                    const reader = new FileReader();
-                                    reader.onload = (e) => {
-                                        photoPreview = e.target.result;
-                                    };
-                                    reader.readAsDataURL($refs.photo.files[0]);
-                            " />
+                       wire:model.live="photo"
+                       x-ref="photo"
+                       x-on:change="
+                           photoName = $refs.photo.files[0].name;
+                           const reader = new FileReader();
+                           reader.onload = (e) => {
+                               photoPreview = e.target.result;
+                           };
+                           reader.readAsDataURL($refs.photo.files[0]);
+                       " />
 
                 <x-label for="photo" value="{{ __('Photo') }}" />
 
@@ -53,83 +53,79 @@
         @endif
 
         <!-- Name -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="name" value="{{ __('Name') }}" />
+            <x-input id="name" type="text" class="mt-1 block w-full" wire:model="state.name" required autocomplete="name" />
+            <x-input-error for="name" class="mt-2" />
+        </div>
 
-            <!-- الحقل الأول: الاسم -->
-            <div>
-                <x-label for="name" value="{{ __('Name') }}" />
-                <x-input id="name" type="text" class="mt-1 block w-full" wire:model="state.name" required autocomplete="name" />
-                <x-input-error for="name" class="mt-2" />
-            </div>
+        <!-- Email -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="email" value="{{ __('Email') }}" />
+            <x-input id="email" type="email" class="mt-1 block w-full" wire:model="state.email" required autocomplete="username" />
+            <x-input-error for="email" class="mt-2" />
 
-            <!-- الحقل الثاني: البريد الإلكتروني -->
-            <div>
-                <x-label for="email" value="{{ __('Email') }}" />
-                <x-input id="email" type="email" class="mt-1 block w-full" wire:model="state.email" required autocomplete="username" />
-                <x-input-error for="email" class="mt-2" />
-            </div>
+            @if (Laravel\Fortify\Features::enabled(Laravel\Fortify\Features::emailVerification()) && ! $this->user->hasVerifiedEmail())
+                <p class="text-sm mt-2 dark:text-white">
+                    {{ __('Your email address is unverified.') }}
+                    <button type="button" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" wire:click.prevent="sendEmailVerification">
+                        {{ __('Click here to re-send the verification email.') }}
+                    </button>
+                </p>
 
-            <!-- الحقل الثالث: الدولة (Country) -->
-            <div>
-                <x-label for="country_user" value="{{ __('Country') }}" />
-                <x-input id="country_user" type="text" class="mt-1 block w-full" wire:model="state.country_user" required />
-                <x-input-error for="country_user" class="mt-2" />
-            </div>
+                @if ($this->verificationLinkSent)
+                    <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
+                        {{ __('A new verification link has been sent to your email address.') }}
+                    </p>
+                @endif
+            @endif
+        </div>
 
-            <!-- الحقل الرابع: الولاية (State) -->
-            <div>
-                <x-label for="state_user" value="{{ __('State') }}" />
-                <x-input id="state_user" type="text" class="mt-1 block w-full" wire:model="state.state_user" required />
-                <x-input-error for="state_user" class="mt-2" />
-            </div>
+        <!-- User Address -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="user_address" value="{{ __('User Address') }}" />
+            <x-input id="user_address" type="text" class="mt-1 block w-full" wire:model="state.user_address" required />
+            <x-input-error for="user_address" class="mt-2" />
+        </div>
 
-            <!-- الحقل الخامس: رقم الرابط مع الأزرار -->
-            <div x-data="{
-                    copyLinkNumber() {
-                        let input = $refs.linkNumberInput;
-                        input.select();
-                        document.execCommand('copy');
-                        // يمكن إضافة إشعار هنا لإعلام المستخدم بأن الرقم تم نسخه
-                    },
-                    generateLinkNumber() {
-                        let num = '';
-                        for (let i = 0; i < 16; i++) {
-                            num += Math.floor(Math.random() * 10);
-                        }
-                        $refs.linkNumberInput.value = num;
-                        @this.set('state.link_number', num);
-                    }
-                }">
+        <!-- Country User -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="country_user" value="{{ __('Country') }}" />
+            <x-input id="country_user" type="text" class="mt-1 block w-full" wire:model="state.country_user" required />
+            <x-input-error for="country_user" class="mt-2" />
+        </div>
+
+        <!-- State User -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="state_user" value="{{ __('State') }}" />
+            <x-input id="state_user" type="text" class="mt-1 block w-full" wire:model="state.state_user" required />
+            <x-input-error for="state_user" class="mt-2" />
+        </div>
+
+        <!-- Link Number -->
+        <div class="col-span-6 sm:col-span-4 flex items-end space-x-2">
+            <div class="flex-grow">
                 <x-label for="link_number" value="{{ __('Link Number') }}" />
-                <div class="flex">
-                    <x-input id="link_number" type="text" class="mt-1 block w-full" wire:model="state.link_number"
-                             x-ref="linkNumberInput" minlength="16" required />
-                    <button type="button" @click="copyLinkNumber"
-                            class="ml-2 bg-blue-500 text-white px-3 py-1 rounded">
-                        {{ __('نسخ') }}
-                    </button>
-                    <button type="button" @click="generateLinkNumber"
-                            class="ml-2 bg-green-500 text-white px-3 py-1 rounded">
-                        {{ __('توليد') }}
-                    </button>
-                </div>
+                <x-input id="link_number" type="text" class="mt-1 block w-full" wire:model="state.link_number" required minlength="16" />
                 <x-input-error for="link_number" class="mt-2" />
             </div>
-
-            <!-- الحقل السادس: اسم المكتب -->
-            <div>
-                <x-label for="Office_name" value="{{ __('Office Name') }}" />
-                <x-input id="Office_name" type="text" class="mt-1 block w-full" wire:model="state.Office_name" required />
-                <x-input-error for="Office_name" class="mt-2" />
+            <div class="flex flex-col space-y-2">
+                <x-button type="button" class="whitespace-nowrap" onclick="copyLinkNumber()">
+                    {{ __('Copy') }}
+                </x-button>
+                <x-button type="button" class="whitespace-nowrap" onclick="generateLinkNumber()">
+                    {{ __('Generate') }}
+                </x-button>
             </div>
+        </div>
 
-            <!-- الحقل السابع: العنوان (يُستخدم textarea لاحتواء بيانات طويلة) -->
-            <div>
-                <x-label for="user_address" value="{{ __('العنوان') }}" />
-                <textarea id="user_address" class="mt-1 block w-full" wire:model="state.user_address" required rows="3"></textarea>
-                <x-input-error for="user_address" class="mt-2" />
-            </div>
-      
-
+        <!-- Office Name (العنصر الأخير) -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="Office_name" value="{{ __('Office Name') }}" />
+            <!-- تحويل الحقل إلى textarea ليستوعب المحتوى الطويل -->
+            <textarea id="Office_name" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm" wire:model="state.Office_name" required></textarea>
+            <x-input-error for="Office_name" class="mt-2" />
+        </div>
     </x-slot>
 
     <x-slot name="actions">
@@ -142,3 +138,26 @@
         </x-button>
     </x-slot>
 </x-form-section>
+
+<!-- JavaScript Functions -->
+<script>
+    function copyLinkNumber() {
+        const input = document.getElementById('link_number');
+        input.select();
+        input.setSelectionRange(0, 99999); // For mobile devices
+        document.execCommand("copy");
+        alert("{{ __('Copied: ') }}" + input.value);
+    }
+
+    function generateLinkNumber() {
+        const input = document.getElementById('link_number');
+        let number = '';
+        // توليد رقم عشوائي مكون من 16 رقم
+        while (number.length < 16) {
+            number += Math.floor(Math.random() * 10);
+        }
+        input.value = number;
+        // تحديث القيمة في Livewire إذا كنت تستخدمه
+        @this.set('state.link_number', number);
+    }
+</script>

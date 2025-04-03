@@ -18,9 +18,14 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     public function update(User $user, array $input): void
     {
         Validator::make($input, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'photo' => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'name'          => ['required', 'string', 'max:255'],
+            'email'         => ['required', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
+            'photo'         => ['nullable', 'mimes:jpg,jpeg,png', 'max:1024'],
+            'user_address'  => ['required', 'string', 'max:255'],
+            'country_user'  => ['required', 'string', 'max:255'],
+            'state_user'    => ['required', 'string', 'max:255'],
+            'link_number'   => ['required', 'string', 'max:255'],
+            'Office_name'   => ['required', 'string', 'max:255'],
         ])->validateWithBag('updateProfileInformation');
 
         if (isset($input['photo'])) {
@@ -32,8 +37,13 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             $this->updateVerifiedUser($user, $input);
         } else {
             $user->forceFill([
-                'name' => $input['name'],
-                'email' => $input['email'],
+                'name'          => $input['name'],
+                'email'         => $input['email'],
+                'user_address'  => $input['user_address'],
+                'country_user'  => $input['country_user'],
+                'state_user'    => $input['state_user'],
+                'link_number'   => $input['link_number'],
+                'Office_name'   => $input['Office_name'],
             ])->save();
         }
     }
@@ -46,9 +56,14 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
     protected function updateVerifiedUser(User $user, array $input): void
     {
         $user->forceFill([
-            'name' => $input['name'],
-            'email' => $input['email'],
-            'email_verified_at' => null,
+            'name'             => $input['name'],
+            'email'            => $input['email'],
+            'user_address'     => $input['user_address'],
+            'country_user'     => $input['country_user'],
+            'state_user'       => $input['state_user'],
+            'link_number'      => $input['link_number'],
+            'Office_name'      => $input['Office_name'],
+            'email_verified_at'=> null,
         ])->save();
 
         $user->sendEmailVerificationNotification();

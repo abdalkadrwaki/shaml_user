@@ -81,6 +81,41 @@
                 @endif
             @endif
         </div>
+
+        <!-- User Address -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="user_address" value="{{ __('User Address') }}" />
+            <x-input id="user_address" type="text" class="mt-1 block w-full" wire:model="state.user_address" required />
+            <x-input-error for="user_address" class="mt-2" />
+        </div>
+
+        <!-- Country User -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="country_user" value="{{ __('Country') }}" />
+            <x-input id="country_user" type="text" class="mt-1 block w-full" wire:model="state.country_user" required />
+            <x-input-error for="country_user" class="mt-2" />
+        </div>
+
+        <!-- State User -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="state_user" value="{{ __('State') }}" />
+            <x-input id="state_user" type="text" class="mt-1 block w-full" wire:model="state.state_user" required />
+            <x-input-error for="state_user" class="mt-2" />
+        </div>
+
+        <!-- Link Number -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="link_number" value="{{ __('Link Number') }}" />
+            <x-input id="link_number" type="text" class="mt-1 block w-full" wire:model="state.link_number" required />
+            <x-input-error for="link_number" class="mt-2" />
+        </div>
+
+        <!-- Office Name -->
+        <div class="col-span-6 sm:col-span-4">
+            <x-label for="Office_name" value="{{ __('Office Name') }}" />
+            <x-input id="Office_name" type="text" class="mt-1 block w-full" wire:model="state.Office_name" required />
+            <x-input-error for="Office_name" class="mt-2" />
+        </div>
     </x-slot>
 
     <x-slot name="actions">

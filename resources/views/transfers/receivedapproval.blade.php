@@ -287,7 +287,7 @@
                     if (data.success) {
                         wrongAttempts = 0;
                         // إرسال طلب تسليم الحوالة مباشرة بعد التحقق من كلمة المرور
-                        fetch("{{ url('/transfers') }}/" + selectedTransfer.id + "/deliver", {
+                        fetch("{{ url('/transfers') }}/" + selectedTransfer.id + "/deliverr", {
                                 method: 'POST',
                                 headers: {
                                     'X-CSRF-TOKEN': '{{ csrf_token() }}',

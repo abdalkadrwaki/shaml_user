@@ -61,17 +61,21 @@
                                 @forelse ($friendRequests as $index => $request)
                                     <tr class="text-sm text-center text-gray-500 hover:bg-gray-100">
                                         <td class="px-2 py-2 text-center border-b">{{ $index + 1 }}</td>
-                                        <td class="px-3 py-1 font-bold text-center border-b">
-                                            {{ $destinations->firstWhere('id', $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id)->Office_name ?? 'غير متوفر' }}<br>
-
-                                            {{
-                                                $destinations->firstWhere('id', $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id)
-                                                ->country_user
-                                                . ' - ' .
-                                                $destinations->firstWhere('id', $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id)
-                                                ->state_user ?? 'غير متوفر'
-                                            }}
-                                        </td>
+                                        @php
+                                        $columnKey = $request->receiver_id === Auth::id() ? $column['receiver_column'] : $column['sender_column'];
+                                        $balance = $request->{$columnKey} ?? 0;
+                                        $textColor = $balance < 0 ? 'text-red-1' : ($balance > 0 ? 'text-Lime' : 'text-gray-500');
+                                        // Extract currency code by removing '_1' or '_2' from column key
+                                        $currencyCode = str_replace(['_1', '_2'], '', $columnKey);
+                                        // Determine the client ID (the other party in the relationship)
+                                        $clientId = $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id;
+                                    @endphp
+                                    <td class="py-2 px-2 border-b text-center {{ $textColor }}">
+                                        <a href="{{ route('transfers.index', ['currency' => $currencyCode, 'clientId' => encrypt($clientId)]) }}"
+                                           class="underline hover:text-blue-800 transition-colors duration-300">
+                                            {{ $balance != 0 ? number_format($balance, 0, '', '') : 'غير متوفر' }}
+                                        </a>
+                                    </td>
 
                                         <td class="py-0.5 px-3 border-b text-center font-bold">
                                             @php

@@ -72,7 +72,7 @@
                             title="16 digits required"/>
 
                     <x-button type="button"
-                            class="mt-1 whitespace-nowrap bg-blue-600"
+                            class="mt-1 whitespace-nowrap "
                             x-on:click="navigator.clipboard.writeText(document.getElementById('link_number').value)">
                         {{ __('نسخ') }}
                     </x-button>

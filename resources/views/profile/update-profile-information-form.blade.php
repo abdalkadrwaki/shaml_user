@@ -53,7 +53,7 @@
         @endif
 
         <!-- Name -->
-        <div class="grid grid-cols-7 gap-4">
+
             <!-- الحقل الأول: الاسم -->
             <div>
                 <x-label for="name" value="{{ __('Name') }}" />
@@ -128,7 +128,7 @@
                 <textarea id="user_address" class="mt-1 block w-full" wire:model="state.user_address" required rows="3"></textarea>
                 <x-input-error for="user_address" class="mt-2" />
             </div>
-        </div>
+      
 
     </x-slot>
 

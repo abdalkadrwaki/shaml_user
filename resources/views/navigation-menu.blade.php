@@ -135,11 +135,11 @@
                         <!-- Dropdown Content -->
                         <div
                             class="absolute hidden bg-white dark:bg-gray-800   shadow-lg rounded-md mt-1 space-y-2    w-32     group-hover:block">
-                            <x-nav-link href="{{ route('transfers.received') }}" :active="request()->routeIs('transfers.received')"
+                            <x-nav-link href="{{ route('transfers.index') }}" :active="request()->routeIs('transfers.index')"
                                 class="px-4 py-2 text-sm  rounded-md hover:bg-gray-300 hover:text-gray-100 no-underline  ">
-                                {{ __(' حوالات واردة ') }}
+                                {{ __('  كشف حساب ') }}
                             </x-nav-link>
-                          
+
 
                         </div>
 

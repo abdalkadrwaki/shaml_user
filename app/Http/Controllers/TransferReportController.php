@@ -29,15 +29,21 @@ class TransferReportController extends Controller
                     $fromDate = Carbon::parse($request->from_date)->startOfDay();
 
                     $initialQuery = Transfer::where(function ($q) {
-                        $q->where('user_id', Auth::id())
-                          ->orWhere('destination', Auth::id());
-                    })
-                    ->where('created_at', '<', $fromDate)
-                    ->whereIn('transaction_type', ['Transfer', 'Exchange', 'Credit'])
-                    ->where(function ($q) use ($selectedCurrency) {
-                        $q->where('sent_currency', $selectedCurrency)
-                          ->orWhere('received_currency', $selectedCurrency);
-                    });
+                            $q->where('user_id', Auth::id())
+                              ->orWhere('destination', Auth::id());
+                        })
+                        ->where('created_at', '<', $fromDate)
+                        ->where(function ($q) {
+                            $q->whereIn('transaction_type', ['Transfer', 'Exchange'])
+                              ->orWhere(function ($q2) {
+                                  $q2->where('transaction_type', 'Credit')
+                                     ->where('status', 'Delivered');
+                              });
+                        })
+                        ->where(function ($q) use ($selectedCurrency) {
+                            $q->where('sent_currency', $selectedCurrency)
+                              ->orWhere('received_currency', $selectedCurrency);
+                        });
 
                     $initialTransactions = $initialQuery->orderBy('created_at')->get();
 
@@ -57,7 +63,13 @@ class TransferReportController extends Controller
                         $q->where('user_id', Auth::id())
                           ->orWhere('destination', Auth::id());
                     })
-                    ->whereIn('transaction_type', ['Transfer', 'Exchange', 'Credit']);
+                    ->where(function ($q) {
+                        $q->whereIn('transaction_type', ['Transfer', 'Exchange'])
+                          ->orWhere(function ($q2) {
+                              $q2->where('transaction_type', 'Credit')
+                                 ->where('status', 'Delivered');
+                          });
+                    });
 
             if ($selectedCurrency) {
                 $query->where(function ($q) use ($selectedCurrency) {
@@ -152,14 +164,10 @@ class TransferReportController extends Controller
                 }
             } else {
                 // إذا كان المستخدم هو المستقبِل في عملية الصرافة
-                // هنا نعكس المنطق لأن المبلغ المستلم هو sent_currency
-                // والمبلغ المدفوع هو received_currency من وجهة نظر هذا المستخدم
                 if (in_array($transfer->sent_currency, $currenciesToUpdate)) {
-                    // في هذه الحالة المستخدم يستلم العملة التي في خانة sent_currency
                     $balanceMap[$transfer->sent_currency] += $transfer->sent_amount;
                 }
                 if (in_array($transfer->received_currency, $currenciesToUpdate)) {
-                    // ويخصم من العملة الموجودة في received_currency + الرسوم
                     $balanceMap[$transfer->received_currency] -= ($transfer->received_amount + $transfer->fees);
                 }
             }
@@ -189,6 +197,7 @@ class TransferReportController extends Controller
             $currentBalance
         );
     }
+
     private function buildTransferRow($transfer, &$transferData, $currencyFilter, $prevBalance, $currentBalance)
     {
         $operations = [];
@@ -217,28 +226,22 @@ class TransferReportController extends Controller
         // هل المستخدم الحالي هو الذي أنشأ الحوالة (المرسِل)؟
         $userIsSender = ($transfer->user_id == Auth::id());
 
-        // إن لم يكن هناك فلتر عملة أو كان يطابق العملة المرسلة
         if (!$currencyFilter || $currencyFilter === $transfer->sent_currency) {
             $operations[] = [
-                // إن كان المرسل هو المستخدم الحالي، فهو يبيع العملة المرسلة
-                // أما إن كان هو المستقبِل، فهو يشتري هذه العملة
                 'type'   => $userIsSender ? 'sell' : 'buy',
                 'amount' => $userIsSender
-                    ? - ($transfer->sent_amount + $transfer->fees) // يخصم إن كان مرسلاً
-                    :  $transfer->sent_amount,                    // يضيف إن كان مستقبلاً
+                    ? - ($transfer->sent_amount + $transfer->fees)
+                    :  $transfer->sent_amount,
                 'currency' => $transfer->sent_currency,
             ];
         }
 
-        // إن لم يكن هناك فلتر عملة أو كان يطابق العملة المستلمة
         if (!$currencyFilter || $currencyFilter === $transfer->received_currency) {
             $operations[] = [
-                // إن كان المستخدم هو المرسل، فهو يشتري العملة المستلمة
-                // وإن كان مستقبلاً، فهو يبيع هذه العملة (من وجهة نظره)
                 'type'   => $userIsSender ? 'buy' : 'sell',
                 'amount' => $userIsSender
-                    ?  $transfer->received_amount                // يضاف إن كان مرسلاً
-                    : - ($transfer->received_amount + $transfer->fees), // يخصم إن كان مستقبلاً
+                    ?  $transfer->received_amount
+                    : - ($transfer->received_amount + $transfer->fees),
                 'currency' => $transfer->received_currency,
             ];
         }
@@ -257,39 +260,25 @@ class TransferReportController extends Controller
 
     private function addTransferOperation($transfer, &$operations, $currencyFilter)
     {
-        // تحديد هل المستخدم الحالي هو المرسل أم المستقبل
         $userIsSender = ($transfer->user_id == Auth::id());
-
-        // تحديد العملة المستخدمة حسب إن كان المستخدم هو المرسل أم المستقبل
         $currency = $userIsSender ? $transfer->sent_currency : $transfer->received_currency;
 
-        // لو كان هناك فلتر للعملة وكان لا يطابق عملة هذه العملية، نخرج مباشرة
         if ($currencyFilter && $currency !== $currencyFilter) {
             return;
         }
 
-        // التحقق من حالة الحوالة
         if ($transfer->status === 'Archived') {
-            // إذا كانت الحوالة ملغاة، نعكس الإشارة:
-            // المرسل (الذي كان مدينًا) يصبح دائنًا، والمستقبل يصبح مدينًا.
             $amount = $userIsSender
-                ? ($transfer->sent_amount) // استرداد للمرسل
-                : - ($transfer->received_amount);             // خصم من المستقبل
-
-            // مجرد تسمية لتمييز نوع العملية في الجدول
+                ? $transfer->sent_amount
+                : - ($transfer->received_amount);
             $type = $userIsSender ? 'ملغاة (مستردة)' : 'ملغاة (مخصومة)';
         } else {
-            // الحالة العادية (الحوالة فعالة)
-            // المرسل: سالب، المستقبل: موجب
             $amount = $userIsSender
                 ? - ($transfer->sent_amount)
                 : $transfer->received_amount;
-
-            // نوع العملية في الجدول
             $type = $userIsSender ? 'صادرة' : 'واردة';
         }
 
-        // إضافة العملية إلى المصفوفة لعرضها في الجدول
         $operations[] = [
             'type' => $type,
             'amount' => $amount,

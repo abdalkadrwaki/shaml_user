@@ -74,13 +74,13 @@
                     <x-button type="button"
                             class="mt-1 whitespace-nowrap"
                             x-on:click="navigator.clipboard.writeText(document.getElementById('link_number').value)">
-                        {{ __('Copy') }}
+                        {{ __('نسخ') }}
                     </x-button>
 
                     <x-button type="button"
                             class="mt-1 whitespace-nowrap"
                             x-on:click="document.getElementById('link_number').value = generateNumber()">
-                        {{ __('Generate') }}
+                        {{ __('توليد') }}
                     </x-button>
                 </div>
                 <x-input-error for="link_number" class="mt-2" />

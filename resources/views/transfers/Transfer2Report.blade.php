@@ -176,7 +176,7 @@
 
                         <!-- صف المجموع النهائي -->
                         <tr class="font-bold text-center bg-gray-200">
-                            <th colspan="3" class="py-2 px-4 border-b">
+                            <th colspan="4" class="py-2 px-4 border-b">
                                 المجموع
                             </th>
                             <th class="py-2 px-4 border-b text-danger">

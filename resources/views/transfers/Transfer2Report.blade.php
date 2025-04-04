@@ -85,7 +85,7 @@
                             <th class="py-3 px-4  text-center w-60">الوصف</th>
                             <th class="py-3 px-4  text-center">مدين (علي)</th>
                             <th class="py-3 px-4  text-center">دائن (لكم)</th>
-                            <th class="py-3 px-4  text-center">العملة</th>
+                          
                             <th class="py-3 px-4  text-center">الأجور</th>
                             <th class="py-3 px-4  text-center">الرصيد</th>
                         </tr>
@@ -157,7 +157,7 @@
                                         {{ $currencyNames[$row['currency']] ?? $row['currency'] }}
                                     @endif
                                 </td>
-                              
+
                                 <td class="py-2 px-4 border-b text-center">
                                     {{ number_format($fees, 2) }}
                                 </td>

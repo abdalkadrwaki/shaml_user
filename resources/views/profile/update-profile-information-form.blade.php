@@ -63,26 +63,27 @@
                 <x-label for="link_number" value="{{ __('Link Number') }}" />
                 <div class="flex gap-2">
                     <x-input id="link_number"
-                            type="text"
-                            class="mt-1 block w-full"
-                            wire:model="state.link_number"
-                            required
-                            minlength="16"
-                            pattern="\d{16}"
-                            title="16 digits required"/>
+                             type="text"
+                             class="mt-1 block w-full"
+                             wire:model="state.link_number"
+                             required
+                             pattern="\d{16}"
+                             title="16 digits required"
+                             maxlength="16"/>
 
                     <x-button type="button"
-                            class="mt-1 whitespace-nowrap "
-                            x-on:click="navigator.clipboard.writeText(document.getElementById('link_number').value)">
+                              class="mt-1 whitespace-nowrap "
+                              x-on:click="navigator.clipboard.writeText(document.getElementById('link_number').value)">
                         {{ __('نسخ') }}
                     </x-button>
 
                     <x-button type="button"
-                            class="mt-1 whitespace-nowrap"
-                            x-on:click="document.getElementById('link_number').value = generateNumber()">
+                              class="mt-1 whitespace-nowrap"
+                              x-on:click="document.getElementById('link_number').value = generateNumber()">
                         {{ __('توليد') }}
                     </x-button>
                 </div>
+
                 <x-input-error for="link_number" class="mt-2" />
             </div>
         </div>

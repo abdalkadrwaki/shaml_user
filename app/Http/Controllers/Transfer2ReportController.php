@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 use App\Models\Currency;
 
-class TransferReportController extends Controller
+class Transfer2ReportController extends Controller
 {
     public function index(Request $request)
     {
@@ -102,7 +102,7 @@ class TransferReportController extends Controller
             $finalBalance = 0;
         }
 
-        return view('transfers.index', compact(
+        return view('transfers.Transfer2Report', compact(
             'transferData',
             'currencies',
             'currencyNames',

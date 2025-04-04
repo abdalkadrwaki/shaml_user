@@ -14,6 +14,7 @@ use App\Http\Controllers\Transfers\RxchangeTransfersController;
 use App\Http\Controllers\Transfers\RxchangeReceivedTransferController;
 use App\Http\Controllers\SubUserController;
 use App\Http\Controllers\TransferReportController; // Route لتسجيل الخروج
+use App\Http\Controllers\Transfer2ReportController;
 use App\Http\Controllers\BalanceController;
 Route::get('/', function () {
     return view('welcome');
@@ -169,7 +170,7 @@ Route::middleware([
 
  Route::get('/transfers', [TransferReportController::class, 'index'])->name('transfers.index');
 
-
+ Route::get('/transfers', [Transfer2ReportController::class, 'index'])->name('transfers.Transfer2Report');
 
 
 

@@ -98,7 +98,7 @@
                                             $today = now()->format('Y-m-d');
                                         @endphp
                                         <td class="py-2 px-2 border-b text-center {{ $textColor }}">
-                                            <a href="{{ route('transfers.index', [
+                                            <a href="{{ route('transfers.Transfer2Report', [
                                                 'currency' => $currencyCode,
                                                 'clientId' => encrypt($clientId),
                                                 'from_date' => $today,

@@ -153,6 +153,7 @@
                                     @if ($creditAmount)
                                         {{ number_format($creditAmount, 2) }}
 
+
                                     @endif
                                 </td>
 

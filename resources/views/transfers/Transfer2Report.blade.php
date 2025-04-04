@@ -185,7 +185,7 @@
                             <th class="py-2 px-4 border-b text-success">
                                 {{ number_format($grandTotalCredit, 2) }}
                             </th>
-                            <th colspan="1" class="py-2 px-4 border-b"></th>
+                            <th colspan="3" class="py-2 px-4 border-b"></th>
                             <th class="py-2 px-4 border-b">
                                 {{ number_format($finalBalance, 2) }}
                             </th>

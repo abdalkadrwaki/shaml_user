@@ -170,7 +170,7 @@ Route::middleware([
 
  Route::get('/transfers', [TransferReportController::class, 'index'])->name('transfers.index');
 
- Route::get('/transfers', [Transfer2ReportController::class, 'index'])->name('transfers.Transfer2Report');
+ Route::get('/transfers', [Transfer2ReportController::class, 'index'])->name('transfers.index');
 
 
 

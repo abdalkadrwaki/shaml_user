@@ -85,7 +85,7 @@
                             <th class="py-3 px-4  text-center w-60">الوصف</th>
                             <th class="py-3 px-4  text-center">مدين (علي)</th>
                             <th class="py-3 px-4  text-center">دائن (لكم)</th>
-                          
+
                             <th class="py-3 px-4  text-center">الأجور</th>
                             <th class="py-3 px-4  text-center">الرصيد</th>
                         </tr>
@@ -145,16 +145,14 @@
                                 <td class="py-2 px-4 border-b text-danger">
                                     @if ($debitAmount)
                                         {{ number_format($debitAmount, 2) }}
-                                        <br>
-                                        {{ $currencyNames[$row['currency']] ?? $row['currency'] }}
+
                                     @endif
                                 </td>
                                 <!-- عمود الدائن -->
                                 <td class="py-2 px-4 border-b text-success">
                                     @if ($creditAmount)
                                         {{ number_format($creditAmount, 2) }}
-                                        <br>
-                                        {{ $currencyNames[$row['currency']] ?? $row['currency'] }}
+
                                     @endif
                                 </td>
 
@@ -177,7 +175,7 @@
 
                         <!-- صف المجموع النهائي -->
                         <tr class="font-bold text-center bg-gray-200">
-                            <th colspan="4" class="py-2 px-4 border-b">
+                            <th colspan="3" class="py-2 px-4 border-b">
                                 المجموع
                             </th>
                             <th class="py-2 px-4 border-b text-danger">

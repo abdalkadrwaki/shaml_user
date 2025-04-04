@@ -145,17 +145,19 @@
                                 <td class="py-2 px-4 border-b text-danger">
                                     @if ($debitAmount)
                                         {{ number_format($debitAmount, 2) }}
+                                        <br>
+                                        {{ $currencyNames[$row['currency']] ?? $row['currency'] }}
                                     @endif
                                 </td>
                                 <!-- عمود الدائن -->
                                 <td class="py-2 px-4 border-b text-success">
                                     @if ($creditAmount)
                                         {{ number_format($creditAmount, 2) }}
+                                        <br>
+                                        {{ $currencyNames[$row['currency']] ?? $row['currency'] }}
                                     @endif
                                 </td>
-                                <td class="py-2 px-4 border-b text-center">
-                                    {{ $currencyNames[$row['currency']] ?? $row['currency'] }}
-                                </td>
+                              
                                 <td class="py-2 px-4 border-b text-center">
                                     {{ number_format($fees, 2) }}
                                 </td>

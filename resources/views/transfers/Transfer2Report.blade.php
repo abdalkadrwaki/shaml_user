@@ -1,13 +1,12 @@
 {{-- resources/views/transfers/index.blade.php --}}
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            كشف الحساب
+        <h2 class="font-semibold  text-center text-xl  text-gray-800 leading-tight">
+            كشف الحساب مكاتب
         </h2>
     </x-slot>
 
 
-    <p>رقم العميل: {{ $clientId }}</p>
 
     <div class="container" style="direction: rtl; width: 98%">
         <div class=" bg-white p-6 rounded-xl shadow-sm border border-gray-100 mt-3">

@@ -1,8 +1,8 @@
 {{-- resources/views/transfers/index.blade.php --}}
 <x-app-layout>
     <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            كشف الحساب
+        <h2 class="font-semibold text-center text-xl text-gray-800 leading-tight">
+            كشف الحساب عام
         </h2>
     </x-slot>
 

@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Transfer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -33,21 +34,28 @@ class Transfer2ReportController extends Controller
                 try {
                     $fromDate = Carbon::parse($request->from_date)->startOfDay();
 
-                    $initialQuery = Transfer::where(function ($q) {
-                            $q->where('user_id', Auth::id())
-                              ->orWhere('destination', Auth::id());
+                    $initialQuery = Transfer::where(function ($q) use ($clientId) {
+                        $q->where(function ($q2) use ($clientId) {
+                            $q2->where('user_id', Auth::id())
+                                ->where('destination', $clientId);
                         })
+                            ->orWhere(function ($q3) use ($clientId) {
+                                $q3->where('user_id', $clientId)
+                                    ->where('destination', Auth::id());
+                            });
+                    })
+
                         ->where('created_at', '<', $fromDate)
                         ->where(function ($q) {
                             $q->whereIn('transaction_type', ['Transfer', 'Exchange'])
-                              ->orWhere(function ($q2) {
-                                  $q2->where('transaction_type', 'Credit')
-                                     ->where('status', 'Delivered');
-                              });
+                                ->orWhere(function ($q2) {
+                                    $q2->where('transaction_type', 'Credit')
+                                        ->where('status', 'Delivered');
+                                });
                         })
                         ->where(function ($q) use ($selectedCurrency) {
                             $q->where('sent_currency', $selectedCurrency)
-                              ->orWhere('received_currency', $selectedCurrency);
+                                ->orWhere('received_currency', $selectedCurrency);
                         });
 
                     $initialTransactions = $initialQuery->orderBy('created_at')->get();
@@ -58,7 +66,6 @@ class Transfer2ReportController extends Controller
                 } catch (\Exception $e) {
                     // معالجة الأخطاء إذا لزم الأمر
                 }
-
             }
 
             // حفظ رصيد أول المدة
@@ -66,21 +73,21 @@ class Transfer2ReportController extends Controller
 
             // استعلام المعاملات ضمن الفترة المطلوبة
             $query = Transfer::where(function ($q) {
-                        $q->where('user_id', Auth::id())
-                          ->orWhere('destination', Auth::id());
-                    })
-                    ->where(function ($q) {
-                        $q->whereIn('transaction_type', ['Transfer', 'Exchange'])
-                          ->orWhere(function ($q2) {
-                              $q2->where('transaction_type', 'Credit')
-                                 ->where('status', 'Delivered');
-                          });
-                    });
+                $q->where('user_id', Auth::id())
+                    ->orWhere('destination', Auth::id());
+            })
+                ->where(function ($q) {
+                    $q->whereIn('transaction_type', ['Transfer', 'Exchange'])
+                        ->orWhere(function ($q2) {
+                            $q2->where('transaction_type', 'Credit')
+                                ->where('status', 'Delivered');
+                        });
+                });
 
             if ($selectedCurrency) {
                 $query->where(function ($q) use ($selectedCurrency) {
                     $q->where('sent_currency', $selectedCurrency)
-                      ->orWhere('received_currency', $selectedCurrency);
+                        ->orWhere('received_currency', $selectedCurrency);
                 });
             }
 
@@ -115,7 +122,7 @@ class Transfer2ReportController extends Controller
             'selectedCurrency',
             'initialBalance',
             'finalBalance',
-             'clientId',
+            'clientId',
         ));
     }
 

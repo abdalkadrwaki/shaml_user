@@ -24,7 +24,7 @@ class UpdateUserProfileInformation implements UpdatesUserProfileInformation
             'user_address'  => ['required', 'string', 'max:255'],
             'country_user'  => ['required', 'string', 'max:255'],
             'state_user'    => ['required', 'string', 'max:255'],
-            'link_number'   => ['required', 'string', 'max:255'],
+           'link_number' => ['required', 'digits:16'],
             'Office_name'   => ['required', 'string', 'max:255'],
         ])->validateWithBag('updateProfileInformation');
 

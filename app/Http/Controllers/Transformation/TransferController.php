@@ -76,9 +76,9 @@ class TransferController extends Controller
             'recipient_mobile'   => 'required|numeric|regex:/^05\d{8}$/',
             'destination'        => 'required|exists:users,id',
             'sent_currency'      => 'required|in:USD,TRY,EUR,SAR,SYP',
-            'sent_amount'        => 'required|numeric|min:0.01|max:1000000',
+            'sent_amount'        => 'required|numeric|min:0.01|max:1000000000',
             'received_currency'  => 'required|in:USD,TRY,EUR,SAR,SYP',
-            'received_amount'    => 'required|numeric|min:0.01|max:1000000',
+            'received_amount'    => 'required|numeric|min:0.01|max:1000000000',
             'fees'               => 'nullable|numeric|min:0|max:1000',
             'exchange_rate'      => 'nullable|numeric|min:0',
             'note'               => 'nullable|string|max:500'

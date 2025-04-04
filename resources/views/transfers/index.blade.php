@@ -19,7 +19,7 @@
                         <select
                             name="currency"
                             id="currency"
-                            class="w-full p-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all"
+                            class="form-select  w-full p-2.5 rounded-lg border border-gray-300 focus:ring-2 focus:ring-blue-200 focus:border-blue-500 transition-all"
                         >
                             @foreach ($currencies as $currency)
                                 <option

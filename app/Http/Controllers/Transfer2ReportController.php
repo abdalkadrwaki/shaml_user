@@ -12,7 +12,13 @@ class Transfer2ReportController extends Controller
     public function index(Request $request)
     {
         $selectedCurrency = $request->currency;
-      
+        try {
+            $clientId = decrypt($request->clientId);
+        } catch (\Illuminate\Contracts\Encryption\DecryptException $e) {
+            // مثلاً: رجّع خطأ أو صفحة 403
+            abort(403, 'رابط غير صالح');
+        }
+
         $currencies = Currency::activeCurrencies();
         $currencyNames = $currencies->pluck('name_ar', 'name_en')->toArray();
         // تهيئة خريطة الأرصدة لعملة المحددة فقط
@@ -108,7 +114,8 @@ class Transfer2ReportController extends Controller
             'currencyNames',
             'selectedCurrency',
             'initialBalance',
-            'finalBalance'
+            'finalBalance',
+             'clientId',
         ));
     }
 

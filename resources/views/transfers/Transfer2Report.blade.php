@@ -6,6 +6,9 @@
         </h2>
     </x-slot>
 
+
+    <p>رقم العميل: {{ $clientId }}</p>
+
     <div class="container" style="direction: rtl; width: 98%">
         <div class=" bg-white p-6 rounded-xl shadow-sm border border-gray-100 mt-3">
             <!-- العنوان مع تحسين التسلسل الهرمي -->

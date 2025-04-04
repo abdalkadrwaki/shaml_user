@@ -97,7 +97,7 @@
                                         @endphp
                                         <td class="py-2 px-2 border-b text-center {{ $textColor }}">
                                             <a href="{{ route('transfers.index', ['currency' => $currencyCode, 'clientId' => encrypt($clientId)]) }}"
-                                               class="underline hover:text-blue-800 transition-colors duration-300">
+                                               class="underline hover:text-blue-800 transition-colors duration-300 no-underline">
                                                 {{ $balance != 0 ? number_format($balance, 0, '', '') : 'غير متوفر' }}
                                             </a>
                                         </td>

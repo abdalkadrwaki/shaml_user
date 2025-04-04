@@ -90,13 +90,20 @@
                                             $columnKey = $request->receiver_id === Auth::id() ? $column['receiver_column'] : $column['sender_column'];
                                             $balance = $request->{$columnKey} ?? 0;
                                             $textColor = $balance < 0 ? 'text-red-1' : ($balance > 0 ? 'text-Lime' : 'text-gray-500');
-                                            // Extract currency code by removing '_1' or '_2' from column key
+                                            // استخراج اسم العملة بالإنجليزية
                                             $currencyCode = str_replace(['_1', '_2'], '', $columnKey);
-                                            // Determine the client ID (the other party in the relationship)
+                                            // الحصول على id العميل (الطرف الآخر)
                                             $clientId = $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id;
+                                            // تاريخ اليوم بتنسيق Y-m-d
+                                            $today = now()->format('Y-m-d');
                                         @endphp
                                         <td class="py-2 px-2 border-b text-center {{ $textColor }}">
-                                            <a href="{{ route('transfers.index', ['currency' => $currencyCode, 'clientId' => encrypt($clientId)]) }}"
+                                            <a href="{{ route('transfers.index', [
+                                                'currency' => $currencyCode,
+                                                'clientId' => encrypt($clientId),
+                                                'from_date' => $today,
+                                                'to_date' => $today,
+                                            ]) }}"
                                                class="underline hover:text-blue-800 transition-colors duration-300 no-underline">
                                                 {{ $balance != 0 ? number_format($balance, 0, '', '') : 'غير متوفر' }}
                                             </a>

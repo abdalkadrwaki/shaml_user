@@ -174,7 +174,7 @@ class GenerateTransferImageService
         $writeText(17, 0, 150, 119, $headerColor_so, $this->fontPathhh, "الوجهة");
         $writeText(13, 0, 150, 150, $headerColor_so, $this->fontPath, $userAddressw);
 
-        $writeText(17, 0, 770, 200, $headerColor_so, $this->fontPathhh, "المستفيد");
+        $writeText(15, 0, 770, 200, $headerColor_so, $this->fontPathhh, "المستفيد");
         // تقسيم اسم المستفيد إلى أسطر إذا كان طويلاً
         $maxWidth = 200; // عرض السطر بالبكسل الذي تريد الالتزام به
         $lines = $this->splitTextIntoLines($transferData->recipient_name, $maxWidth, $this->fontPath, 17);

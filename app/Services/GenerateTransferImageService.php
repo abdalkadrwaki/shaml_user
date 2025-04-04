@@ -93,16 +93,16 @@ class GenerateTransferImageService
 
         // جلب بيانات المستخدمين (المرسل والمستقبل)
         $userAddress = User::where('id', $transferData->destination)->value('user_address');
-        $userw = User::find($transferData->destination, ['Office_name',  'state_user']);
+        $userw = User::find($transferData->destination, ['Office_name']);
         $userw2 = User::find($transferData->destination, ['Office_name']);
-        $userm = User::find($transferData->user_id, ['Office_name', 'state_user']);
+        $userm = User::find($transferData->user_id, ['Office_name']);
 
         if (!$userm || !$userw) {
             throw new Exception('بيانات المستخدمين غير موجودة.');
         }
         $userAddress1 = "{$userw2->Office_name}";
-        $userAddressm = "{$userm->Office_name}-{$userm->state_user}";
-        $userAddressw = "{$userw->Office_name}-{$userw->state_user}";
+        $userAddressm = "{$userm->Office_name}";
+        $userAddressw = "{$userw->Office_name}";
 
         if (!$userAddress) {
             throw new Exception('لم يتم العثور على عنوان المستخدم.');

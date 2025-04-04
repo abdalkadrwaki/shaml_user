@@ -39,24 +39,23 @@ class Transfer2ReportController extends Controller
                             $q2->where('user_id', Auth::id())
                                 ->where('destination', $clientId);
                         })
-                            ->orWhere(function ($q3) use ($clientId) {
-                                $q3->where('user_id', $clientId)
-                                    ->where('destination', Auth::id());
-                            });
-                    })
-
-                        ->where('created_at', '<', $fromDate)
-                        ->where(function ($q) {
-                            $q->whereIn('transaction_type', ['Transfer', 'Exchange'])
-                                ->orWhere(function ($q2) {
-                                    $q2->where('transaction_type', 'Credit')
-                                        ->where('status', 'Delivered');
-                                });
-                        })
-                        ->where(function ($q) use ($selectedCurrency) {
-                            $q->where('sent_currency', $selectedCurrency)
-                                ->orWhere('received_currency', $selectedCurrency);
+                        ->orWhere(function ($q3) use ($clientId) {
+                            $q3->where('user_id', $clientId)
+                                ->where('destination', Auth::id());
                         });
+                    })
+                    ->where('created_at', '<', $fromDate)
+                    ->where(function ($q) {
+                        $q->whereIn('transaction_type', ['Transfer', 'Exchange'])
+                          ->orWhere(function ($q2) {
+                              $q2->where('transaction_type', 'Credit')
+                                 ->where('status', 'Delivered');
+                          });
+                    })
+                    ->where(function ($q) use ($selectedCurrency) {
+                        $q->where('sent_currency', $selectedCurrency)
+                          ->orWhere('received_currency', $selectedCurrency);
+                    });
 
                     $initialTransactions = $initialQuery->orderBy('created_at')->get();
 
@@ -71,23 +70,29 @@ class Transfer2ReportController extends Controller
             // حفظ رصيد أول المدة
             $initialBalance = $balanceMap[$selectedCurrency] ?? 0;
 
-            // استعلام المعاملات ضمن الفترة المطلوبة
-            $query = Transfer::where(function ($q) {
-                $q->where('user_id', Auth::id())
-                    ->orWhere('destination', Auth::id());
-            })
-                ->where(function ($q) {
-                    $q->whereIn('transaction_type', ['Transfer', 'Exchange'])
-                        ->orWhere(function ($q2) {
-                            $q2->where('transaction_type', 'Credit')
-                                ->where('status', 'Delivered');
-                        });
+            // استعلام المعاملات ضمن الفترة المطلوبة باستخدام نفس شروط التصفية
+            $query = Transfer::where(function ($q) use ($clientId) {
+                $q->where(function ($q2) use ($clientId) {
+                    $q2->where('user_id', Auth::id())
+                        ->where('destination', $clientId);
+                })
+                ->orWhere(function ($q3) use ($clientId) {
+                    $q3->where('user_id', $clientId)
+                        ->where('destination', Auth::id());
                 });
+            })
+            ->where(function ($q) {
+                $q->whereIn('transaction_type', ['Transfer', 'Exchange'])
+                  ->orWhere(function ($q2) {
+                      $q2->where('transaction_type', 'Credit')
+                         ->where('status', 'Delivered');
+                  });
+            });
 
             if ($selectedCurrency) {
                 $query->where(function ($q) use ($selectedCurrency) {
                     $q->where('sent_currency', $selectedCurrency)
-                        ->orWhere('received_currency', $selectedCurrency);
+                      ->orWhere('received_currency', $selectedCurrency);
                 });
             }
 
@@ -122,7 +127,7 @@ class Transfer2ReportController extends Controller
             'selectedCurrency',
             'initialBalance',
             'finalBalance',
-            'clientId',
+            'clientId'
         ));
     }
 
@@ -163,13 +168,10 @@ class Transfer2ReportController extends Controller
 
     private function handleExchange(&$balanceMap, $transfer, $currenciesToUpdate)
     {
-        // هل المستخدم الحالي هو الذي أنشأ الحوالة (المرسِل)؟
         $userIsSender = ($transfer->user_id == Auth::id());
 
-        // نعالج فقط إذا كانت العملية ناجحة (Delivered)
         if ($transfer->status === 'Delivered') {
             if ($userIsSender) {
-                // إذا كان المستخدم هو المرسل: يخصم من العملة المُرسلة ويضاف للعملة المستلمة
                 if (in_array($transfer->sent_currency, $currenciesToUpdate)) {
                     $balanceMap[$transfer->sent_currency] -= ($transfer->sent_amount + $transfer->fees);
                 }
@@ -177,7 +179,6 @@ class Transfer2ReportController extends Controller
                     $balanceMap[$transfer->received_currency] += $transfer->received_amount;
                 }
             } else {
-                // إذا كان المستخدم هو المستقبِل في عملية الصرافة
                 if (in_array($transfer->sent_currency, $currenciesToUpdate)) {
                     $balanceMap[$transfer->sent_currency] += $transfer->sent_amount;
                 }
@@ -237,7 +238,6 @@ class Transfer2ReportController extends Controller
 
     private function addExchangeOperations($transfer, &$operations, $currencyFilter)
     {
-        // هل المستخدم الحالي هو الذي أنشأ الحوالة (المرسِل)؟
         $userIsSender = ($transfer->user_id == Auth::id());
 
         if (!$currencyFilter || $currencyFilter === $transfer->sent_currency) {

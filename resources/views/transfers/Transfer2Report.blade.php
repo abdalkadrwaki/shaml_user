@@ -179,13 +179,14 @@
                             <th colspan="3" class="py-2 px-4 border-b">
                                 المجموع
                             </th>
+                            <th colspan="" class="py-2 px-4 border-b"></th>
                             <th class="py-2 px-4 border-b text-danger">
                                 {{ number_format($grandTotalDebit, 2) }}
                             </th>
                             <th class="py-2 px-4 border-b text-success">
                                 {{ number_format($grandTotalCredit, 2) }}
                             </th>
-                      
+
                             <th class="py-2 px-4 border-b">
                                 {{ number_format($finalBalance, 2) }}
                             </th>

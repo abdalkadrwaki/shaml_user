@@ -12,10 +12,10 @@ class Transfer2ReportController extends Controller
     public function index(Request $request)
     {
         $selectedCurrency = $request->currency;
+      
         $currencies = Currency::activeCurrencies();
         $currencyNames = $currencies->pluck('name_ar', 'name_en')->toArray();
-
-        // تهيئة خريطة الأرصدة للعملة المحددة فقط
+        // تهيئة خريطة الأرصدة لعملة المحددة فقط
         $balanceCurrencies = $selectedCurrency ? [$selectedCurrency] : [];
         $balanceMap = array_fill_keys($balanceCurrencies, 0);
         $transferData = [];

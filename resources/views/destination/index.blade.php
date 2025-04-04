@@ -100,7 +100,7 @@
                                         <td class="py-2 px-2 border-b text-center {{ $textColor }}">
                                             <a href="{{ route('transfers.Transfer2Report', [
                                                 'currency' => $currencyCode,
-                                                'clientId' => encrypt($clientId),
+                                                'clientId' => $clientId,
                                                 'from_date' => $today,
                                                 'to_date' => $today,
                                             ]) }}"

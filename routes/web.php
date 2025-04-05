@@ -17,6 +17,7 @@ use App\Http\Controllers\SubUserController;
 use App\Http\Controllers\TransferReportController; // Route لتسجيل الخروج
 use App\Http\Controllers\Transfer2ReportController;
 use App\Http\Controllers\BalanceController;
+use App\Http\Controllers\DeliveryController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -89,7 +90,13 @@ Route::middleware([
  Route::get('/transfers/sent/{id}/details', [SentTransfersController::class, 'getTransferDetails'])->name('transfers.sent.details');
 
  // مسارات الحوالات المستلمة (DeliveredTransfersController)
+// صفحة حوالات التسليم الرئيسية
+Route::get('/delivered-transfers', [DeliveryController::class, 'index'])
+    ->name('delivered.transfers.index');
 
+// تفاصيل حوالة التسليم
+Route::get('/delivered-transfers/{id}/details', [DeliveryController::class, 'show'])
+    ->name('delivered.transfers.show');
 
  // مسار الحوالات الواردة
 

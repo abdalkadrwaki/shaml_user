@@ -6,26 +6,13 @@
         <div class="container p-6">
             @php
                 $statusMapping = [
-                    'Pending' => [
-                        'text' => 'إنتظار',
-                        'bg' => 'bg-yellow-200',
-                        'textColor' => 'text-yellow-800',
-                    ],
+
                     'Delivered' => [
                         'text' => 'مسلمة',
                         'bg' => 'bg-green-200',
                         'textColor' => 'text-green-800',
                     ],
-                    'Frozen' => [
-                        'text' => 'مجمدة',
-                        'bg' => 'bg-blue-200',
-                        'textColor' => 'text-blue-800',
-                    ],
-                    'Cancelled' => [
-                        'text' => 'ملغاة',
-                        'bg' => 'bg-red-200',
-                        'textColor' => 'text-red-800',
-                    ],
+
                 ];
             @endphp
 

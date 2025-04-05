@@ -22,7 +22,7 @@ class DeliverController extends Controller
         $transfers = Transfer::with(['currency', 'recipient', 'receivedCurrency'])
             ->where('destination', Auth::id())
             ->where('transaction_type', 'Transfer')
-            ->where('status', '!=', 'Delivered')
+            ->where('status', 'Delivered')
             ->orderBy('created_at', 'desc')
             ->paginate(13); // تقليل الحجم باستخدام الترقيم
 

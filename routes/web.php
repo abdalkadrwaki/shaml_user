@@ -7,6 +7,7 @@ use App\Http\Controllers\Transformation\ApprovalController;
 use App\Http\Controllers\Transformation\ExchangeController;
 use App\Http\Controllers\DestinationController;
 use App\Http\Controllers\Transfers\SentTransfersController;
+use App\Http\Controllers\Transfers\DeliveredTransfersController;
 use App\Http\Controllers\Transfers\ReceivedTransferController;
 use App\Http\Controllers\Transfers\SentTransfersApprovalController;
 use App\Http\Controllers\Transfers\ReceivedTransferApprovalController;
@@ -87,7 +88,18 @@ Route::middleware([
  Route::get('/transfers/sent/{id}/print', [SentTransfersController::class, 'printImage'])->name('transfers.sent.print');
  Route::get('/transfers/sent/{id}/details', [SentTransfersController::class, 'getTransferDetails'])->name('transfers.sent.details');
 
+ // مسارات الحوالات المستلمة (DeliveredTransfersController)
+
+ Route::get('/transfers/Delivered', [DeliveredTransfersController::class, 'index'])->name('transfers.sent.index');
+ Route::get('/transfers/Delivered/data', [DeliveredTransfersController::class, 'getTransfersData'])->name('transfers.sent.data');
+ Route::get('/transfers/Delivered/{id}/edit', [DeliveredTransfersController::class, 'edit'])->name('transfers.sent.edit');
+ Route::put('/transfers/Deliveredt/{id}', [DeliveredTransfersController::class, 'update'])->name('transfers.sent.update');
+ Route::delete('/transfers/Delivered/{id}', [DeliveredTransfersController::class, 'destroy'])->name('transfers.sent.destroy');
+ Route::get('/transfers/Delivered/{id}/print', [DeliveredTransfersController::class, 'printImage'])->name('transfers.sent.print');
+ Route::get('/transfers/Delivered/{id}/details', [DeliveredTransfersController::class, 'getTransferDetails'])->name('transfers.sent.details');
+ 
  // مسار الحوالات الواردة
+
  Route::get('/transfers/received', [ReceivedTransferController::class, 'index'])
      ->name('transfers.received');
  Route::patch('/transfers/{transfer}/toggle-freeze', [ReceivedTransferController::class, 'toggleFreeze'])

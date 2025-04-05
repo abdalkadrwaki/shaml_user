@@ -93,11 +93,11 @@ Route::middleware([
  Route::get('/transfers/Delivered', [DeliveredTransfersController::class, 'index'])->name('transfers.sent.index');
  Route::get('/transfers/Delivered/data', [DeliveredTransfersController::class, 'getTransfersData'])->name('transfers.sent.data');
  Route::get('/transfers/Delivered/{id}/edit', [DeliveredTransfersController::class, 'edit'])->name('transfers.sent.edit');
- Route::put('/transfers/Deliveredt/{id}', [DeliveredTransfersController::class, 'update'])->name('transfers.sent.update');
+ Route::put('/transfers/Delivered/{id}', [DeliveredTransfersController::class, 'update'])->name('transfers.sent.update');
  Route::delete('/transfers/Delivered/{id}', [DeliveredTransfersController::class, 'destroy'])->name('transfers.sent.destroy');
  Route::get('/transfers/Delivered/{id}/print', [DeliveredTransfersController::class, 'printImage'])->name('transfers.sent.print');
  Route::get('/transfers/Delivered/{id}/details', [DeliveredTransfersController::class, 'getTransferDetails'])->name('transfers.sent.details');
- 
+
  // مسار الحوالات الواردة
 
  Route::get('/transfers/received', [ReceivedTransferController::class, 'index'])

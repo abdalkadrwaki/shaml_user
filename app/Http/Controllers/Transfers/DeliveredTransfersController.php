@@ -111,7 +111,7 @@ class DeliveredTransfersController extends Controller
             $transfer->transaction_type !== 'Transfer'
         ) {
             $errorBag = new MessageBag(['error' => 'لا يمكنك تعديل حوالة ليست في حالة انتظار أو ليست من نوع Transfer.']);
-            return redirect()->route('transfers.Delivered')->withErrors($errorBag);
+            return redirect()->route('transfers.sent.index')->withErrors($errorBag);
         }
 
         return view('transfers.sent.edit', compact('transfer'));
@@ -136,7 +136,7 @@ class DeliveredTransfersController extends Controller
             $transfer->transaction_type !== 'Transfer'
         ) {
             $errorBag = new MessageBag(['error' => 'لا يمكنك تعديل حوالة ليست في حالة انتظار أو ليست من نوع Transfer.']);
-            return redirect()->route('transfers.Delivered')->withErrors($errorBag);
+            return redirect()->route('transfers.sent.index')->withErrors($errorBag);
         }
 
         $validated = $request->validate([
@@ -146,7 +146,7 @@ class DeliveredTransfersController extends Controller
 
         $transfer->update($validated);
 
-        return redirect()->route('transfers.Delivered')
+        return redirect()->route('transfers.sent.index')
             ->with('success', 'تم تحديث الحوالة بنجاح.');
     }
 
@@ -198,7 +198,7 @@ class DeliveredTransfersController extends Controller
             $transfer->transaction_type !== 'Transfer'
         ) {
             $errorBag = new MessageBag(['error' => 'لا يمكنك إلغاء حوالة ليست في حالة انتظار أو ليست من نوع Transfer.']);
-            return redirect()->route('transfers.Delivered')->withErrors($errorBag);
+            return redirect()->route('transfers.sent.index')->withErrors($errorBag);
         }
 
         DB::beginTransaction();

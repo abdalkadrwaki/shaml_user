@@ -20,7 +20,7 @@ class DeliverController extends Controller
     {
         // استخدام الترقيم لتحسين الأداء
         $transfers = Transfer::with(['currency', 'recipient', 'receivedCurrency'])
-            ->where('user_id', Auth::id())
+            ->where('destination', Auth::id())
             ->where('transaction_type', 'Transfer')
             ->where('status', '!=', 'Delivered')
             ->orderBy('created_at', 'desc')

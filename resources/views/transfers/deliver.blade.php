@@ -17,7 +17,7 @@
             @endphp
 
             <!-- Modal التفاصيل -->
-            <div id="detailsModal"
+            <div id="deliverModal"
                 class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
                 <div class="bg-white  rounded-2xl shadow-lg w-full max-w-5xl p-3 relative "> <!-- تكبير النافذة -->
 
@@ -85,7 +85,7 @@
                     </div>
                     <!-- زر الإغلاق -->
                     <div class="flex justify-center text-white">
-                        <button id="closeDetailsModal"
+                        <button id="closedeliverModal"
                             class="bg-blue-900  w-full hover:bg-blue-900  hover:text-gray-300  px-6 py-2 rounded-lg transition">
                             إغلاق
                         </button>
@@ -226,7 +226,7 @@
                                 $('#recipientImage').attr('src', response.image);
 
                                 // عرض النافذة
-                                $('#detailsModal').removeClass('hidden');
+                                $('#deliverModal').removeClass('hidden');
                             },
                             error: function(xhr) {
                                 alert(xhr.responseJSON?.error || 'حدث خطأ أثناء جلب البيانات');
@@ -235,12 +235,12 @@
                     });
 
                     // إغلاق النافذة عند الضغط على زر "إغلاق"
-                    $('#closeDetailsModal').click(function() {
-                        $('#detailsModal').addClass('hidden');
+                    $('#closedeliverModal').click(function() {
+                        $('#deliverModal').addClass('hidden');
                     });
                 });
             </script>
-            
+
 
         </div>
     </div>

@@ -147,12 +147,10 @@
         <!-- عنوان الجهة (مخفي افتراضيًا) -->
         <div class="mb-3 row" id="destination_address_container" style="display:none;">
             <div class="col-md-12">
-                <label for="destination_address" class="form-label rounded-md border-gray-300">عنوان الجهة</label>
-                <!-- Replace <p> with an input element -->
-                <input type="text" id="destination_address" class="form-control" />
+                <label for="destination_address" class="form-label  rounded-md  border-gray-300">عنوان الجهة</label>
+                <p id="destination_address" class="form-control"></p>
             </div>
         </div>
-
 
         <!-- زر الإرسال -->
         <div class="row">

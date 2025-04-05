@@ -13,7 +13,7 @@ class DeliveryController extends Controller
         $transfers = Transfer::with(['currency', 'recipient'])
             ->where('user_id', Auth::id())
             ->where('status', 'Delivered')
-            ->orderBy('delivered_at', 'desc')
+            ->orderBy('created_at', 'desc')
             ->paginate(15);
 
         return view('deliveries.index', compact('transfers'));

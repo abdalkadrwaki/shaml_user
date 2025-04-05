@@ -17,54 +17,7 @@
             @endphp
 
             <!-- Modal التفاصيل -->
-            <div id="detailsModal"
-                class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 hidden">
-                <div class="bg-white rounded-2xl shadow-lg w-full max-w-5xl p-3 relative">
-                    <h2 class="text-2xl font-semibold text-gray-800 text-center mb-6">تفاصيل الحوالة</h2>
-                    <div class="grid grid-cols-1 md:grid-cols-7 gap-3 px-4 mb-6">
-                        <div class="text-center">
-                            <span class="block bg-custom-gray text-black font-semibold rounded-lg">رقم الإشعار</span>
-                            <span id="movementNumber" class="block text-gray-700"></span>
-                        </div>
-                        <div class="text-center">
-                            <span class="block bg-custom-gray text-black font-semibold rounded-lg">اسم المستلم</span>
-                            <span id="recipientName" class="block text-gray-700"></span>
-                        </div>
-                        <div class="text-center">
-                            <span class="block bg-custom-gray text-black font-semibold rounded-lg">رقم الجوال</span>
-                            <span id="recipientMobile" class="block text-gray-700"></span>
-                        </div>
-                        <div class="text-center">
-                            <span class="block bg-custom-gray text-black font-semibold rounded-lg">المبلغ المرسل</span>
-                            <span id="sentAmount" class="block text-gray-700"></span>
-                        </div>
-                        <div class="text-center">
-                            <span class="block bg-custom-gray text-black font-semibold rounded-lg">الإجور</span>
-                            <span id="fees" class="block text-gray-700"></span>
-                        </div>
-                        <div class="text-center">
-                            <span class="block bg-custom-gray text-black font-semibold rounded-lg">تاريخ الحوالة</span>
-                            <span id="transferDate" class="block text-center text-gray-700"></span>
-                        </div>
-                        <div class="text-center font-semibold text-gray-500">
-                            <span class="block bg-custom-gray text-black rounded-lg">ملاحظة</span>
-                            <span id="note" class="text-gray-800">لا توجد ملاحظات</span>
-                        </div>
-                    </div>
-                    <div class="grid place-items-center">
-                        <div class="w-9/12 rounded-lg overflow-hidden border-2 h-80 border-gray-300 shadow-md mb-6">
-                            <span class="block bg-custom-gray text-black text-center h-8">صورة</span>
-                            <img id="recipientImage" src="" alt="صورة المستلم" class="w-full h-80 object-cover">
-                        </div>
-                    </div>
-                    <div class="flex justify-center text-white">
-                        <button id="closeDetailsModal"
-                            class="bg-blue-900 w-full hover:bg-blue-900 hover:text-gray-300 px-6 py-2 rounded-lg transition">
-                            إغلاق
-                        </button>
-                    </div>
-                </div>
-            </div>
+            
 
             <!-- جدول الحوالات -->
             <div class="container mt-4">
@@ -174,7 +127,7 @@
             <!-- تضمين SweetAlert2 و jQuery -->
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-          
+
         </div>
     </div>
 </x-app-layout>

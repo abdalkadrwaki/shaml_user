@@ -90,7 +90,7 @@
                                 class="px-4 py-2 text-sm rounded-md hover:bg-gray-300 hover:text-gray-100 no-underline ">
                                 {{ __(' قص وارد ') }}
                             </x-nav-link>
-                            <x-nav-link href="{{ route('delivered.transfers.index') }}" :active="request()->routeIs('delivered.transfers.index')"
+                            <x-nav-link href="{{ route('transfers.deliver') }}" :active="request()->routeIs('transfers.deliver')"
                                 class="px-4 py-2 text-sm rounded-md hover:bg-gray-300 hover:text-gray-100 no-underline ">
                                 {{ __('  حوالات مسلمة ') }}
                             </x-nav-link>

@@ -10,12 +10,12 @@ class DeliveryController extends Controller
 {
     public function index()
     {
-        $transfers = Transfer::with(['currency', 'recipient'])
-            ->where('user_id', Auth::id())
-            ->where('status', 'Delivered')
-            ->orderBy('created_at', 'desc')
-            ->paginate(15);
-
+        $transfers = Transfer::with(['currency', 'recipient', 'receivedCurrency'])
+        ->where('user_id', Auth::id())
+        ->where('transaction_type', 'Transfer')
+        ->where('status', '!=', 'Archived')
+        ->orderBy('created_at', 'desc')
+        ->paginate(13); // تقليل الحجم باستخدام الترقيم
         return view('deliveries.index', compact('transfers'));
     }
 

@@ -10,17 +10,18 @@ class DeliveryController extends Controller
 {
     public function index()
     {
-        $transfers = Transfer::with(['currency', 'recipient', 'receivedCurrency'])
-        ->where('user_id', Auth::id())
-        ->where('transaction_type', 'Transfer')
-        ->where('status', '!=', 'Archived')
-        ->orderBy('created_at', 'desc')
-        ->paginate(13); // تقليل الحجم باستخدام الترقيم
+        $transfers = Transfer::with(['currency', 'recipient'])
+            ->where('user_id', Auth::id())
+            ->where('transaction_type', 'Transfer')
+            ->where('status', '!=', 'Delivered')
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
+
         return view('deliveries.index', compact('transfers'));
     }
 
     public function show($id)
-    {
+    {   
         $transfer = Transfer::with(['recipient', 'deliveryProofs'])
             ->where('user_id', Auth::id())
             ->findOrFail($id);

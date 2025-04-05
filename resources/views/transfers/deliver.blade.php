@@ -174,40 +174,7 @@
             <!-- تضمين SweetAlert2 و jQuery -->
             <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
             <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script>
-                $(document).ready(function() {
-                    $('.view-details-btn').click(function() {
-                        const transferId = $(this).data('id');
-
-                        $.ajax({
-                            url: `/transfers/deliver/${transferId}/details`,
-                            type: 'GET',
-                            success: function(response) {
-                                let transfer = response.transfer;
-
-                                $('#movementNumber').text(transfer.movement_number);
-                                $('#recipientName').text(transfer.recipient_name);
-                                $('#recipientMobile').text(transfer.recipient_mobile);
-                                $('#sentAmount').text(parseFloat(transfer.sent_amount).toFixed(2));
-                                $('#fees').text(parseFloat(transfer.fees).toFixed(2));
-                                $('#note').text(transfer.note ?? '');
-                                $('#transferDate').text(new Date(transfer.created_at).toLocaleString());
-
-                                $('#recipientImage').attr('src', response.image);
-
-                                $('#detailsModal').removeClass('hidden');
-                            },
-                            error: function(xhr) {
-                                alert(xhr.responseJSON.error || 'حدث خطأ أثناء جلب البيانات');
-                            }
-                        });
-                    });
-
-                    $('#closeDetailsModal').click(function() {
-                        $('#detailsModal').addClass('hidden');
-                    });
-                });
-            </script>
+          
         </div>
     </div>
 </x-app-layout>

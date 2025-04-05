@@ -91,9 +91,11 @@ Route::middleware([
  Route::get('/transfers/sent/{id}/details', [SentTransfersController::class, 'getTransferDetails'])->name('transfers.sent.details');
 
  // مسارات الحوالات المستلمة (DeliveredController)
- Route::get('/transfers/deliver', [DeliverController::class, 'index'])->name('deliver.index');
 
+
+ Route::get('/transfers/deliver', [DeliverController::class, 'index'])->name('deliver.index');
  Route::get('/transfers/deliver/{id}/details', [DeliverController::class, 'getTransferDetails'])->name('deliver.details');
+
 
  // مسار الحوالات الواردة
 

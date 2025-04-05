@@ -4,15 +4,8 @@ namespace App\Http\Controllers\Transfers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Transfer;
-use App\Models\FriendRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\MessageBag;
-use Illuminate\Support\Facades\Gate;
-use App\Services\GenerateTransferImageService;
-use App\Services\BalanceService;
 
 class DeliverController extends Controller
 {
@@ -25,20 +18,16 @@ class DeliverController extends Controller
      */
     public function index()
     {
-
-
         // استخدام الترقيم لتحسين الأداء
         $transfers = Transfer::with(['currency', 'recipient', 'receivedCurrency'])
             ->where('user_id', Auth::id())
             ->where('transaction_type', 'Transfer')
-            ->where('status', '!=', 'Archived')
+            ->where('status', '!=', 'Delivered')
             ->orderBy('created_at', 'desc')
             ->paginate(13); // تقليل الحجم باستخدام الترقيم
 
         return view('transfers.deliver', compact('transfers'));
     }
-
-
 
     /**
      * جلب تفاصيل الحوالة وصورة المستلم للحوالات المسلمة.
@@ -65,7 +54,4 @@ class DeliverController extends Controller
             'image' => $imagePath,
         ]);
     }
-
-
-
 }

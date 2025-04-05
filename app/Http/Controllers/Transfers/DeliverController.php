@@ -39,7 +39,7 @@ class DeliverController extends Controller
     {
         $transfer = Transfer::findOrFail($id);
 
-        if ($transfer->user_id !== Auth::id()) {
+        if ($transfer->destination !== Auth::id()) {
             return response()->json(['error' => 'غير مصرح لك'], 403);
         }
 

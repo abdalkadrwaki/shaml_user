@@ -8,7 +8,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
 use App\Models\Transfer;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Validator;

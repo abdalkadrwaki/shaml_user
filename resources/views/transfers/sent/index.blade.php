@@ -277,41 +277,41 @@
 
 
             <!-- تضمين SweetAlert2 و jQuery -->
-            <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-            <script>
-                $(document).ready(function() {
-                    // عند الضغط على زر الطباعة
-                    $('.view-image-btn').click(function() {
-                        const transferId = $(this).data('id');
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            // عند الضغط على زر الطباعة
+            $('.view-image-btn').click(function() {
+                const transferId = $(this).data('id');
 
-                        // إرسال طلب للحصول على صورة الحوالة عبر AJAX
-                        $.ajax({
-                            url: `/transfers/sent/${transferId}/print`,
-                            type: 'GET',
-                            success: function(response) {
-                                $('#transferImage').attr('src', 'data:image/png;base64,' + response
-                                    .base64Image);
-                                $('#imageModal').removeClass('hidden');
-                            }
-                        });
-                    });
-
-                    $('#closeModal').click(function() {
-                        $('#imageModal').addClass('hidden');
-                    });
+                // إرسال طلب للحصول على صورة الحوالة عبر AJAX
+                $.ajax({
+                    url: `/transfers/sent/${transferId}/print`,
+                    type: 'GET',
+                    success: function(response) {
+                        $('#transferImage').attr('src', 'data:image/png;base64,' + response
+                            .base64Image);
+                        $('#imageModal').removeClass('hidden');
+                    }
                 });
-            </script>
-            <script>
-                $(document).ready(function() {
-                    $('.edit-btn').click(function() {
-                        const id = $(this).data('id');
-                        const name = $(this).data('name');
-                        const mobile = $(this).data('mobile');
+            });
 
-                        Swal.fire({
-                            title: 'تعديل الحوالة',
-                            html: `
+            $('#closeModal').click(function() {
+                $('#imageModal').addClass('hidden');
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.edit-btn').click(function() {
+                const id = $(this).data('id');
+                const name = $(this).data('name');
+                const mobile = $(this).data('mobile');
+
+                Swal.fire({
+                    title: 'تعديل الحوالة',
+                    html: `
                         <form id="editTransferForm" method="POST" action="{{ route('transfers.sent.update', '') }}/${id}">
                             @csrf
                             @method('PUT')
@@ -325,72 +325,72 @@
                             </div>
                         </form>
                     `,
-                            showCancelButton: true,
-                            confirmButtonText: 'تحديث',
-                            cancelButtonText: 'إلغاء',
-                            preConfirm: () => {
-                                $('#editTransferForm').submit();
-                            }
-                        });
-                    });
-                });
-            </script>
-            <script>
-                // دالة لتنزيل الصورة عند الضغط على زر "تنزيل الصورة"
-                function downloadImage() {
-                    const imageBase64 = document.getElementById('transferImage').src;
-
-                    if (!imageBase64) {
-                        alert('لا توجد صورة متاحة للتنزيل.');
-                        return;
+                    showCancelButton: true,
+                    confirmButtonText: 'تحديث',
+                    cancelButtonText: 'إلغاء',
+                    preConfirm: () => {
+                        $('#editTransferForm').submit();
                     }
-
-                    // إنشاء رابط لتنزيل الصورة
-                    const link = document.createElement('a');
-                    link.href = imageBase64; // المصدر هو الصورة الموجودة في الـ img
-                    link.download = 'transfer_details.png'; // اسم الصورة عند تنزيلها
-                    document.body.appendChild(link);
-                    link.click();
-                    document.body.removeChild(link);
-                }
-            </script>
-            <script>
-                $(document).ready(function() {
-                    $('.view-details-btn').click(function() {
-                        const transferId = $(this).data('id');
-
-                        $.ajax({
-                            url: `/transfers/sent/${transferId}/details`,
-                            type: 'GET',
-                            success: function(response) {
-                                let transfer = response.transfer;
-
-                                // تحديث محتويات العناصر الموجودة في الـ Modal
-                                $('#movementNumber').text(transfer.movement_number);
-                                $('#recipientName').text(transfer.recipient_name);
-                                $('#recipientMobile').text(transfer.recipient_mobile);
-                                $('#sentAmount').text(parseFloat(transfer.sent_amount).toFixed(2));
-                                $('#fees').text(parseFloat(transfer.fees).toFixed(2));
-                                $('#note').text(transfer.note ?? '');
-                                $('#transferDate').text(new Date(transfer.created_at).toLocaleString());
-
-                                // تحديث صورة المستلم
-                                $('#recipientImage').attr('src', response.image);
-
-                                // عرض النافذة
-                                $('#detailsModal').removeClass('hidden');
-                            },
-                            error: function(xhr) {
-                                alert(xhr.responseJSON.error || 'حدث خطأ أثناء جلب البيانات');
-                            }
-                        });
-                    });
-
-                    // إغلاق النافذة عند الضغط على زر "إغلاق"
-                    $('#closeDetailsModal').click(function() {
-                        $('#detailsModal').addClass('hidden');
-                    });
                 });
-            </script>
+            });
+        });
+    </script>
+    <script>
+        // دالة لتنزيل الصورة عند الضغط على زر "تنزيل الصورة"
+        function downloadImage() {
+            const imageBase64 = document.getElementById('transferImage').src;
+
+            if (!imageBase64) {
+                alert('لا توجد صورة متاحة للتنزيل.');
+                return;
+            }
+
+            // إنشاء رابط لتنزيل الصورة
+            const link = document.createElement('a');
+            link.href = imageBase64; // المصدر هو الصورة الموجودة في الـ img
+            link.download = 'transfer_details.png'; // اسم الصورة عند تنزيلها
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.view-details-btn').click(function() {
+                const transferId = $(this).data('id');
+
+                $.ajax({
+                    url: `/transfers/sent/${transferId}/details`,
+                    type: 'GET',
+                    success: function(response) {
+                        let transfer = response.transfer;
+
+                        // تحديث محتويات العناصر الموجودة في الـ Modal
+                        $('#movementNumber').text(transfer.movement_number);
+                        $('#recipientName').text(transfer.recipient_name);
+                        $('#recipientMobile').text(transfer.recipient_mobile);
+                        $('#sentAmount').text(parseFloat(transfer.sent_amount).toFixed(2));
+                        $('#fees').text(parseFloat(transfer.fees).toFixed(2));
+                        $('#note').text(transfer.note ?? '');
+                        $('#transferDate').text(new Date(transfer.created_at).toLocaleString());
+
+                        // تحديث صورة المستلم
+                        $('#recipientImage').attr('src', response.image);
+
+                        // عرض النافذة
+                        $('#detailsModal').removeClass('hidden');
+                    },
+                    error: function(xhr) {
+                        alert(xhr.responseJSON.error || 'حدث خطأ أثناء جلب البيانات');
+                    }
+                });
+            });
+
+            // إغلاق النافذة عند الضغط على زر "إغلاق"
+            $('#closeDetailsModal').click(function() {
+                $('#detailsModal').addClass('hidden');
+            });
+        });
+    </script>
 
 </x-app-layout>

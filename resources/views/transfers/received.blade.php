@@ -35,8 +35,19 @@
     @endphp
 
     <div class="container mt-4" style="width: 98%">
-        <div class="bg-white p-4 rounded-lg shadow-lg">
 
+
+
+
+        @if (session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+        @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+
+        <div class="bg-white p-4 rounded-lg shadow-lg">
+            <div class="overflow-x-auto">
                 <div class="flex gap-4 p-2 justify-center" style="min-width: max-content;">
                     @foreach ($groupedTransfers as $currencyName => $transfers)
                         @php
@@ -54,27 +65,15 @@
                         @endphp
 
                         @if ($totalAmount > 0)
-                            <div
-                                class="min-w-[200px] p-4 rounded-lg shadow-sm border border-gray-200 {{ $bgColor }}">
+                            <div class="min-w-[200px] p-4 rounded-lg shadow-sm border border-gray-200 {{ $bgColor }}">
                                 <h3 class="text-lg font-bold text-center">{{ $currencyName }}</h3>
                                 <p class="mt-2 text-center text-base">{{ number_format($totalAmount, 2) }}</p>
                             </div>
                         @endif
                     @endforeach
                 </div>
-        
+            </div>
 
-        </div>
-
-
-        @if (session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-
-        <div class="bg-white p-4 rounded-lg shadow-lg">
             <table class=" myTable table-auto w-full border border-gray-300  shadow-md overflow-hidden"
                 style="direction: rtl;">
                 <thead class="bg-gray-200 text-gray-700 ">

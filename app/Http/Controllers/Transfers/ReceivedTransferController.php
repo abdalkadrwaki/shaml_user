@@ -40,31 +40,25 @@ class ReceivedTransferController extends Controller
 
     public function index(Request $request)
     {
+        // جلب الحوالات بشكل مباشر بدون كاش
+        $receivedTransfers = Transfer::with(['currency', 'recipient', 'receivedCurrency'])
+            ->where('destination', Auth::id())
+            ->where('transaction_type', 'Transfer')
+            ->whereIn('status', ['Pending', 'Frozen'])
+            ->orderBy('created_at', 'desc')
+            ->simplePaginate(100);
 
-
-
-        $page = $request->get('page', 1);
-        $version = $this->getUserTransfersVersion();
-        $cacheKey = "transfers_user_" . Auth::id() . "_v" . $version . "_page_" . $page;
-
-        // استخدام simplePaginate لتفادي استعلام العد الكامل للبيانات
-        // بعد جلب الحوالات
-        $receivedTransfers = Cache::remember($cacheKey, now()->addMinutes(10), function () {
-            return Transfer::with(['currency', 'recipient', 'receivedCurrency'])
-                ->where('destination', Auth::id())
-                ->where('transaction_type', 'Transfer')
-                ->whereIn('status', ['Pending', 'Frozen'])
-                ->orderBy('created_at', 'desc')
-                ->simplePaginate(100);
-        });
-
-        // تجميع الحوالات حسب العملة
-        $groupedTransfers = $receivedTransfers->groupBy(function ($transfer) {
+        // تجميع الحوالات حسب اسم العملة (بالعربي) أو اسم العملة المرسلة في حال عدم وجود علاقة
+        $groupedTransfers = $receivedTransfers->getCollection()->groupBy(function ($transfer) {
             return $transfer->currency ? $transfer->currency->name_ar : $transfer->sent_currency;
         });
 
+        // إعادة تعيين المجموعة داخل الـ paginator
+        $receivedTransfers->setCollection(collect($groupedTransfers)->flatten(1));
+
         return view('transfers.received', compact('receivedTransfers', 'groupedTransfers'));
     }
+
 
     public function toggleFreeze(Transfer $transfer)
     {

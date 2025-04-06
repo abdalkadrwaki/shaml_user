@@ -35,23 +35,33 @@
     @endphp
 
     <div class="container mt-4" style="width: 98%">
-        <div class="flex flex-wrap justify-start gap-4 mb-6">
-            @foreach ($groupedTransfers as $currencyName => $transfers)
-                @php
-                    $totalAmount = $transfers->sum('sent_amount');
-                @endphp
+        <div class="overflow-x-auto">
+            <div class="flex gap-4 p-2" style="min-width: max-content;">
+                @foreach ($groupedTransfers as $currencyName => $transfers)
+                    @php
+                        $totalAmount = $transfers->sum('sent_amount');
 
-                @if ($totalAmount > 0)
-                    <div
-                        class="min-w-[180px] bg-gray-50 border border-gray-200 rounded-lg shadow-sm p-4 transition hover:shadow-md">
-                        <div class="text-center">
-                            <h3 class="text-lg font-semibold text-gray-800">{{ $currencyName }}</h3>
-                            <p class="mt-2 text-gray-600 text-base">{{ number_format($totalAmount, 2) }}</p>
+                        // ألوان مخصصة حسب العملة
+                        $bgColor = 'bg-gray-100 text-gray-800';
+                        if ($currencyName === 'دولار') {
+                            $bgColor = 'bg-green-100 text-green-800';
+                        } elseif ($currencyName === 'تركي') {
+                            $bgColor = 'bg-red-100 text-red-800';
+                        } elseif ($currencyName === 'يورو') {
+                            $bgColor = 'bg-blue-100 text-blue-800';
+                        }
+                    @endphp
+
+                    @if ($totalAmount > 0)
+                        <div class="min-w-[200px] p-4 rounded-lg shadow-sm border border-gray-200 {{ $bgColor }}">
+                            <h3 class="text-lg font-bold text-center">{{ $currencyName }}</h3>
+                            <p class="mt-2 text-center text-base">{{ number_format($totalAmount, 2) }}</p>
                         </div>
-                    </div>
-                @endif
-            @endforeach
+                    @endif
+                @endforeach
+            </div>
         </div>
+
 
 
 

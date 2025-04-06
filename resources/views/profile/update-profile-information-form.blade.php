@@ -1,4 +1,4 @@
-<div class="min-h-screen flex justify-center items-center">
+<div class="justify-center">
     <x-form-section submit="updateProfileInformation">
         <x-slot name="title">
 

@@ -33,6 +33,19 @@
             ],
         ];
     @endphp
+    @foreach ($groupedTransfers as $currencyName => $transfers)
+        @php
+            // حساب إجمالي المبالغ المرسلة للعملة المحددة
+            $totalAmount = $transfers->sum('sent_amount');
+        @endphp
+
+        @if ($totalAmount > 0)
+            <div class="box bg-white p-4 rounded-lg shadow-lg mb-4">
+                <h3 class="text-xl font-bold">{{ $currencyName }}</h3>
+                <p class="mt-2">المبلغ الإجمالي: {{ number_format($totalAmount, 2) }}</p>
+            </div>
+        @endif
+    @endforeach
 
     <div class="container mt-4" style="width: 98%">
 
@@ -112,7 +125,7 @@
                                                 ? 'green'
                                                 : 'inherit'))
                                         : 'inherit' }};">
-                                    {{ $transfer->receivedCurrency? $transfer->receivedCurrency->name_ar : $transfer->received_currency }}
+                                    {{ $transfer->receivedCurrency ? $transfer->receivedCurrency->name_ar : $transfer->received_currency }}
                                 </div>
                             </td>
                             <td class="py-2 px-4 border-b">
@@ -167,19 +180,7 @@
         </div>
 
 
-        @foreach($groupedTransfers as $currencyName => $transfers)
-        @php
-            // حساب إجمالي المبالغ المرسلة للعملة المحددة
-            $totalAmount = $transfers->sum('sent_amount');
-        @endphp
 
-        @if($totalAmount > 0)
-            <div class="box bg-white p-4 rounded-lg shadow-lg mb-4">
-                <h3 class="text-xl font-bold">{{ $currencyName }}</h3>
-                <p class="mt-2">المبلغ الإجمالي: {{ number_format($totalAmount, 2) }}</p>
-            </div>
-        @endif
-    @endforeach
 
 
         <div class="modal fade" id="deliverTransferModal" tabindex="-1" aria-labelledby="deliverTransferModalLabel"

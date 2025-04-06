@@ -34,16 +34,17 @@
         ];
     @endphp
 
-<div class="container mt-4" style="width: 98%">
-    @if (session('error'))
-        <div class="alert alert-danger">{{ session('error') }}</div>
-    @endif
-    @if (session('success'))
-        <div class="alert alert-success">{{ session('success') }}</div>
-    @endif
+    <div class="container mt-4" style="width: 98%">
 
-    <!-- بطاقة صناديق العملات -->
-    <div class="bg-white rounded-lg shadow-lg mb-4">
+
+
+
+        @if (session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+        @if (session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
         <!-- رأس البطاقة -->
         <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
             <h5 class="mb-0">ملخص العملات</h5>
@@ -81,103 +82,123 @@
             </div>
         </div>
     </div>
-
-    <!-- باقي الكود (الجدول وغيره) -->
     <div class="bg-white p-4 rounded-lg shadow-lg">
-        <table class="myTable table table-bordered w-100 shadow-md" style="direction: rtl;">
-            <thead class="bg-light text-dark">
+
+
+        <table class=" myTable table-auto w-full border border-gray-300  shadow-md overflow-hidden"
+            style="direction: rtl;">
+            <thead class="bg-gray-200 text-gray-700 ">
                 <tr>
-                    <th class="px-4 py-3 text-center" style="width: 150px;">الجهة المرسلة</th>
-                    <th class="px-4 py-3 text-center">رقم إشعار</th>
-                    <th class="px-4 py-3 text-center">المستفيد</th>
-                    <th class="py-3 px-4 text-center">المبلغ المرسل</th>
-                    <th class="py-3 px-4 text-center">المبلغ المستلم</th>
-                    <th class="px-4 py-3 text-center">الإجور</th>
-                    <th class="px-4 py-3 text-center">الحالة</th>
-                    <th class="px-4 py-3 text-center">ملاحظة</th>
-                    <th class="px-4 py-3 text-center">تاريخ</th>
-                    <th class="px-4 py-3 text-center">الإجراءات</th>
+                    <!-- عمود جديد لاسم الجهة المرسلة -->
+                    <th class="px-4 py-3 text-center  w-48"> الجهة المرسلة</th>
+                    <th class="px-4 py-3 text-center ">رقم إشعار</th>
+                    <th class="px-4 py-3 text-center ">المستفيد</th>
+                    <th class="py-3 px-4 border-b text-center">المبغ المرسل </th>
+                    <th class="py-3 px-4 border-b text-center">المبلغ المستلم </th>
+                    <th class="px-4 py-3 text-center ">الإجور</th>
+                    <th class="px-4 py-3 text-center ">الحالة</th>
+                    <th class="px-4 py-3 text-center ">ملاحظة</th>
+                    <th class="px-4 py-3 text-center ">تاريخ</th>
+                    <th class="px-4 py-3 text-center w-72">الإجراءت </th>
+
                 </tr>
             </thead>
             <tbody>
                 @foreach ($receivedTransfers as $transfer)
-                    <tr class="text-center text-muted hover:bg-light transition {{ $transfer->status === 'Frozen' ? 'bg-secondary' : '' }}"
+                    <tr class="text-center text-gray-600 hover:bg-gray-100 transition {{ $transfer->status === 'Frozen' ? 'bg-gray-300' : '' }}"
                         data-transfer-id="{{ $transfer->id }}">
-                        <td class="py-2 px-4 border-bottom font-bold">
+
+                        <!-- عمود اسم الجهة المرسلة -->
+                        <td class="py-2 px-4 border-b font-bold">
                             @if ($transfer->sender)
                                 {{ $transfer->sender->name }}<br>
                                 {{ $transfer->sender->state_user }} - {{ $transfer->sender->country_user }}
                             @else
-                                <span class="text-danger">غير متوفر</span>
+                                <span class="text-red-500">غير متوفر</span>
                             @endif
                         </td>
-                        <td class="py-2 px-4 border-bottom font-bold text-primary">
-                            {{ $transfer->movement_number }}
+
+                        <!-- عمود رقم الإشعار -->
+                        <td class="py-2 px-4 border-b font-bold text-blue-500">
+                            <div>{{ $transfer->movement_number }}</div>
+
                         </td>
-                        <td class="py-2 px-4 border-bottom">{{ $transfer->recipient_name }}</td>
-                        <td class="py-2 px-4 border-bottom">
-                            <div class="font-weight-bold">{{ number_format($transfer->sent_amount, 2) }}</div>
-                            <div style="color:
-                                {{ $transfer->currency
-                                    ? ($transfer->currency->name_ar == 'تركي'
-                                        ? 'red'
-                                        : ($transfer->currency->name_ar == 'دولار'
-                                            ? 'green'
-                                            : 'inherit'))
-                                    : 'inherit' }};">
+
+                        <!-- باقي الأعمدة -->
+                        <td class="py-2 px-4 border-b">{{ $transfer->recipient_name }}</td>
+                        <td class="py-2 px-4 border-b">
+                            <div class="font-bold">{{ number_format($transfer->sent_amount, 2) }}</div>
+                            <div
+                                style="color:
+                                    {{ $transfer->currency
+                                        ? ($transfer->currency->name_ar == 'تركي'
+                                            ? 'red'
+                                            : ($transfer->currency->name_ar == 'دولار'
+                                                ? 'green'
+                                                : 'inherit'))
+                                        : 'inherit' }};">
                                 {{ $transfer->currency ? $transfer->currency->name_ar : $transfer->sent_currency }}
                             </div>
                         </td>
-                        <td class="py-2 px-4 border-bottom">
-                            <div class="font-weight-bold">{{ number_format($transfer->received_amount, 2) }}</div>
-                            <div style="color: {{ $transfer->receivedCurrency
-                                ? ($transfer->receivedCurrency->name_ar == 'تركي'
-                                    ? 'red'
-                                    : ($transfer->receivedCurrency->name_ar == 'دولار'
-                                        ? 'green'
-                                        : 'inherit'))
-                                : 'inherit' }};">
+
+                        <td class="py-2 px-4 border-b text-center ">
+                            <div class="font-bold">
+                                {{ number_format($transfer->received_amount, 2) }}
+                            </div>
+                            <div
+                                style="color: {{ $transfer->receivedCurrency
+                                    ? ($transfer->receivedCurrency->name_ar == 'تركي'
+                                        ? 'red'
+                                        : ($transfer->receivedCurrency->name_ar == 'دولار'
+                                            ? 'green'
+                                            : 'inherit'))
+                                    : 'inherit' }};">
                                 {{ $transfer->receivedCurrency ? $transfer->receivedCurrency->name_ar : $transfer->received_currency }}
                             </div>
                         </td>
-                        <td class="py-2 px-4 border-bottom">
-                            <div class="font-weight-bold">{{ number_format($transfer->fees, 2) }}</div>
-                            <div style="color:
-                                {{ $transfer->currency
-                                    ? ($transfer->currency->name_ar == 'تركي'
-                                        ? 'red'
-                                        : ($transfer->currency->name_ar == 'دولار'
-                                            ? 'green'
-                                            : 'inherit'))
-                                    : 'inherit' }};">
+                        <td class="py-2 px-4 border-b">
+                            <div class="font-bold">{{ number_format($transfer->fees, 2) }}</div>
+                            <div
+                                style="color:
+                                    {{ $transfer->currency
+                                        ? ($transfer->currency->name_ar == 'تركي'
+                                            ? 'red'
+                                            : ($transfer->currency->name_ar == 'دولار'
+                                                ? 'green'
+                                                : 'inherit'))
+                                        : 'inherit' }};">
                                 {{ $transfer->currency ? $transfer->currency->name_ar : $transfer->sent_currency }}
                             </div>
                         </td>
-                        <td class="py-2 px-4 border-bottom text-center status-cell">
+                        <td class="py-2 px-4 border-b text-center status-cell">
                             @if (isset($statusMapping[$transfer->status]))
-                                <span class="{{ $statusMapping[$transfer->status]['bg'] }} {{ $statusMapping[$transfer->status]['textColor'] }} py-1 px-3 rounded">
+                                <span
+                                    class="{{ $statusMapping[$transfer->status]['bg'] }} {{ $statusMapping[$transfer->status]['textColor'] }} py-1 px-3 rounded-full inline-block">
                                     {{ $statusMapping[$transfer->status]['text'] }}
                                 </span>
                             @else
                                 {{ $transfer->status }}
                             @endif
                         </td>
-                        <td class="py-2 px-4 border-bottom text-center">{{ $transfer->note }}</td>
-                        <td class="py-2 px-4 border-bottom text-center">{{ $transfer->created_at->format('Y-m-d H:i') }}</td>
-                        <td class="py-2 px-4 border-bottom text-center">
-                            <form action="{{ route('transfers.toggle-freeze', $transfer->id) }}" method="POST" class="d-inline">
+                        <td class="py-2 px-4 border-b text-center">{{ $transfer->note }}</td>
+                        <td class="py-2 px-4 border-b text-center">{{ $transfer->created_at->format('Y-m-d H:i') }}
+                        </td>
+                        <td class="py-2 px-4 border-b text-center">
+                            <form action="{{ route('transfers.toggle-freeze', $transfer->id) }}" method="POST"
+                                class="toggle-freeze-form inline">
                                 @csrf
                                 @method('PATCH')
-                                <button type="submit" class="btn btn-sm {{ $transfer->status === 'Frozen' ? 'btn-success' : 'btn-primary' }}">
+                                <button type="submit"
+                                    class="px-2 py-1 rounded {{ $transfer->status === 'Frozen' ? 'bg-green-500 hover:bg-green-600' : 'bg-blue-500 hover:bg-blue-600' }} text-white">
                                     {{ $transfer->status === 'Frozen' ? 'الغاء التجميد' : 'تجميد' }}
                                 </button>
                             </form>
+
                             @if (in_array($transfer->status, ['Delivered', 'Cancelled']))
-                                <button class="btn btn-secondary btn-sm" disabled>تسليم</button>
+                                <button class="btn btn-secondary" disabled>تسليم</button>
                             @else
-                                <button class="btn btn-primary btn-sm deliver-btn" data-transfer-id="{{ $transfer->id }}">
-                                    تسليم
-                                </button>
+                                <button class="btn btn-primary deliver-btn px-2 py-1 rounded"
+                                    data-transfer-id="{{ $transfer->id }}">تسليم</button>
                             @endif
                         </td>
                     </tr>
@@ -185,164 +206,159 @@
             </tbody>
         </table>
     </div>
-</div>
-
-<script>
-    // تبديل إظهار/إخفاء صناديق العملات
-    document.getElementById('toggleCurrencyBtn').addEventListener('click', function() {
-        var currencyBoxes = document.getElementById('currencyBoxes');
-        if (currencyBoxes.style.display === 'none' || currencyBoxes.style.display === '') {
-            currencyBoxes.style.display = 'block';
-            this.textContent = 'إخفاء العملات';
-        } else {
-            currencyBoxes.style.display = 'none';
-            this.textContent = 'إظهار العملات';
-        }
-    });
-</script>
 
 
 
 
 
+    <div class="modal fade" id="deliverTransferModal" tabindex="-1" aria-labelledby="deliverTransferModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+            <div class="modal-content bg-white rounded-lg shadow-xl">
 
-        <div class="modal fade" id="deliverTransferModal" tabindex="-1" aria-labelledby="deliverTransferModalLabel"
-            aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered">
-                <div class="modal-content bg-white rounded-lg shadow-xl">
+                <div class="modal-header bg-gray-100 p-4 rounded-t-lg  text-center">
+                    <h5 id="deliverTransferModalLabel" class="modal-title text-xl font-semibold text-gray-800">
+                        تسليم الحوالة
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
+                </div>
 
-                    <div class="modal-header bg-gray-100 p-4 rounded-t-lg  text-center">
-                        <h5 id="deliverTransferModalLabel" class="modal-title text-xl font-semibold text-gray-800">
-                            تسليم الحوالة
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="إغلاق"></button>
-                    </div>
+                <div class="modal-body p-4">
 
-                    <div class="modal-body p-4">
+                    <div id="transferInfo"
+                        class="grid grid-cols-2 md:grid-cols-6 gap-4 p-4 bg-blue-50 rounded-xl shadow-inner">
 
-                        <div id="transferInfo"
-                            class="grid grid-cols-2 md:grid-cols-6 gap-4 p-4 bg-blue-50 rounded-xl shadow-inner">
-
-                            <div class="text-center space-y-2 col-span-1">
-                                <span class="block bg-white text-blue-600 text-sm font-bold py-1 rounded-lg shadow-sm">
-                                    الجهة</span>
-                                <span id="modal_sender" class="block text-gray-700 font-medium"></span>
-                            </div>
-
-
-                            <div class="text-center space-y-2 col-span-1">
-                                <span
-                                    class="block bg-white text-blue-600 text-sm font-bold py-1 rounded-lg shadow-sm">رقم
-                                    الإشعار</span>
-                                <span id="modal_movement_number" class="block text-gray-700 font-medium"></span>
-                            </div>
-
-                            <div class="text-center space-y-2 col-span-1">
-                                <span
-                                    class="block bg-white text-blue-600 text-sm font-bold py-1 rounded-lg shadow-sm">المستفيد
-                                </span>
-                                <span id="modal_recipient_name" class="block text-gray-700 font-medium"></span>
-                            </div>
-
-                            <div class="text-center space-y-2 col-span-1">
-                                <span
-                                    class="block bg-white text-blue-600 text-sm font-bold py-1 rounded-lg shadow-sm">المبلغ
-                                </span>
-                                <span id="modal_sent_amount" class="block text-gray-700 font-medium"></span>
-                            </div>
-
-                            <div class="text-center space-y-2 col-span-1">
-                                <span
-                                    class="block bg-white text-blue-600 text-sm font-bold py-1 rounded-lg shadow-sm">الاجور</span>
-                                <span id="modal_fees" class="block text-gray-700 font-medium"></span>
-                            </div>
-
-
-                            <div class="text-center space-y-2 col-span-1">
-                                <span
-                                    class="block bg-white text-blue-600 text-sm font-bold py-1 rounded-lg shadow-sm">تاريخ</span>
-                                <span id="modal_created_at" class="block text-gray-700 font-medium"></span>
-                            </div>
+                        <div class="text-center space-y-2 col-span-1">
+                            <span class="block bg-white text-blue-600 text-sm font-bold py-1 rounded-lg shadow-sm">
+                                الجهة</span>
+                            <span id="modal_sender" class="block text-gray-700 font-medium"></span>
                         </div>
 
-                        <div id="passwordSection" class="mb-3">
-                            <label for="transferPassword" class="form-label text-gray-700">أدخل كلمة المرور</label>
-                            <input type="number" class="form-control w-full p-2 border border-gray-300 rounded-lg"
-                                id="transferPassword">
-                            <div id="passwordError" class="text-red-500 text-sm mt-2" style="display: none;"></div>
+
+                        <div class="text-center space-y-2 col-span-1">
+                            <span class="block bg-white text-blue-600 text-sm font-bold py-1 rounded-lg shadow-sm">رقم
+                                الإشعار</span>
+                            <span id="modal_movement_number" class="block text-gray-700 font-medium"></span>
                         </div>
 
-                        <div id="deliverySection" style="display: none;">
-                            <div class="flex flex-col gap-4">
-                                <!-- الصف العلوي للبوكسين -->
-                                <div class="flex flex-col md:flex-row gap-4 mt-3 ">
-                                    <!-- بوكس الكاميرا -->
-                                    <div class="flex-1 border border-gray-300 rounded-lg p-4 flex items-center justify-center"
-                                        style="height: 300px;">
-                                        <div id="cameraContainer" class="w-full h-full">
-                                            <video id="video" width="100%" height="100%" autoplay
-                                                style="display: none;"></video>
-                                            <canvas id="canvas" width="640" height="480"
-                                                style="display: none;"></canvas>
-                                        </div>
-                                    </div>
+                        <div class="text-center space-y-2 col-span-1">
+                            <span
+                                class="block bg-white text-blue-600 text-sm font-bold py-1 rounded-lg shadow-sm">المستفيد
+                            </span>
+                            <span id="modal_recipient_name" class="block text-gray-700 font-medium"></span>
+                        </div>
 
-                                    <!-- بوكس الصورة -->
-                                    <div class="flex-1 border border-gray-300 rounded-lg p-4 flex items-center justify-center"
-                                        style="height: 300px;">
-                                        <img id="capturedImage" src="" alt="صورة ملتقطة" class="max-w-full"
-                                            style="display: none;">
-                                        <div id="cameraPlaceholder" class="text-gray-500">الكاميرا غير مفعلة</div>
-                                    </div>
-                                </div>
+                        <div class="text-center space-y-2 col-span-1">
+                            <span
+                                class="block bg-white text-blue-600 text-sm font-bold py-1 rounded-lg shadow-sm">المبلغ
+                            </span>
+                            <span id="modal_sent_amount" class="block text-gray-700 font-medium"></span>
+                        </div>
 
-                                <!-- الأزرار تحت البوكسين -->
-                                <div class="mt-2 flex gap-2 ">
-                                    <button id="captureBtn"
-                                        class="bg-gray-500 hover:bg-gray-700 text-white px-4 py-2 rounded-lg w-full">
-                                        التقاط الصورة من الكاميرا
-                                    </button>
-                                    <button id="chooseFileBtn"
-                                        class="bg-gray-500 hover:bg-gray-700 text-white px-4 py-2 rounded-lg w-full">
-                                        اختيار صورة من الملفات
-                                    </button>
-                                    <input type="file" id="fileInput" accept="image/*" style="display: none;">
-                                </div>
+                        <div class="text-center space-y-2 col-span-1">
+                            <span
+                                class="block bg-white text-blue-600 text-sm font-bold py-1 rounded-lg shadow-sm">الاجور</span>
+                            <span id="modal_fees" class="block text-gray-700 font-medium"></span>
+                        </div>
 
-                                <!-- الإينبوت تحت الأزرار -->
-                                <div class="flex-1">
-                                    <div class="mb-3">
-                                        <label for="recipientInfo" class="form-label text-gray-700">معلومات
-                                            التسليم</label>
-                                        <input type="text"
-                                            class="form-control w-full p-2 border border-gray-300 rounded-lg"
-                                            id="recipientInfo" value="لايوجد">
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="deliveryError" class="text-red-500 text-sm mt-2" style="display: none;"></div>
+
+                        <div class="text-center space-y-2 col-span-1">
+                            <span
+                                class="block bg-white text-blue-600 text-sm font-bold py-1 rounded-lg shadow-sm">تاريخ</span>
+                            <span id="modal_created_at" class="block text-gray-700 font-medium"></span>
                         </div>
                     </div>
 
-                    <div class="modal-footer bg-gray-100 p-1 rounded-b-lg flex justify-end gap-2">
-                        <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg"
-                            data-bs-dismiss="modal">
-                            إغلاق
-                        </button>
-                        <button type="button" id="deliverTransferBtn"
-                            class="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
-                            تسليم الحوالة
-                        </button>
+                    <div id="passwordSection" class="mb-3">
+                        <label for="transferPassword" class="form-label text-gray-700">أدخل كلمة المرور</label>
+                        <input type="number" class="form-control w-full p-2 border border-gray-300 rounded-lg"
+                            id="transferPassword">
+                        <div id="passwordError" class="text-red-500 text-sm mt-2" style="display: none;"></div>
                     </div>
+
+                    <div id="deliverySection" style="display: none;">
+                        <div class="flex flex-col gap-4">
+                            <!-- الصف العلوي للبوكسين -->
+                            <div class="flex flex-col md:flex-row gap-4 mt-3 ">
+                                <!-- بوكس الكاميرا -->
+                                <div class="flex-1 border border-gray-300 rounded-lg p-4 flex items-center justify-center"
+                                    style="height: 300px;">
+                                    <div id="cameraContainer" class="w-full h-full">
+                                        <video id="video" width="100%" height="100%" autoplay
+                                            style="display: none;"></video>
+                                        <canvas id="canvas" width="640" height="480"
+                                            style="display: none;"></canvas>
+                                    </div>
+                                </div>
+
+                                <!-- بوكس الصورة -->
+                                <div class="flex-1 border border-gray-300 rounded-lg p-4 flex items-center justify-center"
+                                    style="height: 300px;">
+                                    <img id="capturedImage" src="" alt="صورة ملتقطة" class="max-w-full"
+                                        style="display: none;">
+                                    <div id="cameraPlaceholder" class="text-gray-500">الكاميرا غير مفعلة</div>
+                                </div>
+                            </div>
+
+                            <!-- الأزرار تحت البوكسين -->
+                            <div class="mt-2 flex gap-2 ">
+                                <button id="captureBtn"
+                                    class="bg-gray-500 hover:bg-gray-700 text-white px-4 py-2 rounded-lg w-full">
+                                    التقاط الصورة من الكاميرا
+                                </button>
+                                <button id="chooseFileBtn"
+                                    class="bg-gray-500 hover:bg-gray-700 text-white px-4 py-2 rounded-lg w-full">
+                                    اختيار صورة من الملفات
+                                </button>
+                                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                            </div>
+
+                            <!-- الإينبوت تحت الأزرار -->
+                            <div class="flex-1">
+                                <div class="mb-3">
+                                    <label for="recipientInfo" class="form-label text-gray-700">معلومات
+                                        التسليم</label>
+                                    <input type="text"
+                                        class="form-control w-full p-2 border border-gray-300 rounded-lg"
+                                        id="recipientInfo" value="لايوجد">
+                                </div>
+                            </div>
+                        </div>
+                        <div id="deliveryError" class="text-red-500 text-sm mt-2" style="display: none;"></div>
+                    </div>
+                </div>
+
+                <div class="modal-footer bg-gray-100 p-1 rounded-b-lg flex justify-end gap-2">
+                    <button type="button" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg"
+                        data-bs-dismiss="modal">
+                        إغلاق
+                    </button>
+                    <button type="button" id="deliverTransferBtn"
+                        class="bg-green-500 hover:bg-green-700 text-white px-4 py-2 rounded-lg">
+                        تسليم الحوالة
+                    </button>
                 </div>
             </div>
         </div>
+    </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-
+    <script>
+        // تبديل إظهار/إخفاء صناديق العملات
+        document.getElementById('toggleCurrencyBtn').addEventListener('click', function() {
+            var currencyBoxes = document.getElementById('currencyBoxes');
+            if (currencyBoxes.style.display === 'none' || currencyBoxes.style.display === '') {
+                currencyBoxes.style.display = 'block';
+                this.textContent = 'إخفاء العملات';
+            } else {
+                currencyBoxes.style.display = 'none';
+                this.textContent = 'إظهار العملات';
+            }
+        });
+    </script>
     <script>
         // المتغيرات العامة
         let selectedTransfer = null;

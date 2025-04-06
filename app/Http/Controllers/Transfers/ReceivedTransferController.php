@@ -48,6 +48,7 @@ class ReceivedTransferController extends Controller
         $cacheKey = "transfers_user_" . Auth::id() . "_v" . $version . "_page_" . $page;
 
         // استخدام simplePaginate لتفادي استعلام العد الكامل للبيانات
+        // بعد جلب الحوالات
         $receivedTransfers = Cache::remember($cacheKey, now()->addMinutes(10), function () {
             return Transfer::with(['currency', 'recipient', 'receivedCurrency'])
                 ->where('destination', Auth::id())
@@ -57,12 +58,12 @@ class ReceivedTransferController extends Controller
                 ->simplePaginate(100);
         });
 
-// تجميع الحوالات حسب العملة
-$groupedTransfers = $receivedTransfers->groupBy(function ($transfer) {
-    return $transfer->currency ? $transfer->currency->name_ar : $transfer->sent_currency;
-});
+        // تجميع الحوالات حسب العملة
+        $groupedTransfers = $receivedTransfers->groupBy(function ($transfer) {
+            return $transfer->currency ? $transfer->currency->name_ar : $transfer->sent_currency;
+        });
 
-return view('transfers.received', compact('receivedTransfers', 'groupedTransfers'));
+        return view('transfers.received', compact('receivedTransfers', 'groupedTransfers'));
     }
 
     public function toggleFreeze(Transfer $transfer)

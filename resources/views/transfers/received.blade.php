@@ -36,7 +36,7 @@
 
     <div class="container mt-4" style="width: 98%">
         <div class="overflow-x-auto">
-            <div class="flex gap-4 p-2" style="min-width: max-content;">
+            <div class="flex gap-4 p-2 justify-center" style="min-width: max-content;">
                 @foreach ($groupedTransfers as $currencyName => $transfers)
                     @php
                         $totalAmount = $transfers->sum('sent_amount');
@@ -53,7 +53,7 @@
                     @endphp
 
                     @if ($totalAmount > 0)
-                        <div class="min-w-[200px] p-4 rounded-lg shadow-sm border border-gray-200 {{ $bgColor }}">
+                        <div class="min-w-[400px] p-4 rounded-lg shadow-sm border border-gray-200 {{ $bgColor }}">
                             <h3 class="text-lg font-bold text-center">{{ $currencyName }}</h3>
                             <p class="mt-2 text-center text-base">{{ number_format($totalAmount, 2) }}</p>
                         </div>

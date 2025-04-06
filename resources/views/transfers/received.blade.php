@@ -36,7 +36,7 @@
 
     <div class="container mt-4" style="width: 98%">
 
-        <div class="flex flex-wrap gap-4 p-4">
+        <div class="flex flex-wrap gap-4 p-4 justify-center">
             @foreach ($groupedTransfers as $currencyName => $transfers)
                 @php
                     $totalAmount = $transfers->sum('sent_amount');

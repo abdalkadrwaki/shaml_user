@@ -43,7 +43,7 @@
                 @endphp
 
                 @if ($totalAmount > 0)
-                    <div class="  w-auto bg-white p-2 rounded-lg shadow-lg text-center">
+                    <div class=" w-96 bg-white p-2 rounded-lg shadow-lg text-center">
                         <h3 class="text-xl font-bold text-gray-700">{{ $currencyName }}</h3>
                         <p class="mt-2 text-gray-600"> {{ number_format($totalAmount, 2) }}</p>
                     </div>

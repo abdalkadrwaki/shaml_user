@@ -7,7 +7,7 @@
 
     </x-slot>
 
-    <x-slot name="form">
+    <x-slot name="form" class=" bg-slate-700">
         <!-- Profile Photo -->
         @if (Laravel\Jetstream\Jetstream::managesProfilePhotos())
             <div x-data="{photoName: null, photoPreview: null}" class="col-span-6">

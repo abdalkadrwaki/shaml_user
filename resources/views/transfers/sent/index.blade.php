@@ -312,7 +312,7 @@
                 Swal.fire({
                     title: 'تعديل الحوالة',
                     html: `
-                        <form id="editTransferForm" method="POST" action="{{ route('transfers.sent.update', '') }}/${id}">
+                        <form id="editTransferForm" method="POST" action="/transfers/sent/${id}">
                             @csrf
                             @method('PUT')
                             <div class="mb-3">

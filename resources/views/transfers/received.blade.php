@@ -35,21 +35,24 @@
     @endphp
 
     <div class="container mt-4" style="width: 98%">
-
-        <div class="flex flex-wrap gap-4 p-4 justify-center">
+        <div class="flex flex-wrap justify-start gap-4 mb-6">
             @foreach ($groupedTransfers as $currencyName => $transfers)
                 @php
                     $totalAmount = $transfers->sum('sent_amount');
                 @endphp
 
                 @if ($totalAmount > 0)
-                    <div class="w-[200px] bg-white p-3 rounded-lg shadow-lg text-center">
-                        <h3 class="text-xl font-bold text-gray-700">{{ $currencyName }}</h3>
-                        <p class="mt-2 text-gray-600"> {{ number_format($totalAmount, 2) }}</p>
+                    <div
+                        class="min-w-[180px] bg-gray-50 border border-gray-200 rounded-lg shadow-sm p-4 transition hover:shadow-md">
+                        <div class="text-center">
+                            <h3 class="text-lg font-semibold text-gray-800">{{ $currencyName }}</h3>
+                            <p class="mt-2 text-gray-600 text-base">{{ number_format($totalAmount, 2) }}</p>
+                        </div>
                     </div>
                 @endif
             @endforeach
         </div>
+
 
 
         @if (session('error'))

@@ -19,6 +19,9 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <style>
             [x-cloak] { display: none !important; }
+            body {
+  padding-top: 4rem; /* يتناسب مع ارتفاع شريط التنقل */
+}
         </style>
         <!-- Styles -->
         @livewireStyles

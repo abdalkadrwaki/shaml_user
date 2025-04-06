@@ -47,9 +47,9 @@
         @endif
         <!-- رأس البطاقة -->
         <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
-            <h5 class="mb-0">ملخص العملات</h5>
+
             <button id="toggleCurrencyBtn" class="btn btn-outline-primary btn-sm">
-                إظهار العملات
+                إظهار مجموع
             </button>
         </div>
 

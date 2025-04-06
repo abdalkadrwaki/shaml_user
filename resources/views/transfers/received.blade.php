@@ -43,9 +43,9 @@
                 @endphp
 
                 @if ($totalAmount > 0)
-                    <div class="w-[200px] bg-white p-4 rounded-lg shadow-lg text-center">
+                    <div class="w-[200px] bg-white p-2 rounded-lg shadow-lg text-center">
                         <h3 class="text-xl font-bold text-gray-700">{{ $currencyName }}</h3>
-                        <p class="mt-2 text-gray-600">المبلغ الإجمالي: {{ number_format($totalAmount, 2) }}</p>
+                        <p class="mt-2 text-gray-600"> {{ number_format($totalAmount, 2) }}</p>
                     </div>
                 @endif
             @endforeach

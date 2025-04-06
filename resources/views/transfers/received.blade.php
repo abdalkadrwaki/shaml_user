@@ -36,7 +36,7 @@
 
     <div class="container mt-4" style="width: 98%">
         <div class="bg-white p-4 rounded-lg shadow-lg">
-            <div class="overflow-x-auto">
+
                 <div class="flex gap-4 p-2 justify-center" style="min-width: max-content;">
                     @foreach ($groupedTransfers as $currencyName => $transfers)
                         @php
@@ -62,7 +62,7 @@
                         @endif
                     @endforeach
                 </div>
-            </div>
+        
 
         </div>
 

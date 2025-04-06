@@ -33,21 +33,24 @@
             ],
         ];
     @endphp
-    @foreach ($groupedTransfers as $currencyName => $transfers)
-        @php
-            // حساب إجمالي المبالغ المرسلة للعملة المحددة
-            $totalAmount = $transfers->sum('sent_amount');
-        @endphp
-
-        @if ($totalAmount > 0)
-            <div class="box bg-white p-4 rounded-lg shadow-lg mb-4">
-                <h3 class="text-xl font-bold">{{ $currencyName }}</h3>
-                <p class="mt-2">المبلغ الإجمالي: {{ number_format($totalAmount, 2) }}</p>
-            </div>
-        @endif
-    @endforeach
 
     <div class="container mt-4" style="width: 98%">
+
+        <div class="flex flex-wrap gap-4 p-4">
+            @foreach ($groupedTransfers as $currencyName => $transfers)
+                @php
+                    $totalAmount = $transfers->sum('sent_amount');
+                @endphp
+
+                @if ($totalAmount > 0)
+                    <div class="w-[200px] bg-white p-4 rounded-lg shadow-lg text-center">
+                        <h3 class="text-xl font-bold text-gray-700">{{ $currencyName }}</h3>
+                        <p class="mt-2 text-gray-600">المبلغ الإجمالي: {{ number_format($totalAmount, 2) }}</p>
+                    </div>
+                @endif
+            @endforeach
+        </div>
+
 
         @if (session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>

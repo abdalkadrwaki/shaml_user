@@ -16,7 +16,7 @@
                     'to_date' => request('to_date', now()->format('Y-m-d')),
                 ]) }}"
                     class="bg-white shadow-md rounded-md flex flex-col items-center text-center flex-1 mx-2 no-underline hover:no-underline">
-                    <div class="w-full bg-blue-900 py-2 rounded-t-md">
+                    <div class="w-full bg-blue-900 py-2 c rounded-t-md">
                         <h2 class="text-xl font-bold text-white">{{ $currency->name_ar }}</h2>
                     </div>
                     <div class="w-full bg-custom-gray2 py-2 rounded-t-md border-b border-blue-900">

@@ -93,7 +93,7 @@
                                                         "*✅ الــــســــلــــام عــــلــــيــــكــــم ✅*\n\n" .
                                                         "     ........*شــركــة تــواصــل*........\n\n" .
                                                         "     ✅ مــطــابــقــة حــساب ✅\n\n" .
-                                                        "*((((( لـ الواكي الباب))))*\n\n" .
+                                                        "*(((((                                                {{ $destinations->firstWhere('id', $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id)->Office_name ?? 'غير متوفر' }}))))*\n\n" .
                                                         "* حتى تاريخ {$currentDateTime}*\n\n" .
                                                         "--------------------------------------\n\n" .
                                                         "*《 {$turkishBalance} 》 ليرة تركية*\n" .
@@ -518,6 +518,6 @@
                 alert('حدث خطأ أثناء النسخ. حاول مرة أخرى.');
             });
         }
-        </script>
+    </script>
 
 </x-app-layout>

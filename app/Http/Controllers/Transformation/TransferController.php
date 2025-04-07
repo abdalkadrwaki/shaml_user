@@ -73,7 +73,7 @@ class TransferController extends Controller
     try {
         $validated = $request->validate([
             'recipient_name'     => 'required|string|max:255',
-            'recipient_mobile'   => 'required|numeric|regex:/^05\d{8}$/',
+           'recipient_mobile' => 'required|numeric|digits_between:1,10',
             'destination'        => 'required|exists:users,id',
             'sent_currency'      => 'required|in:USD,TRY,EUR,SAR,SYP',
             'sent_amount'        => 'required|numeric|min:0.01|max:100000000000',

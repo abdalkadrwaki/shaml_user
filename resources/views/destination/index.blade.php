@@ -509,4 +509,15 @@
         </div>
 
     </div>
+    <script>
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('تم نسخ الرسالة التالية:\n\n' + text);
+            }).catch((error) => {
+                console.error('خطأ أثناء النسخ:', error);
+                alert('حدث خطأ أثناء النسخ. حاول مرة أخرى.');
+            });
+        }
+        </script>
+
 </x-app-layout>

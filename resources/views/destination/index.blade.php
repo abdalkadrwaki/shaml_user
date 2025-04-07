@@ -75,16 +75,21 @@
 
                                         <td class="py-0.5 px-3 border-b text-center font-bold">
                                             @php
-                                                $balance = (int) $request->balance_in_usd; // تحويل الرقم إلى عدد صحيح
-                                                $color = $balance < 0 ? 'text-red-1' : 'text-Lime'; // تحديد اللون بناءً على القيمة
-                                                $text = $balance > 0 ? '(دائن لكم)' : '(دائن عليكم)'; // تحديد النص بناءً على القيمة
+                                                 $balance = (int) $request->balance_in_usd;
+                                                 $color = $balance < 0 ? 'text-red-1' : 'text-Lime';
+                                                 $text = $balance > 0 ? '(دائن لكم)' : '(دائن عليكم)';
+                                                 $balanceText = number_format($balance, 0, '', '');
+                                                 // نص الرصيد الذي سيتم نسخه
+                                                 $fullText = $balanceText . ' ' . $text;
                                             @endphp
-                                            <span class="{{ $color }}">
-                                                {{ number_format($balance, 0, '', '') }} <!-- عرض الرقم بدون فواصل -->
-                                                {{ $text }} <!-- عرض النص بين قوسين -->
+                                            <span id="balance-{{ $request->id }}" class="{{ $color }}">
+                                                {{ $fullText }}
                                             </span>
-
+                                            <button onclick="copyBalance('balance-{{ $request->id }}')" class="ml-2 px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-300">
+                                                 نسخ
+                                            </button>
                                         </td>
+
                                         @foreach ($columns as $column)
                                         @php
                                             $columnKey = $request->receiver_id === Auth::id() ? $column['receiver_column'] : $column['sender_column'];
@@ -125,6 +130,19 @@
                 </div>
 
             </div>
+            <script>
+                function copyBalance(elementId) {
+                    var balanceText = document.getElementById(elementId).innerText;
+                    navigator.clipboard.writeText(balanceText)
+                       .then(function() {
+                           // يمكنك استبدال alert بنظام إشعارات آخر إذا رغبت
+                           alert("تم نسخ الرصيد: " + balanceText);
+                       })
+                       .catch(function(error) {
+                           alert("حدث خطأ أثناء النسخ: " + error);
+                       });
+                }
+              </script>
 
             <!-- جدول الطلبات الواردة -->
             <div class="tab-pane fade" id="pills-received-request" role="tabpanel"

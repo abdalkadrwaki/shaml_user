@@ -91,18 +91,28 @@
                                                 // إعداد التاريخ والوقت الحالي
                                                 $currentDateTime = now()->format('d/m/Y H:i:s');
 
-                                                // رسالة النسخ بتنسيق احترافي
+                                                // بدء رسالة النسخ بالتنسيق المطلوب
                                                 $copyMessage = "*✅ الــــســــلــــام عــــلــــيــــكــــم ✅*\n\n" .
                                                                "     ........*{$officeName}*........\n\n" .
                                                                "     ✅ مــطــابــقــة حــساب ✅\n\n" .
-                                                               "*((((( لـ الواكي الباب))))*\n\n" .
                                                                "* حتى تاريخ {$currentDateTime}*\n\n" .
                                                                "--------------------------------------\n\n" .
-
                                                                "*الموقع: {$officeLocation}*\n\n" .
-                                                               "*《 {$usdFormatted} 》 دولار {$usdText}*\n\n" .
-                                                               "--------------------------------------\n\n" .
-                                                               "     *يرجى التأكيد على صحة المطابقة*";
+                                                               "*《 {$usdFormatted} 》 دولار {$usdText}*\n";
+
+                                                // إضافة باقي العملات (الديناميكية)
+                                                foreach ($columns as $column) {
+                                                    // تحديد العمود المناسب حسب دور المستخدم
+                                                    $columnKey = $request->receiver_id === Auth::id() ? $column['receiver_column'] : $column['sender_column'];
+                                                    $balance = (int) ($request->{$columnKey} ?? 0);
+                                                    $currencyCode = str_replace(['_1', '_2'], '', $columnKey);
+                                                    $currencyText = $balance < 0 ? '(لنا)' : '(لكم)';
+                                                    $balanceFormatted = number_format(abs($balance), 0, '', '');
+                                                    $copyMessage .= "*《 {$balanceFormatted} 》 {$currencyCode} {$currencyText}*\n";
+                                                }
+
+                                                $copyMessage .= "\n--------------------------------------\n\n" .
+                                                                "     *يرجى التأكيد على صحة المطابقة*";
                                             @endphp
 
                                                 <span class="{{ $usdBalance < 0 ? 'text-red-1' : 'text-Lime' }}">

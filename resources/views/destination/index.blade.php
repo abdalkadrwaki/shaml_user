@@ -76,34 +76,35 @@
 
                                             <td class="py-0.5 px-3 border-b text-center font-bold">
                                                 @php
-                                                    // الرصيد بالدولار كما مثال
-                                                    $usdBalance = (int) $request->balance_in_usd;
-                                                    $usdText = $usdBalance > 0 ? '(دائن لكم)' : '(دائن عليكم)';
-                                                    $usdFormatted = number_format($usdBalance, 0, '', '');
+                                                // استخراج بيانات المكتب (الاسم والموقع)
+                                                $office = $destinations->firstWhere('id', $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id);
+                                                $officeName = $office->Office_name ?? 'غير متوفر';
+                                                $officeLocation = ($office->country_user ?? 'غير متوفر') . ' - ' . ($office->state_user ?? '');
 
-                                                    // مثال مبسط لعملات أخرى، ويمكنك استبدالها أو ربطها بالبيانات الديناميكية
-                                                    $turkishBalance = 0;
-                                                    $euroBalance = 0;
+                                                // الرصيد بالدولار
+                                                $usdBalance = (int) $request->balance_in_usd;
+                                                // إذا كان الرصيد تحت صفر، نكتب لنا، وإذا كان فوق صفر نكتب لكم
+                                                $usdText = $usdBalance < 0 ? '(لنا)' : '(لكم)';
+                                                // نستخدم القيمة المطلقة للعرض بدون إشارة، ويمكنك تعديل ذلك إذا أردت عرض الإشارة
+                                                $usdFormatted = number_format(abs($usdBalance), 0, '', '');
 
-                                                    // إعداد التاريخ والوقت الحالي بالتنسيق المطلوب
-                                                    $currentDateTime = now()->format('d/m/Y H:i:s');
+                                                // إعداد التاريخ والوقت الحالي
+                                                $currentDateTime = now()->format('d/m/Y H:i:s');
 
-                                                    // رسالة النسخ المُنسّقة
-                                                    $copyMessage =
-                                                        "*✅ الــــســــلــــام عــــلــــيــــكــــم ✅*\n\n" .
-                                                        "     ........*شــركــة تــواصــل*........\n\n" .
-                                                        "     ✅ مــطــابــقــة حــساب ✅\n\n" .
-                                                        "*(((((                                                {{ $destinations->firstWhere('id', $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id)->Office_name ?? 'غير متوفر' }}))))*\n\n" .
-                                                        "* حتى تاريخ {$currentDateTime}*\n\n" .
-                                                        "--------------------------------------\n\n" .
-                                                        "*《 {$turkishBalance} 》 ليرة تركية*\n" .
-                                                        "*لكم 《 {$usdFormatted}" .
-                                                        ($usdBalance < 0 ? '-' : '') .
-                                                        " 》 دولار*\n" .
-                                                        "*《 {$euroBalance} 》 يورو*\n\n" .
-                                                        "--------------------------------------\n\n" .
-                                                        '     *يرجى التأكيد على صحة المطابقة*';
-                                                @endphp
+                                                // رسالة النسخ بتنسيق احترافي
+                                                $copyMessage = "*✅ الــــســــلــــام عــــلــــيــــكــــم ✅*\n\n" .
+                                                               "     ........*شــركــة تــواصــل*........\n\n" .
+                                                               "     ✅ مــطــابــقــة حــساب ✅\n\n" .
+                                                               "*((((( لـ الواكي الباب))))*\n\n" .
+                                                               "* حتى تاريخ {$currentDateTime}*\n\n" .
+                                                               "--------------------------------------\n\n" .
+                                                               "*اسم المكتب: {$officeName}*\n" .
+                                                               "*الموقع: {$officeLocation}*\n\n" .
+                                                               "*《 {$usdFormatted} 》 دولار {$usdText}*\n\n" .
+                                                               "--------------------------------------\n\n" .
+                                                               "     *يرجى التأكيد على صحة المطابقة*";
+                                            @endphp
+
                                                 <span class="{{ $usdBalance < 0 ? 'text-red-1' : 'text-Lime' }}">
                                                     {{ $usdFormatted }} {{ $usdText }}
                                                 </span>
@@ -518,6 +519,6 @@
                 alert('حدث خطأ أثناء النسخ. حاول مرة أخرى.');
             });
         }
-    </script>
+        </script>
 
 </x-app-layout>

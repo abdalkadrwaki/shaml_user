@@ -59,42 +59,62 @@
                             </thead>
                             <tbody>
                                 @forelse ($friendRequests as $index => $request)
-                                    <tr class="text-sm text-center text-gray-500 hover:bg-gray-100">
-                                        <td class="px-2 py-2 text-center border-b">{{ $index + 1 }}</td>
-                                        <td class="px-3 py-1 font-bold text-center border-b">
-                                            {{ $destinations->firstWhere('id', $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id)->Office_name ?? 'غير متوفر' }}<br>
+                                <tr class="text-sm text-center text-gray-500 hover:bg-gray-100">
+                                    <td class="px-2 py-2 text-center border-b">{{ $index + 1 }}</td>
+                                    <td class="px-3 py-1 font-bold text-center border-b">
+                                        {{ $destinations->firstWhere('id', $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id)->Office_name ?? 'غير متوفر' }}<br>
+                                        {{
+                                            $destinations->firstWhere('id', $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id)
+                                            ->country_user
+                                            . ' - ' .
+                                            $destinations->firstWhere('id', $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id)
+                                            ->state_user ?? 'غير متوفر'
+                                        }}
+                                    </td>
 
-                                            {{
-                                                $destinations->firstWhere('id', $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id)
-                                                ->country_user
-                                                . ' - ' .
-                                                $destinations->firstWhere('id', $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id)
-                                                ->state_user ?? 'غير متوفر'
-                                            }}
-                                        </td>
+                                    <td class="py-0.5 px-3 border-b text-center font-bold">
+                                        @php
+                                            // الرصيد بالدولار كما مثال
+                                            $usdBalance = (int) $request->balance_in_usd;
+                                            $usdText = $usdBalance > 0 ? '(دائن لكم)' : '(دائن عليكم)';
+                                            $usdFormatted = number_format($usdBalance, 0, '', '');
 
-                                        <td class="py-0.5 px-3 border-b text-center font-bold">
-                                            @php
-                                                $balance = (int) $request->balance_in_usd; // تحويل الرقم إلى عدد صحيح
-                                                $color = $balance < 0 ? 'text-red-1' : 'text-Lime'; // تحديد اللون بناءً على القيمة
-                                                $text = $balance > 0 ? '(دائن لكم)' : '(دائن عليكم)'; // تحديد النص بناءً على القيمة
-                                            @endphp
-                                            <span class="{{ $color }}">
-                                                {{ number_format($balance, 0, '', '') }} <!-- عرض الرقم بدون فواصل -->
-                                                {{ $text }} <!-- عرض النص بين قوسين -->
-                                            </span>
+                                            // مثال مبسط لعملات أخرى، ويمكنك استبدالها أو ربطها بالبيانات الديناميكية
+                                            $turkishBalance = 0;
+                                            $euroBalance = 0;
 
-                                        </td>
-                                        @foreach ($columns as $column)
+                                            // إعداد التاريخ والوقت الحالي بالتنسيق المطلوب
+                                            $currentDateTime = now()->format('d/m/Y H:i:s');
+
+                                            // رسالة النسخ المُنسّقة
+                                            $copyMessage = "*✅ الــــســــلــــام عــــلــــيــــكــــم ✅*\n\n" .
+                                                           "     ........*شركة الشامل*........\n\n" .
+                                                           "     ✅ مــطــابــقــة حــساب ✅\n\n" .
+                                                           "*((((( لـ الواكي الباب))))*\n\n" .
+                                                           "* حتى تاريخ {$currentDateTime}*\n\n" .
+                                                           "--------------------------------------\n\n" .
+                                                           "*《 {$turkishBalance} 》 ليرة تركية*\n" .
+                                                           "*لكم 《 {$usdFormatted}" . ($usdBalance < 0 ? '-' : '') . " 》 دولار*\n" .
+                                                           "*《 {$euroBalance} 》 يورو*\n\n" .
+                                                           "--------------------------------------\n\n" .
+                                                           "     *يرجى التأكيد على صحة المطابقة*";
+                                        @endphp
+                                        <span class="{{ $usdBalance < 0 ? 'text-red-1' : 'text-Lime' }}">
+                                            {{ $usdFormatted }} {{ $usdText }}
+                                        </span>
+                                        <!-- زر النسخ -->
+                                        <button onclick="copyText(`{!! $copyMessage !!}`)" class="ml-2 px-2 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors duration-300">
+                                            نسخ
+                                        </button>
+                                    </td>
+
+                                    @foreach ($columns as $column)
                                         @php
                                             $columnKey = $request->receiver_id === Auth::id() ? $column['receiver_column'] : $column['sender_column'];
                                             $balance = $request->{$columnKey} ?? 0;
                                             $textColor = $balance < 0 ? 'text-red-1' : ($balance > 0 ? 'text-Lime' : 'text-gray-500');
-                                            // استخراج اسم العملة بالإنجليزية
                                             $currencyCode = str_replace(['_1', '_2'], '', $columnKey);
-                                            // الحصول على id العميل (الطرف الآخر)
                                             $clientId = $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id;
-                                            // تاريخ اليوم بتنسيق Y-m-d
                                             $today = now()->format('Y-m-d');
                                         @endphp
                                         <td class="py-2 px-2 border-b text-center {{ $textColor }}">
@@ -109,6 +129,16 @@
                                             </a>
                                         </td>
                                     @endforeach
+
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="{{ 5 + count($columns) }}" class="px-2 py-2 text-center text-gray-500">
+                                        لا توجد طلبات صداقة حالياً.
+                                    </td>
+                                </tr>
+                            @endforelse
+
 
                                     </tr>
                                 @empty
@@ -463,4 +493,16 @@
         </div>
 
     </div>
+
+    <script>
+        function copyText(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('تم نسخ الرسالة التالية:\n\n' + text);
+            }).catch((error) => {
+                console.error('خطأ أثناء النسخ:', error);
+                alert('حدث خطأ أثناء النسخ. حاول مرة أخرى.');
+            });
+        }
+        </script>
+
 </x-app-layout>

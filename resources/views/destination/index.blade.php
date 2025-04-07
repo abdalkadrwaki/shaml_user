@@ -81,34 +81,48 @@
                                                 $officeName = $office->Office_name ?? 'غير متوفر';
                                                 $officeLocation = ($office->country_user ?? 'غير متوفر') . ' - ' . ($office->state_user ?? '');
 
+                                                // مصفوفة لتحويل رموز العملات إلى أسماء باللغة العربية
+                                                $currencyNamesArabic = [
+                                                    'usd' => 'دولار',
+                                                    'try' => 'ليرة تركية',
+                                                    'eur' => 'يورو',
+                                                    // يمكن إضافة المزيد من العملات هنا حسب الحاجة
+                                                ];
+
                                                 // الرصيد بالدولار
                                                 $usdBalance = (int) $request->balance_in_usd;
-                                                // إذا كان الرصيد تحت صفر، نكتب لنا، وإذا كان فوق صفر نكتب لكم
+                                                // تحديد النص بناءً على قيمة الرصيد: تحت صفر (لنا) وفوق صفر (لكم)
                                                 $usdText = $usdBalance < 0 ? '(لنا)' : '(لكم)';
-                                                // نستخدم القيمة المطلقة للعرض بدون إشارة، ويمكنك تعديل ذلك إذا أردت عرض الإشارة
+                                                // تنسيق الرصيد باستخدام القيمة المطلقة لعرض الرقم بدون إشارة
                                                 $usdFormatted = number_format(abs($usdBalance), 0, '', '');
+                                                // الحصول على اسم العملة العربية للدولار
+                                                $usdCurrencyName = $currencyNamesArabic['usd'] ?? 'دولار';
 
-                                                // إعداد التاريخ والوقت الحالي
+                                                // إعداد التاريخ والوقت الحالي بالتنسيق المطلوب
                                                 $currentDateTime = now()->format('d/m/Y H:i:s');
 
-                                                // بدء رسالة النسخ بالتنسيق المطلوب
+                                                // بدء رسالة النسخ بتنسيق احترافي
                                                 $copyMessage = "*✅ الــــســــلــــام عــــلــــيــــكــــم ✅*\n\n" .
                                                                "     ........*{$officeName}*........\n\n" .
                                                                "     ✅ مــطــابــقــة حــساب ✅\n\n" .
                                                                "* حتى تاريخ {$currentDateTime}*\n\n" .
                                                                "--------------------------------------\n\n" .
                                                                "*الموقع: {$officeLocation}*\n\n" .
-                                                               "*《 {$usdFormatted} 》 دولار {$usdText}*\n";
+                                                               "*《 {$usdFormatted} 》 {$usdCurrencyName} {$usdText}*\n";
 
-                                                // إضافة باقي العملات (الديناميكية)
+                                                // إضافة باقي العملات الديناميكية من مصفوفة $columns
                                                 foreach ($columns as $column) {
-                                                    // تحديد العمود المناسب حسب دور المستخدم
+                                                    // تحديد العمود المناسب بناءً على دور المستخدم
                                                     $columnKey = $request->receiver_id === Auth::id() ? $column['receiver_column'] : $column['sender_column'];
                                                     $balance = (int) ($request->{$columnKey} ?? 0);
-                                                    $currencyCode = str_replace(['_1', '_2'], '', $columnKey);
+                                                    // إزالة اللاحقات من رمز العملة وتحويله إلى أحرف صغيرة
+                                                    $currencyCode = strtolower(str_replace(['_1', '_2'], '', $columnKey));
+                                                    // الحصول على اسم العملة بالعربية من المصفوفة أو عرض الرمز إذا لم يكن موجودًا
+                                                    $currencyArabic = $currencyNamesArabic[$currencyCode] ?? $currencyCode;
+                                                    // تحديد نص الرصيد بناءً على قيمته
                                                     $currencyText = $balance < 0 ? '(لنا)' : '(لكم)';
                                                     $balanceFormatted = number_format(abs($balance), 0, '', '');
-                                                    $copyMessage .= "*《 {$balanceFormatted} 》 {$currencyCode} {$currencyText}*\n";
+                                                    $copyMessage .= "*《 {$balanceFormatted} 》 {$currencyArabic} {$currencyText}*\n";
                                                 }
 
                                                 $copyMessage .= "\n--------------------------------------\n\n" .

@@ -7,7 +7,7 @@
             <div class="col-md-6">
                 <label for="recipient_name_transfer" class="form-label">اسم المستفيد</label>
                 <input type="text" id="recipient_name_transfer" name="recipient_name"
-                    class="form-control rounded-md  border-gray-300" value="{{ old('recipient_name', 'محمد') }}"
+                    class="form-control rounded-md  border-gray-300" value="{{ old('recipient_name') }}"
                     required>
                 @error('recipient_name')
                     <span class="text-danger">{{ $message }}</span>
@@ -18,7 +18,7 @@
                 <label for="recipient_mobile_transfer" class="form-label ">جوال المستفيد</label>
                 <input type="tel" id="recipient_mobile_transfer" name="recipient_mobile"
                     class="form-control  rounded-md  border-gray-300"
-                    value="{{ old('recipient_mobile', '0596123781') }}" required>
+                    value="{{ old('recipient_mobile') }}" required>
                 @error('recipient_mobile')
                     <span class="text-danger">{{ $message }}</span>
                 @enderror
@@ -71,7 +71,7 @@
             <div class="col-md-6">
                 <label for="sent_amount_transfer" class="form-label">المبلغ المرسل</label>
                 <input type="text" id="sent_amount_transfer" name="sent_amount"
-                    class="form-control number-only  rounded-md  border-gray-300" value="{{ old('sent_amount', 1) }}"
+                    class="form-control number-only  rounded-md  border-gray-300" value="{{ old('sent_amount') }}"
                     step="0.01" required>
                 @error('sent_amount')
                     <span class="text-danger">{{ $message }}</span>
@@ -113,7 +113,7 @@
             <div class="col-md-6">
                 <label for="fees_transfer" class="form-label">الأجور</label>
                 <input type="text" id="fees_transfer" name="fees"
-                    class="form-control number-only  rounded-md  border-gray-300" value="{{ old('fees', 1) }}"
+                    class="form-control number-only  rounded-md  border-gray-300" value="{{ old('fees') }}"
                     step="0.01">
                 @error('fees')
                     <span class="text-danger">{{ $message }}</span>

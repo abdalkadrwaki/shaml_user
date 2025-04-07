@@ -18,10 +18,8 @@ class ReceivedTransferApprovalController extends Controller
      */
     public function index(Request $request)
     {
-      
-        // يُمكنك إضافة صلاحيات إضافية هنا إذا لزم الأمر
 
-        // استخدام simplePaginate بدلاً من get() لتحميل مجموعة محدودة من البيانات في كل صفحة
+       
         $receivedTransfers = Transfer::with(['currency', 'sender'])
             ->where('destination', Auth::id())
             ->where('transaction_type', 'Credit')

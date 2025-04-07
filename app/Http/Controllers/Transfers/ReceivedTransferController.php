@@ -40,17 +40,36 @@ class ReceivedTransferController extends Controller
 
     public function index(Request $request)
     {
-        // جلب الحوالات بشكل مباشر بدون كاش
-        $receivedTransfers = Transfer::with(['currency', 'recipient', 'receivedCurrency'])
-            ->where('destination', Auth::id())
-            ->where('transaction_type', 'Transfer')
-            ->whereIn('status', ['Pending', 'Frozen'])
-            ->orderBy('created_at', 'desc')
-            ->simplePaginate(100);
+        // تحسين الاستعلام:
+        // 1. تحديد الأعمدة المطلوبة فقط لتقليل كمية البيانات المُحضرة.
+        // 2. استخدام leftJoin لجلب اسم العملة مباشرة من جدول العملات.
+        // 3. استخدام cursorPaginate بدلاً من simplePaginate لتحسين الأداء مع البيانات الضخمة.
+        $receivedTransfers = Transfer::select(
+                'transfers.id',
+                'transfers.currency_id',
+                'transfers.sent_currency',
+                'transfers.destination',
+                'transfers.transaction_type',
+                'transfers.status',
+                'transfers.created_at',
+                'transfers.note',
+                'transfers.sent_currency',
+                'transfers.fees',
+                'transfers.received_amount',
+                'transfers.sent_amount',
+                'transfers.recipient_name',
+                'currencies.name_ar as currency_name_ar'
+            )
+            ->leftJoin('currencies', 'transfers.currency_id', '=', 'currencies.id')
+            ->where('transfers.destination', Auth::id())
+            ->where('transfers.transaction_type', 'Transfer')
+            ->whereIn('transfers.status', ['Pending', 'Frozen'])
+            ->orderBy('transfers.created_at', 'desc')
+            ->cursorPaginate(100);
 
-        // تجميع الحوالات حسب اسم العملة (بالعربي) أو اسم العملة المرسلة في حال عدم وجود علاقة
+        // تجميع الحوالات حسب اسم العملة (بالاعتماد على الاسم المُسترجَع من جدول العملات أو اسم العملة المُرسلة)
         $groupedTransfers = $receivedTransfers->getCollection()->groupBy(function ($transfer) {
-            return $transfer->currency ? $transfer->currency->name_ar : $transfer->sent_currency;
+            return $transfer->currency_name_ar ?? $transfer->sent_currency;
         });
 
         // إعادة تعيين المجموعة داخل الـ paginator
@@ -58,6 +77,7 @@ class ReceivedTransferController extends Controller
 
         return view('transfers.received', compact('receivedTransfers', 'groupedTransfers'));
     }
+
 
 
     public function toggleFreeze(Transfer $transfer)

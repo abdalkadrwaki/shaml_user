@@ -40,29 +40,25 @@ class ReceivedTransferController extends Controller
 
     public function index(Request $request)
     {
-        // تحميل العلاقات الضرورية فقط مع تحديد الحقول المطلوبة
-        $receivedTransfers = Transfer::with([
-            'currency' => fn($q) => $q->select('id', 'name_ar'),
-            'recipient' => fn($q) => $q->select('id', 'name'), // حدد الحقول الضرورية
-            // إزالة receivedCurrency إذا لم تكن مستخدمة في العرض
-        ])
-        ->where('destination', Auth::id())
-        ->where('transaction_type', 'Transfer')
-        ->whereIn('status', ['Pending', 'Frozen'])
-        ->orderBy('created_at', 'desc') // التأكد من وجود index على created_at
-        ->cursorPaginate(100);
+        // جلب الحوالات بشكل مباشر بدون كاش
+        $receivedTransfers = Transfer::with(['currency', 'recipient', 'receivedCurrency'])
+            ->where('destination', Auth::id())
+            ->where('transaction_type', 'Transfer')
+            ->whereIn('status', ['Pending', 'Frozen'])
+            ->orderBy('created_at', 'desc')
+            ->cursorPaginate(100);
 
-        // تجميع الحوالات مع تقليل العمليات في الذاكرة
-        $groupedTransfers = $receivedTransfers->getCollection()->mapToGroups(function ($transfer) {
-            return [
-                $transfer->currency?->name_ar ?? $transfer->sent_currency => $transfer
-            ];
+        // تجميع الحوالات حسب اسم العملة (بالعربي) أو اسم العملة المرسلة في حال عدم وجود علاقة
+        $groupedTransfers = $receivedTransfers->getCollection()->groupBy(function ($transfer) {
+            return $transfer->currency ? $transfer->currency->name_ar : $transfer->sent_currency;
         });
 
-        $receivedTransfers->setCollection($groupedTransfers->flatten(1));
+        // إعادة تعيين المجموعة داخل الـ paginator
+        $receivedTransfers->setCollection(collect($groupedTransfers)->flatten(1));
 
         return view('transfers.received', compact('receivedTransfers', 'groupedTransfers'));
     }
+
 
     public function toggleFreeze(Transfer $transfer)
     {

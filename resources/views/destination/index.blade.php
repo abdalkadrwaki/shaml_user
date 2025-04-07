@@ -75,15 +75,31 @@
 
                                         <td class="py-0.5 px-3 border-b text-center font-bold">
                                             @php
-                                                $balance = (int) $request->balance_in_usd; // تحويل الرقم إلى عدد صحيح
-                                                $color = $balance < 0 ? 'text-red-1' : 'text-Lime'; // تحديد اللون بناءً على القيمة
-                                                $text = $balance > 0 ? '(دائن لكم)' : '(دائن عليكم)'; // تحديد النص بناءً على القيمة
+                                                $balance = (int) $request->balance_in_usd;
+                                                $color = $balance < 0 ? 'text-red-1' : 'text-Lime';
+                                                $text = $balance > 0 ? '(دائن لكم)' : '(دائن عليكم)';
+                                                $officeName = $destinations->firstWhere('id', $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id)->Office_name ?? 'غير متوفر';
+                                                $location = $destinations->firstWhere('id', $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id)
+                                                            ->country_user . ' - ' . $destinations->firstWhere('id', $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id)
+                                                            ->state_user ?? 'غير متوفر';
                                             @endphp
-                                            <span class="{{ $color }}">
-                                                {{ number_format($balance, 0, '', '') }} <!-- عرض الرقم بدون فواصل -->
-                                                {{ $text }} <!-- عرض النص بين قوسين -->
-                                            </span>
-
+                                            <div class="flex items-center justify-center gap-2">
+                                                <span class="{{ $color }}" id="balance-{{ $index }}">
+                                                    {{ number_format($balance, 0, '', '') }}
+                                                    {{ $text }}
+                                                </span>
+                                                <button
+                                                    type="button"
+                                                    class="p-1 text-gray-600 transition-colors duration-200 rounded-md hover:bg-gray-200 copy-balance"
+                                                    data-office="{{ $officeName }}"
+                                                    data-location="{{ $location }}"
+                                                    data-balance="{{ number_format($balance, 0, '', '') }}"
+                                                    data-text="{{ $text }}"
+                                                    title="نسخ الرصيد"
+                                                >
+                                                    <i class="fas fa-clipboard text-xs"></i>
+                                                </button>
+                                            </div>
                                         </td>
                                         @foreach ($columns as $column)
                                         @php
@@ -125,7 +141,40 @@
                 </div>
 
             </div>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const copyButtons = document.querySelectorAll('.copy-balance');
 
+                    copyButtons.forEach(button => {
+                        button.addEventListener('click', function() {
+                            const office = this.dataset.office;
+                            const location = this.dataset.location;
+                            const balance = this.dataset.balance;
+                            const text = this.dataset.text;
+
+                            const formattedText = `اسم المكتب: ${office}
+                الموقع: ${location}
+                الرصيد: ${balance} دولار ${text}
+
+                - تم إرسالها من نظام إدارة الحسابات -`;
+
+                            navigator.clipboard.writeText(formattedText).then(() => {
+                                // تغيير الأيقونة للإشارة على النجاح
+                                const icon = this.querySelector('i');
+                                icon.classList.remove('fa-clipboard');
+                                icon.classList.add('fa-check');
+
+                                setTimeout(() => {
+                                    icon.classList.remove('fa-check');
+                                    icon.classList.add('fa-clipboard');
+                                }, 2000);
+                            }).catch(err => {
+                                console.error('Failed to copy:', err);
+                            });
+                        });
+                    });
+                });
+                </script>
             <!-- جدول الطلبات الواردة -->
             <div class="tab-pane fade" id="pills-received-request" role="tabpanel"
                 aria-labelledby="pills-received-request-tab">

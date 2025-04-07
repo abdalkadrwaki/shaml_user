@@ -113,7 +113,7 @@
             <div class="col-md-6">
                 <label for="fees_transfer" class="form-label">الأجور</label>
                 <input type="text" id="fees_transfer" name="fees"
-                    class="form-control number-only  rounded-md  border-gray-300" value="{{ old('fees') }}"
+                    class="form-control number-only  rounded-md  border-gray-300" value="{{ old('fees'),'0' }}"
                     step="0.01">
                 @error('fees')
                     <span class="text-danger">{{ $message }}</span>

@@ -14,7 +14,7 @@
 
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')" class="no-underline">
                         <button
-                            class="inline-flex items-center px-6 py-2 mt-1.5 text-sm font-medium text-gray-800 bg-white hover:bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-0.5 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                            class="inline-flex items-center px-4 py-2 mt-1.5 text-sm font-medium text-gray-800 bg-white hover:bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-0.5 focus:ring-indigo-500 transition duration-150 ease-in-out">
 
                             <svg class="w-6 h-6 ml-2 text-blue-700 fill-current" width="256px" height="256px"
                                 viewBox="0 0 24.00 24.00" fill="none" xmlns="http://www.w3.org/2000/svg"
@@ -33,7 +33,7 @@
                     </x-nav-link>
                     <div class="relative">
                         <button
-                            class="inline-flex items-center px-10 py-2 mt-3 text-sm font-medium text-gray-800 bg-white hover:bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-0.5 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                            class="inline-flex items-center px-4 py-2 mt-3 w-40 text-sm font-medium text-gray-800 bg-white hover:bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-0.5 focus:ring-indigo-500 transition duration-150 ease-in-out">
 
                             <svg class="text-indigo-500 transition-transform duration-300 group-hover:text-indigo-600"
                                 xmlns="http://www.w3.org/2000/svg" height="14" width="14" viewBox="0 0 512 512">

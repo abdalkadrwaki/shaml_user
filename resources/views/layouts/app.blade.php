@@ -21,6 +21,7 @@
             [x-cloak] { display: none !important; }
             body {
   padding-top: 4rem; /* يتناسب مع ارتفاع شريط التنقل */
+  font-family: 'Tajawal', sans-serif;
 }
         </style>
         <!-- Styles -->

@@ -33,7 +33,7 @@
                     </x-nav-link>
                     <div class="relative">
                         <button
-                            class="inline-flex items-center px-4 py-2 -mt-5  w-36 text-sm font-medium text-gray-800 bg-white hover:bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-0.5 focus:ring-indigo-500 transition duration-150 ease-in-out">
+                            class="inline-flex items-center px-4 py-2 mt-3  w-36 text-sm font-medium text-gray-800 bg-white hover:bg-gray-50 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-0.5 focus:ring-indigo-500 transition duration-150 ease-in-out">
 
                             <svg class="text-indigo-500 transition-transform duration-300 group-hover:text-indigo-600"
                                 xmlns="http://www.w3.org/2000/svg" height="14" width="14" viewBox="0 0 512 512">
@@ -45,7 +45,7 @@
 
                         <!-- Dropdown Content -->
                         <div
-                            class="absolute hidden bg-white dark:bg-gray-800   shadow-lg rounded-md mt-1 space-y-2    w-32     group-hover:block">
+                            class="absolute hidden bg-white dark:bg-gray-800   shadow-lg rounded-md -mt-5 space-y-2    w-32     group-hover:block">
                             <x-nav-link href="{{ route('transfers.sent.index') }}" :active="request()->routeIs('transfers.sent.index')"
                                 class="px-4 py-2 text-sm  rounded-md hover:bg-gray-300 hover:text-gray-100 no-underline  ">
                                 {{ __(' حوالات صادرة ') }}

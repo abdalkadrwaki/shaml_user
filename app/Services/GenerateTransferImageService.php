@@ -149,6 +149,58 @@ class GenerateTransferImageService
         imageline($image, 30, 163, 770, 163, $borderColor);
         imageline($image, 30, 266, 770, 266, $borderColor);
 
+        // إضافة اللوجو إلى الصورة
+        $logoPath = public_path('images/image-removebg-preview (2).png');
+
+        if (file_exists($logoPath)) {
+            // تحميل صورة اللوجو
+            $logo = imagecreatefrompng($logoPath);
+
+            // تحديد الأبعاد المطلوبة للوجو (170x170 بكسل)
+            $logoWidth = 170;
+            $logoHeight = 170;
+
+            // إنشاء صورة جديدة لتعديل حجم اللوجو
+            $logoResized = imagecreatetruecolor($logoWidth, $logoHeight);
+
+            // دعم الشفافية للوجو
+            imagecolortransparent($logoResized, imagecolorallocatealpha($logoResized, 0, 0, 0, 127));
+            imagealphablending($logoResized, false);
+            imagesavealpha($logoResized, true);
+
+            // نسخ وتغيير حجم اللوجو
+            imagecopyresampled(
+                $logoResized,
+                $logo,
+                0, 0, // إحداثيات الوجهة في صورة اللوجو المعدلة
+                0, 0, // إحداثيات المصدر في صورة اللوجو الأصلية
+                $logoWidth, $logoHeight, // العرض والارتفاع المطلوبين
+                imagesx($logo), imagesy($logo)
+            );
+
+            // إزالة نسخة اللوجو الأصلية من الذاكرة
+            imagedestroy($logo);
+
+            // تحديد موقع وضع اللوجو على الصورة الأساسية (مثلاً في الركن العلوي الأيسر)
+            $logoX = 30;  // المسافة من اليسار
+            $logoY = 30;  // المسافة من الأعلى
+
+            // دمج اللوجو على الصورة الأساسية
+            imagecopy(
+                $image,
+                $logoResized,
+                $logoX, $logoY, // إحداثيات الوجهة في الصورة الأساسية
+                0, 0,         // إحداثيات المصدر في صورة اللوجو
+                $logoWidth, $logoHeight // الأبعاد
+            );
+
+            // إزالة نسخة اللوجو المعدلة من الذاكرة
+            imagedestroy($logoResized);
+        } else {
+            // يمكنك تسجيل خطأ أو متابعة التنفيذ بدون اللوجو
+            // throw new Exception('ملف اللوجو غير موجود.');
+        }
+
         // دالة داخلية لكتابة النص على الصورة مع الحفاظ على ترتيب الكلمات
         $writeText = function($fontSize, $angle, $x, $y, $color, $fontPath, $text, $alignRight = true) use ($image) {
             // معالجة النص باستخدام ArPHP للحفاظ على ترتيب الكلمات
@@ -188,11 +240,10 @@ class GenerateTransferImageService
         $writeText(17, 0, 530, 200, $headerColor_so, $this->fontPathhh, "الجوال");
         imagettftext($image, 17, 0, 430, 240, $textColor, $this->fontPath, $transferData->recipient_mobile );
         $writeText(16, 0, 350, 200, $headerColor_so, $this->fontPathhh, "رقم الإشعار");
-
-        imagettftext($image,17, 0, 220, 240, $headerColor, $this->fontPath, $transferData->movement_number);
+        imagettftext($image, 17, 0, 220, 240, $headerColor, $this->fontPath, $transferData->movement_number);
 
         $writeText(17, 0, 150, 200, $headerColor_so, $this->fontPathhh, "رقم السري");
-        imagettftext($image,17, 0, 50, 240, $headerColor_soo, $this->fontPath, $transferData->password);
+        imagettftext($image, 17, 0, 50, 240, $headerColor_soo, $this->fontPath, $transferData->password);
 
         $writeText(17, 0, 770, 300, $headerColor_so, $this->fontPathhh, "عنوان");
         // تقسيم عنوان المستخدم إلى أسطر إذا كان طويلاً
@@ -227,10 +278,9 @@ class GenerateTransferImageService
         $xStart = ($width - $totalWidth) / 2;
 
         // كتابة العملة على يسار الرقم (نبدأ بكتابة العملة أولاً ثم الرقم بعده)
+        $writeText(17, 0, 400, 490, $highlightColor, $this->fontPath, $currencyStr);
 
-        $writeText(17, 0, 400,490 , $highlightColor, $this->fontPath, $currencyStr);
-
-        imagettftext($image,17, 0, 410, 490, $highlightColor, $this->fontPath, $numberStr);
+        imagettftext($image, 17, 0, 410, 490, $highlightColor, $this->fontPath, $numberStr);
 
         $textNumberRaw = $this->arabic->int2str($number);
         $textNumber = $this->arabic->utf8Glyphs($textNumberRaw, true);

@@ -61,144 +61,156 @@ class TransferController extends Controller
 
 
     /**
-     * تنفيذ عملية الحوالة المالية بعد التحقق من كافة الشروط.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function store(Request $request)
+ * تنفيذ عملية الحوالة المالية بعد التحقق من كافة الشروط.
+ *
+ * @param \Illuminate\Http\Request $request
+ * @return \Illuminate\Http\JsonResponse
+ */
+public function store(Request $request)
 {
+    // التحقق من صحة البيانات الواردة
+    $validated = $request->validate([
+        'recipient_name'     => 'required|string|max:255',
+        'recipient_mobile'   => 'required|numeric|digits_between:1,10',
+        'destination'        => 'required|exists:users,id',
+        'sent_currency'      => 'required|in:USD,TRY,EUR,SAR,SYP',
+        'sent_amount'        => 'required|numeric|min:0.01|max:100000000000',
+        'received_currency'  => 'required|in:USD,TRY,EUR,SAR,SYP',
+        'received_amount'    => 'required|numeric|min:0.01|max:100000000000',
+        'fees'               => 'nullable|numeric|min:0|max:1000',
+        'exchange_rate'      => 'nullable|numeric|min:0',
+        'note'               => 'nullable|string|max:500'
+    ]);
 
+    // حساب المبلغ الكلي يشمل المبلغ المرسل والعمولة (fees) في حالة وجودها
+    $fees = $validated['fees'] ?? 0;
+    // لنستخدم حساب دقيق (يمكن استخدام BC Math في حال كانت العمليات الحسابية ذات متطلبات دقة عالية)
+    $totalAmount = $validated['sent_amount'] + $fees;
+
+    // التأكد من وجود رصيد كاف قبل تنفيذ العملية
+    if (!BalanceService::checkBalanceLimit(
+        Auth::id(),
+        $validated['sent_currency'],
+        $totalAmount,
+        true
+    )) {
+        return response()->json(['error' => 'تجاوز الحد المسموح به للرصيد'], 422);
+    }
 
     try {
-        $validated = $request->validate([
-            'recipient_name'     => 'required|string|max:255',
-           'recipient_mobile' => 'required|numeric|digits_between:1,10',
-            'destination'        => 'required|exists:users,id',
-            'sent_currency'      => 'required|in:USD,TRY,EUR,SAR,SYP',
-            'sent_amount'        => 'required|numeric|min:0.01|max:100000000000',
-            'received_currency'  => 'required|in:USD,TRY,EUR,SAR,SYP',
-            'received_amount'    => 'required|numeric|min:0.01|max:100000000000',
-            'fees'               => 'nullable|numeric|min:0|max:1000',
-            'exchange_rate'      => 'nullable|numeric|min:0',
-            'note'               => 'nullable|string|max:500'
-        ]);
+        // تنفيذ كافة العمليات داخل معاملة واحدة بحيث إذا فشلت أي عملية يتم التراجع عن جميع العمليات
+        $result = DB::transaction(function () use ($validated, $totalAmount) {
+            // إضافة معرف المستخدم إلى البيانات للتحقق منه لاحقاً
+            $validated['user_id'] = Auth::id();
 
-        $totalAmount = $validated['sent_amount'] + ($validated['fees'] ?? 0);
-        $validated['user_id'] = Auth::id();
+            // الحصول على طلب الصداقة المشترك وقفل الصف (lockForUpdate) لتفادي مشاكل التزامن
+            $friendRequest = FriendRequest::where(function ($query) use ($validated) {
+                    $query->where('sender_id', Auth::id())
+                          ->where('receiver_id', $validated['destination']);
+                })
+                ->orWhere(function ($query) use ($validated) {
+                    $query->where('receiver_id', Auth::id())
+                          ->where('sender_id', $validated['destination']);
+                })
+                ->where('status', 'accepted')
+                ->lockForUpdate()
+                ->firstOrFail();
 
-        // تحقق من الرصيد
-        if (!BalanceService::checkBalanceLimit(
-            Auth::id(),
-            $validated['sent_currency'],
-            $totalAmount,
-            true
-        )) {
-            return response()->json(['error' => 'تجاوز الحد المسموح به للرصيد'], 422);
-        }
+            // التحقق من إيقاف الحوالات بحسب إعدادات الصداقة
+            if (
+                ($friendRequest->sender_id == Auth::id() && !$friendRequest->Stop_movements_2) ||
+                ($friendRequest->receiver_id == Auth::id() && !$friendRequest->Stop_movements_1)
+            ) {
+                throw new \Exception('تم إيقاف الحوالة. يرجى مراجعة المكتب.');
+            }
+            if (
+                ($friendRequest->sender_id == Auth::id() && !$friendRequest->stop_syp_2) ||
+                ($friendRequest->receiver_id == Auth::id() && !$friendRequest->stop_syp_1)
+            ) {
+                throw new \Exception('تم إيقاف العملة السورية. يرجى مراجعة المكتب.');
+            }
 
-        DB::beginTransaction();
+            // تحديث رصيد الحوالة عند الصديق
+            $currencyColumn1 = strtoupper($validated['sent_currency']) . '_1';
+            $currencyColumn2 = strtoupper($validated['sent_currency']) . '_2';
 
-        $friendRequest = FriendRequest::where(function ($query) use ($validated) {
-                $query->where('sender_id', Auth::id())
-                      ->where('receiver_id', $validated['destination']);
-            })
-            ->orWhere(function ($query) use ($validated) {
-                $query->where('receiver_id', Auth::id())
-                      ->where('sender_id', $validated['destination']);
-            })
-            ->where('status', 'accepted')
-            ->lockForUpdate()
-            ->firstOrFail();
+            if ($friendRequest->sender_id == Auth::id() && $friendRequest->receiver_id == $validated['destination']) {
+                $friendRequest->increment($currencyColumn1, $totalAmount);
+                $friendRequest->decrement($currencyColumn2, $totalAmount);
+            } elseif ($friendRequest->receiver_id == Auth::id() && $friendRequest->sender_id == $validated['destination']) {
+                $friendRequest->increment($currencyColumn2, $totalAmount);
+                $friendRequest->decrement($currencyColumn1, $totalAmount);
+            }
 
-        // تحقق من عدم إيقاف الحوالات
-        if (
-            ($friendRequest->sender_id == Auth::id() && !$friendRequest->Stop_movements_2) ||
-            ($friendRequest->receiver_id == Auth::id() && !$friendRequest->Stop_movements_1)
-        ) {
-            throw new \Exception('تم إيقاف الحوالة. يرجى مراجعة المكتب.');
-        }
-        if (
-            ($friendRequest->sender_id == Auth::id() && !$friendRequest->stop_syp_2) ||
-            ($friendRequest->receiver_id == Auth::id() && !$friendRequest->stop_syp_1)
-        ) {
-            throw new \Exception('تم إيقاف العملة السورية. يرجى مراجعة المكتب.');
-        }
+            // تحديث الرصيد العام للمستخدم عبر خدمة الحساب
+            BalanceService::updateBalanceInUSD(
+                $friendRequest,
+                $validated['sent_currency'],
+                $totalAmount,
+                (Auth::id() === $friendRequest->sender_id),
+                $validated['destination']
+            );
 
+            // إنشاء سجل الحوالة في قاعدة البيانات
+            $transfer = Transfer::create([
+                'recipient_name'    => $validated['recipient_name'],
+                'recipient_mobile'  => $validated['recipient_mobile'],
+                'destination'       => $validated['destination'],
+                'sent_currency'     => $validated['sent_currency'],
+                'sent_amount'       => $validated['sent_amount'],
+                'received_currency' => $validated['received_currency'],
+                'received_amount'   => $validated['received_amount'],
+                'fees'              => $validated['fees'] ?? 0,
+                'exchange_rate'     => $validated['exchange_rate'] ?? 1,
+                'note'              => $validated['note'] ?? null,
+                'user_id'           => Auth::id(),
+                'password'          => str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT)
+                // بإمكانك إضافة حقول إضافية مثل movement_number إذا لزم الأمر
+            ]);
 
-        // تحديث رصيد الصداقة
-        $currencyColumn1 = strtoupper($validated['sent_currency']) . '_1';
-        $currencyColumn2 = strtoupper($validated['sent_currency']) . '_2';
+            // توليد صورة الحوالة باستخدام خدمة توليد الصور
+            $imageService = new GenerateTransferImageService();
+            $imageData    = $imageService->generateTransferImage($transfer->id);
 
-        if ($friendRequest->sender_id == Auth::id() && $friendRequest->receiver_id == $validated['destination']) {
-            $friendRequest->increment($currencyColumn1, $totalAmount);
-            $friendRequest->decrement($currencyColumn2, $totalAmount);
-        } elseif ($friendRequest->receiver_id == Auth::id() && $friendRequest->sender_id == $validated['destination']) {
-            $friendRequest->increment($currencyColumn2, $totalAmount);
-            $friendRequest->decrement($currencyColumn1, $totalAmount);
-        }
+            // التأكد من نجاح عملية توليد الصورة
+            if (!$imageData) {
+                throw new \Exception('فشل إنشاء صورة الحوالة.');
+            }
 
-        // تحديث الرصيد العام للمستخدم
-        BalanceService::updateBalanceInUSD(
-            $friendRequest,
-            $validated['sent_currency'],
-            $totalAmount,
-            (Auth::id() === $friendRequest->sender_id),
-            $validated['destination']
-        );
+            // يتم إرجاع البيانات المهمة لمتابعة العملية لاحقاً بعد الـ commit
+            return [
+                'transfer'  => $transfer,
+                'imageData' => $imageData
+            ];
+        });
 
-        // إنشاء الحوالة
-        $transfer = Transfer::create([
-            'recipient_name'    => $validated['recipient_name'],
-            'recipient_mobile'  => $validated['recipient_mobile'],
-            'destination'       => $validated['destination'],
-            'sent_currency'     => $validated['sent_currency'],
-            'sent_amount'       => $validated['sent_amount'],
-            'received_currency' => $validated['received_currency'],
-            'received_amount'   => $validated['received_amount'],
-            'fees'              => $validated['fees'] ?? 0,
-            'exchange_rate'     => $validated['exchange_rate'] ?? 1,
-            'note'              => $validated['note'] ?? null,
-            'user_id'           => Auth::id(),
-            'password'          => str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT)
-            // إذا كنتَ تحتاج حقلاً إضافيًا مثل movement_number ضعه هنا:
-            // 'movement_number' => ...
-        ]);
-
-
-
-        // إنشاء صورة الحوالة
-        $imageService = new GenerateTransferImageService();
-        $imageData    = $imageService->generateTransferImage($transfer->id);
-
-        DB::commit();
-
+        // في حال نجاح العملية يقوم الكود بإرجاع البيانات المطلوبة
         return response()->json([
             'success'         => true,
-            'transfer_id'     => $transfer->id,
-            'movement_number' => $transfer->movement_number,
-            'recipient_name'  => $transfer->recipient_name,
-            'sent_amount'     => $transfer->sent_amount,
-            'sent_currency' => ' (' . $transfer->currency->name_ar . ')',
-            'password'        => $transfer->password,
-            'destination'     => optional($transfer->destinationUser)->state_user . ' - ' . optional($transfer->destinationUser)->country_user,
-            'Office_name'     => optional($transfer->destinationUser)->Office_name,
-            'user_address'    => optional($transfer->destinationUser)->user_address,
-            'receipt_image' => $imageData,
+            'transfer_id'     => $result['transfer']->id,
+            'movement_number' => $result['transfer']->movement_number,
+            'recipient_name'  => $result['transfer']->recipient_name,
+            'sent_amount'     => $result['transfer']->sent_amount,
+            'sent_currency'   => ' (' . $result['transfer']->currency->name_ar . ')',
+            'password'        => $result['transfer']->password,
+            'destination'     => optional($result['transfer']->destinationUser)->state_user . ' - ' . optional($result['transfer']->destinationUser)->country_user,
+            'Office_name'     => optional($result['transfer']->destinationUser)->Office_name,
+            'user_address'    => optional($result['transfer']->destinationUser)->user_address,
+            'receipt_image'   => $result['imageData'],
             'message'         => 'تم إنشاء الحوالة بنجاح'
         ]);
-
     } catch (\Illuminate\Validation\ValidationException $e) {
         return response()->json(['error' => 'خطأ في التحقق', 'details' => $e->errors()], 422);
     } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
         return response()->json(['error' => 'الجهة غير موجودة'], 404);
     } catch (\Exception $e) {
-        DB::rollBack();
+        // في حالة حدوث أي خطأ يتم تسجيله وإرجاع رسالة الخطأ المناسبة
         Log::error('Transfer Error: ' . $e->getMessage(), [
             'user'  => Auth::id(),
             'trace' => $e->getTraceAsString()
         ]);
         event(new UndefinedErrorOccurred($e));
+
         return response()->json(['error' => 'فشل في المعاملة: ' . $e->getMessage()], 500);
     }
 }

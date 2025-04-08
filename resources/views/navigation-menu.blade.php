@@ -10,7 +10,7 @@
                     </a>
                 </div>
                 <!-- Navigation Links -->
-                <div class="hidden sm:flex space-x-8 space-x-reverse">
+                <div class="hidden sm:flex space-x-6 space-x-reverse">
 
                     <x-nav-link href="{{ route('dashboard') }}" :active="request()->routeIs('dashboard')" class="no-underline">
                         <button

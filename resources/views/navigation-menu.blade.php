@@ -47,7 +47,7 @@
                         <div
                             class="absolute hidden bg-white dark:bg-gray-800   shadow-lg rounded-md -mt-10 space-y-2    w-36 group-hover:block">
                             <x-nav-link href="{{ route('transfers.sent.index') }}" :active="request()->routeIs('transfers.sent.index')"
-                                class="px-4 py-2 text-sm  rounded-md hover:bg-gray-300 hover:text-gray-100 no-underline  ">
+                                class="block w-full px-4 py-2 text-sm rounded-md hover:bg-blue-500 hover:text-white no-underline">
                                 {{ __(' حوالات صادرة ') }}
                             </x-nav-link>
                             <x-nav-link href="{{ route('transfers.sentapproval') }}" :active="request()->routeIs('transfers.sentapproval')"
@@ -55,7 +55,7 @@
                                 {{ __(' اعتماد صادر') }}
                             </x-nav-link>
                             <x-nav-link href="{{ route('transfers.sentrxchange') }}" :active="request()->routeIs('transfers.sentrxchange')"
-                                class="px-4 py-2 text-sm rounded-md hover:bg-gray-300 hover:text-gray-100 no-underline ">
+                                class="block w-full px-4 py-2 text-sm rounded-md hover:bg-blue-500 hover:text-white no-underline">
                                 {{ __(' قص صادر ') }}
                             </x-nav-link>
 

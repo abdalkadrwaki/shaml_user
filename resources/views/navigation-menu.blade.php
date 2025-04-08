@@ -75,7 +75,7 @@
                         </button>
 
                         <!-- Dropdown Content -->
-                        <div class="absolute hidden bg-custom-gray dark:bg-gray-800 shadow-lg rounded-md -mt-10 space-y-2 w-36 group-hover:block mx-4 px-4">
+                        <div class="absolute hidden bg-custom-gray dark:bg-gray-800 shadow-lg rounded-md -mt-10 space-y-2 w-36 group-hover:block mx-3 px-3">
                             <!-- Added mx-2 for outer margin and px-2 for inner padding -->
 
                             <x-nav-link

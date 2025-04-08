@@ -158,7 +158,7 @@ class GenerateTransferImageService
 
             // تحديد الأبعاد المطلوبة للوجو (170x170 بكسل)
             $logoWidth = 170;
-            $logoHeight = 170;
+            $logoHeight = 150;
 
             // إنشاء صورة جديدة لتعديل حجم اللوجو
             $logoResized = imagecreatetruecolor($logoWidth, $logoHeight);
@@ -182,7 +182,7 @@ class GenerateTransferImageService
             imagedestroy($logo);
 
             // تحديد موقع وضع اللوجو على الصورة الأساسية (مثلاً في الركن العلوي الأيسر)
-            $logoX = 30;  // المسافة من اليسار
+            $logoX = 300;  // المسافة من اليسار
             $logoY = 30;  // المسافة من الأعلى
 
             // دمج اللوجو على الصورة الأساسية

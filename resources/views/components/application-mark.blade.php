@@ -1,2 +1,1 @@
-<div style="background: url('{{ asset('images/logo.png') }}') no-repeat center center; width: 48px; height: 48px;">
-</div>
+<img src="{{ asset('images/logo.png') }}" alt="Logo" width="100" height="100">

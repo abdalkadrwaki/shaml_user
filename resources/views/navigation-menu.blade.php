@@ -47,15 +47,15 @@
                         <div
                             class="absolute hidden bg-white dark:bg-gray-800   shadow-lg rounded-md -mt-10 space-y-2    w-36 group-hover:block">
                             <x-nav-link href="{{ route('transfers.sent.index') }}" :active="request()->routeIs('transfers.sent.index')"
-                                 class="block w-full px-4 py-2 text-sm rounded-md hover:bg-blue-500 hover:text-white no-underline">
+                                 class="block w-full px-5 py-3 text-sm rounded-lg hover:bg-gray-200 hover:text-black transition-all duration-200">
                                 {{ __(' حوالات صادرة ') }}
                             </x-nav-link>
                             <x-nav-link href="{{ route('transfers.sentapproval') }}" :active="request()->routeIs('transfers.sentapproval')"
-                                 class="block w-full px-4 py-2 text-sm rounded-md hover:bg-blue-500 hover:text-white no-underline">
+                                 class="block w-full px-5 py-3 text-sm rounded-lg hover:bg-gray-200 hover:text-black transition-all duration-200">
                                 {{ __(' اعتماد صادر') }}
                             </x-nav-link>
                             <x-nav-link href="{{ route('transfers.sentrxchange') }}" :active="request()->routeIs('transfers.sentrxchange')"
-                                 class="block w-full px-4 py-2 text-sm rounded-md hover:bg-blue-500 hover:text-white no-underline">
+                                 class="block w-full px-5 py-3 text-sm rounded-lg hover:bg-gray-200 hover:text-black transition-all duration-200">
                                 {{ __(' قص صادر ') }}
                             </x-nav-link>
 
@@ -79,20 +79,20 @@
                             class="absolute hidden bg-custom-gray dark:bg-gray-800   shadow-lg rounded-md -mt-10 space-y-2  w-36 group-hover:block">
                             <x-nav-link href="{{ route('transfers.received') }}"
                             :active="request()->routeIs('transfers.received')"
-                             class="block w-full px-4 py-2 text-sm rounded-md hover:bg-blue-500 hover:text-white no-underline">
+                             class="block w-full px-5 py-3 text-sm rounded-lg hover:bg-gray-200 hover:text-black transition-all duration-200">
                             {{ __(' حوالات واردة ') }}
                         </x-nav-link>
 
                             <x-nav-link href="{{ route('transfers.receivedapproval') }}" :active="request()->routeIs('transfers.receivedapproval')"
-                                 class="block w-full px-4 py-2 text-sm rounded-md hover:bg-blue-500 hover:text-white no-underline">
+                                 class="block w-full px-5 py-3 text-sm rounded-lg hover:bg-gray-200 hover:text-black transition-all duration-200">
                                 {{ __(' اعتماد وارد') }}
                             </x-nav-link>
                             <x-nav-link href="{{ route('transfers.rxchangeReceivedTransfer') }}" :active="request()->routeIs('transfers.sentrxchange')"
-                                class="block w-full px-4 py-2 text-sm rounded-md hover:bg-blue-500 hover:text-white no-underline">
+                                class="block w-full px-5 py-3 text-sm rounded-lg hover:bg-gray-200 hover:text-black transition-all duration-200">
                                 {{ __(' قص وارد ') }}
                             </x-nav-link>
                             <x-nav-link href="{{ route('deliver.index') }}" :active="request()->routeIs('deliver.index')"
-                                class="block w-full px-4 py-2 text-sm rounded-md hover:bg-blue-500 hover:text-white no-underline">
+                                class="block w-full px-5 py-3 text-sm rounded-lg hover:bg-gray-200 hover:text-black transition-all duration-200">
                                 {{ __('حوالات مسلمة ') }}
                             </x-nav-link>
 

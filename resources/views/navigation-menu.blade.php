@@ -84,7 +84,7 @@
                         </x-nav-link>
 
                             <x-nav-link href="{{ route('transfers.receivedapproval') }}" :active="request()->routeIs('transfers.receivedapproval')"
-                                class="block w-full px-4 border border-white  py-2 text-sm rounded-md hover:bg-blue-500 hover:text-white no-underline">
+                                class="block w-full px-4 border border-blue-900  py-2 text-sm rounded-md hover:bg-blue-500 hover:text-white no-underline">
                                 {{ __(' اعتماد وارد') }}
                             </x-nav-link>
                             <x-nav-link href="{{ route('transfers.rxchangeReceivedTransfer') }}" :active="request()->routeIs('transfers.sentrxchange')"

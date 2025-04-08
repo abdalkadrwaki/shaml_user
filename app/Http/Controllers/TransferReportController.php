@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Transfer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -9,39 +10,37 @@ use App\Models\Currency;
 
 class TransferReportController extends Controller
 {
+
     public function index(Request $request)
     {
         $selectedCurrency = $request->currency;
         $currencies = Currency::activeCurrencies();
         $currencyNames = $currencies->pluck('name_ar', 'name_en')->toArray();
-
-        // تهيئة خريطة الأرصدة للعملة المحددة فقط
         $balanceCurrencies = $selectedCurrency ? [$selectedCurrency] : [];
         $balanceMap = array_fill_keys($balanceCurrencies, 0);
         $transferData = [];
-
+        
         if ($request->hasAny(['currency', 'from_date', 'to_date'])) {
 
-            // حساب الرصيد الابتدائي للعملة المحددة (المعاملات التي تسبق تاريخ البحث)
             if ($request->filled('from_date') && $selectedCurrency) {
                 try {
                     $fromDate = Carbon::parse($request->from_date)->startOfDay();
 
                     $initialQuery = Transfer::where(function ($q) {
-                            $q->where('user_id', Auth::id())
-                              ->orWhere('destination', Auth::id());
-                        })
+                        $q->where('user_id', Auth::id())
+                            ->orWhere('destination', Auth::id());
+                    })
                         ->where('created_at', '<', $fromDate)
                         ->where(function ($q) {
                             $q->whereIn('transaction_type', ['Transfer', 'Exchange'])
-                              ->orWhere(function ($q2) {
-                                  $q2->where('transaction_type', 'Credit')
-                                     ->where('status', 'Delivered');
-                              });
+                                ->orWhere(function ($q2) {
+                                    $q2->where('transaction_type', 'Credit')
+                                        ->where('status', 'Delivered');
+                                });
                         })
                         ->where(function ($q) use ($selectedCurrency) {
                             $q->where('sent_currency', $selectedCurrency)
-                              ->orWhere('received_currency', $selectedCurrency);
+                                ->orWhere('received_currency', $selectedCurrency);
                         });
 
                     $initialTransactions = $initialQuery->orderBy('created_at')->get();
@@ -52,7 +51,6 @@ class TransferReportController extends Controller
                 } catch (\Exception $e) {
                     // معالجة الأخطاء إذا لزم الأمر
                 }
-
             }
 
             // حفظ رصيد أول المدة
@@ -60,21 +58,21 @@ class TransferReportController extends Controller
 
             // استعلام المعاملات ضمن الفترة المطلوبة
             $query = Transfer::where(function ($q) {
-                        $q->where('user_id', Auth::id())
-                          ->orWhere('destination', Auth::id());
-                    })
-                    ->where(function ($q) {
-                        $q->whereIn('transaction_type', ['Transfer', 'Exchange'])
-                          ->orWhere(function ($q2) {
-                              $q2->where('transaction_type', 'Credit')
-                                 ->where('status', 'Delivered');
-                          });
-                    });
+                $q->where('user_id', Auth::id())
+                    ->orWhere('destination', Auth::id());
+            })
+                ->where(function ($q) {
+                    $q->whereIn('transaction_type', ['Transfer', 'Exchange'])
+                        ->orWhere(function ($q2) {
+                            $q2->where('transaction_type', 'Credit')
+                                ->where('status', 'Delivered');
+                        });
+                });
 
             if ($selectedCurrency) {
                 $query->where(function ($q) use ($selectedCurrency) {
                     $q->where('sent_currency', $selectedCurrency)
-                      ->orWhere('received_currency', $selectedCurrency);
+                        ->orWhere('received_currency', $selectedCurrency);
                 });
             }
 

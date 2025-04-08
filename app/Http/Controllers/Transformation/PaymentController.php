@@ -11,10 +11,6 @@ use Illuminate\Support\Facades\Auth;
 class PaymentController extends Controller
 {
 
-
-
-
-
     /**
      * عرض صفحة الحوالات.
      *

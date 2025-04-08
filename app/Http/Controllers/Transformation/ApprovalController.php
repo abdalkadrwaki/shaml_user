@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Gate;
 use App\Services\BalanceService;
 use App\Services\FriendService;
+
 class ApprovalController extends Controller
 {
     public function create()
@@ -27,10 +28,6 @@ class ApprovalController extends Controller
 
     public function storeApproval(Request $request): RedirectResponse
     {
-        // التحقق من صلاحيات المستخدم قبل تنفيذ العملية
-      
-
-        // التحقق من صحة المدخلات مع استخدام "bail" للتوقف عند أول خطأ
         $validated = $request->validate([
             'destination'   => 'bail|required|integer|exists:users,id',
             'sent_currency' => 'bail|required|string|in:USD,TRY,EUR',
@@ -38,77 +35,92 @@ class ApprovalController extends Controller
             'note'          => 'nullable|string|max:500',
         ]);
 
-        // إضافة بعض الحقول الثابتة والمطلوبة لسجل الحوالة
-        $validated['user_id']           = Auth::id();
-        $totalAmount                    = $validated['sent_amount'];
-        $validated['recipient_name']    = 'اعتماد';
-        $validated['transaction_type']  = 'Credit';
-        $validated['recipient_mobile']  = '0';
-        $validated['received_amount']   = '1';
-        $validated['received_currency'] = 'TRY';
-        $isSender                      = true;
+        $userId = Auth::id();
+        $destinationId = $validated['destination'];
+        $currency = $validated['sent_currency'];
+        $amount = $validated['sent_amount'];
 
-        // التحقق من عدم تجاوز حد الرصيد المسموح به
-        if (!BalanceService::checkBalanceLimit(Auth::id(), $validated['sent_currency'], $totalAmount, $isSender)) {
+        // قبل بدء المعاملة، تحقق من الرصيد بشكل مبدئي
+        if (!BalanceService::checkBalanceLimit($userId, $currency, $amount, true)) {
             return redirect()->route('dashboard')
                 ->withErrors(['error' => 'تم تجاوز المحدودية المسموح بها.']);
         }
 
         try {
-            // تنفيذ العمليات داخل معاملة واحدة مع إعادة المحاولة لحد أقصى 3 مرات في حال حدوث تعارض
-            $transfer = DB::transaction(function () use ($validated) {
-                // استخدام خدمة الصداقة للتحقق من وجود علاقة صداقة مقبولة
-                $friendRequest = FriendService::checkAcceptedFriendship(Auth::id(), $validated['destination']);
+            DB::beginTransaction();
 
-                if (!$friendRequest) {
-                    throw new \Exception('لا يمكن إتمام الحوالة. لم يتم العثور على علاقة صداقة مقبولة.');
-                }
+            // تأمين صف المستخدم بقفل لتجنب التعارضات
+            $sender = User::where('id', $userId)->lockForUpdate()->first();
+            $recipient = User::where('id', $destinationId)->lockForUpdate()->first();
 
-                // التحقق من حالات الإيقاف الخاصة بالعملية
-                if ($friendRequest->sender_id == Auth::id() && !$friendRequest->stop_approval_2) {
-                    throw new \Exception('تم إيقاف ,اعتماد. يرجى مراجعة المكتب.');
-                }
-                if ($friendRequest->receiver_id == Auth::id() && !$friendRequest->stop_approval_1) {
-                    throw new \Exception('تم إيقاف اعتماد. يرجى مراجعة المكتب.');
-                }
+            if (!$sender || !$recipient) {
+                throw new \Exception('تعذر العثور على المستخدمين.');
+            }
 
-                // إنشاء سجل الحوالة
-                return Transfer::create($validated);
-            }, 3);
-        } catch (\Exception $e) {
-            // تسجيل الخطأ دون إفصاح تفاصيل حساسة للمستخدم
-            Log::error('خطأ أثناء معالجة الحوالة:', [
+            // تحقق من الصداقة
+            $friendRequest = FriendService::checkAcceptedFriendship($userId, $destinationId);
+            if (!$friendRequest) {
+                throw new \Exception('لا يمكن إتمام الحوالة. لم يتم العثور على علاقة صداقة مقبولة.');
+            }
+
+            if ($friendRequest->sender_id == $userId && !$friendRequest->stop_approval_2) {
+                throw new \Exception('تم إيقاف اعتماد من الجهة الأخرى.');
+            }
+
+            if ($friendRequest->receiver_id == $userId && !$friendRequest->stop_approval_1) {
+                throw new \Exception('تم إيقاف اعتماد من الجهة الأخرى.');
+            }
+
+            // تحقق من الرصيد بعد القفل للتأكد أنه لم يتغير أثناء التنفيذ
+            if (!BalanceService::checkBalanceLimit($userId, $currency, $amount, true)) {
+                throw new \Exception('الرصيد غير كافٍ لإتمام العملية.');
+            }
+
+            // إنشاء سجل الحوالة
+            $transfer = Transfer::create([
+                'user_id'           => $userId,
+                'destination'       => $destinationId,
+                'sent_currency'     => $currency,
+                'sent_amount'       => $amount,
+                'note'              => $validated['note'] ?? null,
+                'recipient_name'    => 'اعتماد',
+                'transaction_type'  => 'Credit',
+                'recipient_mobile'  => '0',
+                'received_amount'   => '1', // لاحقًا يمكن حساب القيمة الحقيقية عبر خدمة تحويل عملات
+                'received_currency' => 'TRY',
+            ]);
+
+            // سجل بنجاح، ثبّت المعاملة
+            DB::commit();
+        } catch (\Throwable $e) {
+            DB::rollBack();
+
+            Log::error('فشل تنفيذ الحوالة:', [
                 'error'   => $e->getMessage(),
                 'trace'   => $e->getTraceAsString(),
-                'user_id' => Auth::id(),
+                'user_id' => $userId,
                 'data'    => $validated,
             ]);
-            return redirect()->route('dashboard')
-    ->withErrors(['error' => $e->getMessage()]);
 
+            return redirect()->route('dashboard')->withErrors(['error' => 'حدث خطأ أثناء تنفيذ الحوالة: ' . $e->getMessage()]);
         }
 
-        // تحويل اسم العملة من الاختصار الإنجليزي إلى الاسم العربي
         $currenciesMapping = [
             'USD' => 'دولار أمريكي',
             'TRY' => 'ليرة تركية',
             'EUR' => 'يورو'
         ];
 
-        // استخراج معلومات الجهة ليتم عرضها في نافذة Swal
-        $destinationUser = User::find($validated['destination']);
+        $destinationUser = User::find($destinationId);
         $transferDetails = [
             'destination'   => $destinationUser ? $destinationUser->id : 'غير معروف',
-            'sent_currency' => $currenciesMapping[$validated['sent_currency']] ?? $validated['sent_currency'],
-            'sent_amount'   => $validated['sent_amount'],
+            'sent_currency' => $currenciesMapping[$currency] ?? $currency,
+            'sent_amount'   => $amount,
             'note'          => $validated['note'] ?? ''
         ];
-
 
         return redirect()->route('dashboard')
             ->with('transfer', $transferDetails)
             ->with('message', 'تم إرسال الحوالة بنجاح.');
     }
-
-
 }

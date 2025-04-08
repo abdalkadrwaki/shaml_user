@@ -51,7 +51,7 @@
                                 {{ __(' حوالات صادرة ') }}
                             </x-nav-link>
                             <x-nav-link href="{{ route('transfers.sentapproval') }}" :active="request()->routeIs('transfers.sentapproval')"
-                                class="px-4 py-2 text-sm  rounded-md hover:bg-gray-300 hover:text-gray-100 no-underline ">
+                                class="block w-full px-4 py-2 text-sm rounded-md hover:bg-blue-500 hover:text-white no-underline">
                                 {{ __(' اعتماد صادر') }}
                             </x-nav-link>
                             <x-nav-link href="{{ route('transfers.sentrxchange') }}" :active="request()->routeIs('transfers.sentrxchange')"
@@ -84,15 +84,15 @@
                         </x-nav-link>
 
                             <x-nav-link href="{{ route('transfers.receivedapproval') }}" :active="request()->routeIs('transfers.receivedapproval')"
-                                class="px-4 py-2 text-sm  rounded-md hover:bg-gray-300 hover:text-gray-100 no-underline ">
+                                class="block w-full px-4 py-2 text-sm rounded-md hover:bg-blue-500 hover:text-white no-underline">
                                 {{ __(' اعتماد وارد') }}
                             </x-nav-link>
                             <x-nav-link href="{{ route('transfers.rxchangeReceivedTransfer') }}" :active="request()->routeIs('transfers.sentrxchange')"
-                                class="px-4 py-2 text-sm rounded-md hover:bg-gray-300 hover:text-gray-100 no-underline ">
+                               class="block w-full px-4 py-2 text-sm rounded-md hover:bg-blue-500 hover:text-white no-underline">
                                 {{ __(' قص وارد ') }}
                             </x-nav-link>
                             <x-nav-link href="{{ route('deliver.index') }}" :active="request()->routeIs('deliver.index')"
-                                class="px-4 py-2 text-sm rounded-md hover:bg-gray-300 hover:text-gray-100 no-underline ">
+                               class="block w-full px-4 py-2 text-sm rounded-md hover:bg-blue-500 hover:text-white no-underline">
                                 {{ __('حوالات مسلمة ') }}
                             </x-nav-link>
 

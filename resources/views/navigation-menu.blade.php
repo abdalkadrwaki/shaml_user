@@ -44,8 +44,7 @@
                         </button>
 
                         <!-- Dropdown Content -->
-                        <div
-                            class="absolute hidden bg-custom-gray dark:bg-gray-800   shadow-lg rounded-md -mt-10 space-y-2    w-36 group-hover:block">
+                        <div class="absolute hidden bg-custom-gray dark:bg-gray-800 shadow-lg rounded-md -mt-10 space-y-2 w-36 group-hover:block mx-2 px-2">
                             <x-nav-link href="{{ route('transfers.sent.index') }}" :active="request()->routeIs('transfers.sent.index')"
                                  class="block w-full px-3 py-2 text-sm rounded-md hover:bg-blue-500 dark:hover:bg-gray-700 hover:text-white transition-colors no-underline">
                                 {{ __(' حوالات صادرة ') }}

@@ -75,36 +75,38 @@
                         </button>
 
                         <!-- Dropdown Content -->
-                        <div class="absolute hidden bg-custom-gray dark:bg-gray-800 shadow-lg rounded-md -mt-10 space-y-2 w-36 group-hover:block">
+                        <div class="absolute hidden bg-custom-gray dark:bg-gray-800 shadow-lg rounded-md -mt-10 space-y-2 w-36 group-hover:block mx-2 px-2">
+                            <!-- Added mx-2 for outer margin and px-2 for inner padding -->
+
                             <x-nav-link
-                                 href="{{ route('transfers.received') }}"
-                                 :active="request()->routeIs('transfers.received')"
-                                 class="block w-full px-4 py-2 text-sm rounded-md mx-2 hover:bg-blue-500 hover:text-white no-underline">
-                                 {{ __(' حوالات واردة ') }}
+                                href="{{ route('transfers.received') }}"
+                                :active="request()->routeIs('transfers.received')"
+                                class="block w-full px-3 py-2 text-sm rounded-md hover:bg-gray-600 dark:hover:bg-gray-700 hover:text-white transition-colors no-underline">
+                                <!-- Changed hover:bg-blue-500 to hover:bg-gray-600 -->
+                                {{ __(' حوالات واردة ') }}
                             </x-nav-link>
 
                             <x-nav-link
-                                 href="{{ route('transfers.receivedapproval') }}"
-                                 :active="request()->routeIs('transfers.receivedapproval')"
-                                 class="block w-full px-4 py-2 text-sm rounded-md mx-2 hover:bg-blue-500 hover:text-white no-underline">
-                                 {{ __(' اعتماد وارد') }}
+                                href="{{ route('transfers.receivedapproval') }}"
+                                :active="request()->routeIs('transfers.receivedapproval')"
+                                class="block w-full px-3 py-2 text-sm rounded-md hover:bg-gray-600 dark:hover:bg-gray-700 hover:text-white transition-colors no-underline">
+                                {{ __(' اعتماد وارد') }}
                             </x-nav-link>
 
                             <x-nav-link
-                                 href="{{ route('transfers.rxchangeReceivedTransfer') }}"
-                                 :active="request()->routeIs('transfers.sentrxchange')"
-                                 class="block w-full px-4 py-2 text-sm rounded-md mx-2 hover:bg-blue-500 hover:text-white no-underline">
-                                 {{ __(' قص وارد ') }}
+                                href="{{ route('transfers.rxchangeReceivedTransfer') }}"
+                                :active="request()->routeIs('transfers.sentrxchange')"
+                                class="block w-full px-3 py-2 text-sm rounded-md hover:bg-gray-600 dark:hover:bg-gray-700 hover:text-white transition-colors no-underline">
+                                {{ __(' قص وارد ') }}
                             </x-nav-link>
 
                             <x-nav-link
-                                 href="{{ route('deliver.index') }}"
-                                 :active="request()->routeIs('deliver.index')"
-                                 class="block w-full px-4 py-2 text-sm rounded-md mx-2 hover:bg-blue-500 hover:text-white no-underline">
-                                 {{ __('حوالات مسلمة ') }}
+                                href="{{ route('deliver.index') }}"
+                                :active="request()->routeIs('deliver.index')"
+                                class="block w-full px-3 py-2 text-sm rounded-md hover:bg-gray-600 dark:hover:bg-gray-700 hover:text-white transition-colors no-underline">
+                                {{ __('حوالات مسلمة ') }}
                             </x-nav-link>
                         </div>
-
 
                     </div>
                     <x-nav-link href="{{ route('student.friend-request') }}" :active="request()->routeIs('student.friend-request')" class="no-underline">

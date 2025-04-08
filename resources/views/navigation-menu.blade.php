@@ -4,12 +4,11 @@
         <div class="flex justify-between h-16">
             <div class="flex gap-x-8">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center mt-4">
+                <div class="shrink-0 flex items-center mt-5">
                     <a href="{{ route('dashboard') }}">
                         <x-application-mark class="block h-9 w-auto" />
                     </a>
                 </div>
-
                 <!-- Navigation Links -->
                 <div class="hidden sm:flex space-x-8 space-x-reverse">
 

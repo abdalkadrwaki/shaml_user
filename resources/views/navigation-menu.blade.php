@@ -45,7 +45,7 @@
 
                         <!-- Dropdown Content -->
                         <div
-                            class="absolute hidden bg-white dark:bg-gray-800   shadow-lg rounded-md -mt-10 space-y-2    w-36     group-hover:block">
+                            class="absolute hidden bg-white dark:bg-gray-800   shadow-lg rounded-md -mt-10 space-y-2    w-36 group-hover:block">
                             <x-nav-link href="{{ route('transfers.sent.index') }}" :active="request()->routeIs('transfers.sent.index')"
                                 class="px-4 py-2 text-sm  rounded-md hover:bg-gray-300 hover:text-gray-100 no-underline  ">
                                 {{ __(' حوالات صادرة ') }}
@@ -76,7 +76,7 @@
 
                         <!-- Dropdown Content -->
                         <div
-                            class="absolute hidden bg-white dark:bg-gray-800   shadow-lg rounded-md mt-1 space-y-2  w-36 group-hover:block">
+                            class="absolute hidden bg-white dark:bg-gray-800   shadow-lg rounded-md -mt-10 space-y-2  w-36 group-hover:block">
                             <x-nav-link href="{{ route('transfers.received') }}" :active="request()->routeIs('transfers.received')"
                                 class="px-4 py-2 text-sm  rounded-md hover:bg-gray-300 hover:text-gray-100 no-underline  ">
                                 {{ __(' حوالات واردة ') }}

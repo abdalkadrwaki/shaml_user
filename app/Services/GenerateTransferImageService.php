@@ -186,7 +186,7 @@ class GenerateTransferImageService
         }
 
         $writeText(17, 0, 530, 200, $headerColor_so, $this->fontPathhh, "الجوال");
-        imagettftext($image, 17, 0, 430, 200, $textColor, $this->fontPath, $transferData->recipient_mobile );
+        imagettftext($image, 17, 0, 430, 240, $textColor, $this->fontPath, $transferData->recipient_mobile );
         $writeText(16, 0, 350, 200, $headerColor_so, $this->fontPathhh, "رقم الإشعار");
 
         imagettftext($image,17, 0, 220, 240, $headerColor, $this->fontPath, $transferData->movement_number);

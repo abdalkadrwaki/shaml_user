@@ -5,7 +5,7 @@
     </div>
 
     <!-- نموذج تسجيل الدخول مع ازاحة بسيطة لأعلى بمقدار 10 بكسل -->
-    <div class="w-full sm:max-w-md mt-[-50px] px-6 py-3 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
+    <div class="w-full sm:max-w-md mt-[-45px] px-6 py-3 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
         {{ $slot }}
     </div>
 </div>

@@ -82,7 +82,7 @@
             </div>
         </div>
 
-        <div class="bg-white p-4 rounded-lg shadow-lg overflow-x-auto">
+        <div class="bg-gray-600 p-4 rounded-lg shadow-lg overflow-x-auto">
 
 
             <table class="myTable min-w-full border border-gray-300 shadow-md text-sm"   style="direction: rtl;">

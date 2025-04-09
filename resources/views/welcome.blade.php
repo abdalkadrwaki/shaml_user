@@ -1,5 +1,5 @@
 
-<div class=" mt-9">
+<div class=" -mt-20">
 <x-guest-layout>
     <x-authentication-card>
         <x-slot name="logo">

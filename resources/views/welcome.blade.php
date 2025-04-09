@@ -1,7 +1,8 @@
 
-<div class=" -mt-20">
+
 <x-guest-layout>
     <x-authentication-card>
+        <div class=" -mt-20">
         <x-slot name="logo">
             <x-authentication-card-logo />
         </x-slot>
@@ -46,6 +47,7 @@
                 </x-button>
             </div>
         </form>
+    </div>
     </x-authentication-card>
 </x-guest-layout>
-</div>
+

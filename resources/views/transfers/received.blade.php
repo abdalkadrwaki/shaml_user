@@ -34,7 +34,7 @@
         ];
     @endphp
 
-    <div class="container mx-auto p-6">
+    <div class="container">
 
 
 
@@ -82,7 +82,7 @@
             </div>
         </div>
 
-        <div class="bg-gray-100 min-w-full p-4 rounded-lg shadow-lg overflow-x-auto">
+        <div class="bg-gray-100 w-full p-4 rounded-lg shadow-lg overflow-x-auto">
 
 
             <table class="myTable min-w-full border border-gray-300 shadow-md text-sm"   style="direction: rtl;">

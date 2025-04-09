@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Transformation;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
@@ -15,9 +14,7 @@ use App\Models\FriendRequest;
 use App\Services\BalanceService;
 use App\Services\GenerateTransferImageService;
 use App\Services\FriendService;
-use App\Jobs\GenerateTransferImageJob;
-use App\Events\TransferCountUpdated;
-use Carbon\Carbon;
+
 use App\Events\UndefinedErrorOccurred;
 // عند تحديث العداد (مثلاً بعد حفظ عملية جديدة في قاعدة البيانات)
 

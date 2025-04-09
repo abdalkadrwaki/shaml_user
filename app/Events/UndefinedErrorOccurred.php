@@ -2,7 +2,7 @@
 
 namespace App\Events;
 
-use Throwable;
+use Exception;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
 
@@ -10,157 +10,49 @@ class UndefinedErrorOccurred
 {
     use Dispatchable, SerializesModels;
 
-    /**
-     * The uncaught exception or error that occurred.
-     *
-     * @var \Throwable
-     */
-    public Throwable $exception;
-
-    /**
-     * The ID of the authenticated user (if any).
-     *
-     * @var int|null
-     */
-    public ?int $userId;
-
-    /**
-     * The email of the authenticated user (if any).
-     *
-     * @var string|null
-     */
-    public ?string $userEmail;
-
-    /**
-     * The full URL of the request.
-     *
-     * @var string
-     */
-    public string $url;
-
-    /**
-     * The HTTP method used for the request (GET, POST, etc.).
-     *
-     * @var string
-     */
-    public string $method;
-
-    /**
-     * The query parameters of the request.
-     *
-     * @var array
-     */
-    public array $queryParams;
-
-    /**
-     * The timestamp when the error occurred.
-     *
-     * @var string
-     */
-    public string $timestamp;
-
-    /**
-     * The file where the error occurred.
-     *
-     * @var string
-     */
-    public string $file;
-
-    /**
-     * The line number where the error occurred.
-     *
-     * @var int
-     */
-    public int $line;
-
-    /**
-     * The message of the error.
-     *
-     * @var string
-     */
     public string $errorMessage;
+    public string $errorCode;
+    protected array $sensitivePatterns = [
+        '/password\s*=\s*.+/',
+        '/\bapi_key\b.*/',
+        '/database\.password/',
+    ];
 
     /**
-     * The stack trace of the error.
+     * إنشاء نسخة جديدة من الحدث مع تعقيم المعلومات الحساسة
      *
-     * @var string
-     */
-    public string $stackTrace;
-
-    /**
-     * The environment the application is running in (local, production, etc.).
-     *
-     * @var string
-     */
-    public string $environment;
-
-    /**
-     * The type of error (e.g., Database Error, General Error).
-     *
-     * @var string
-     */
-    public string $errorType;
-
-    /**
-     * A custom message for the error, depending on its type.
-     *
-     * @var string
-     */
-    public string $customMessage;
-
-    /**
-     * Create a new event instance.
-     *
-     * @param \Throwable $exception
+     * @param \Exception $exception
      * @return void
      */
-    public function __construct(Throwable $exception)
+    public function __construct(Exception $exception)
     {
-        $this->exception = $exception;
-        $this->userId = auth()->check() ? auth()->id() : null;
-        $this->userEmail = auth()->check() ? auth()->user()->email : null;
-        $this->url = request()->fullUrl();
-        $this->method = request()->method();
-        $this->queryParams = request()->query();
-        $this->timestamp = now()->toDateTimeString();
-        $this->file = $exception->getFile();
-        $this->line = $exception->getLine();
-        $this->errorMessage = $exception->getMessage();
-        $this->stackTrace = $exception->getTraceAsString();
-        $this->environment = app()->environment();
-        $this->errorType = $this->getErrorType($exception);
-        $this->customMessage = $this->getCustomMessage($exception);
+        $message = $exception->getMessage();
+        $this->errorMessage = $this->sanitizeErrorMessage($message);
+        $this->errorCode = $this->generateErrorCode($exception);
     }
 
     /**
-     * Determine the type of the error.
-     *
-     * @param \Throwable $exception
-     * @return string
+     * تعقيم رسالة الخطأ من المعلومات الحساسة
      */
-    protected function getErrorType(Throwable $exception)
+    private function sanitizeErrorMessage(string $message): string
     {
-        if ($exception instanceof \Illuminate\Database\QueryException) {
-            return 'Database Error';
-        }
-
-        return 'General Error';
+        return preg_replace(
+            $this->sensitivePatterns,
+            '[REDACTED]',
+            $message
+        );
     }
 
     /**
-     * Get a custom message based on the error type.
-     *
-     * @param \Throwable $exception
-     * @return string
+     * توليد رمز خطأ آمن للعرض
      */
-    protected function getCustomMessage(Throwable $exception)
+    private function generateErrorCode(Exception $exception): string
     {
-        if ($exception instanceof \Illuminate\Validation\ValidationException) {
-            return 'خطأ في التحقق من المدخلات';
-        } elseif ($exception instanceof \Illuminate\Database\Eloquent\ModelNotFoundException) {
-            return 'النموذج المطلوب غير موجود';
-        }
-
-        return 'حدث خطأ غير متوقع';
+        return 'ERR-' . md5(
+            $exception->getFile() .
+            $exception->getLine() .
+            $exception->getCode() .
+            now()->timestamp
+        );
     }
 }

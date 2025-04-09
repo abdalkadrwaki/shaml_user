@@ -33,7 +33,7 @@
     <body class="font-sans antialiased">
         <x-banner />
 
-        <div class="min-h-screen bg-custom-gray dark:bg-gray-900">
+        <div class=" bg-custom-gray dark:bg-gray-900">
             @livewire('navigation-menu')
 
 

@@ -34,8 +34,7 @@
         ];
     @endphp
 
-    <div class="container">
-
+<div class="container mt-4" style="padding: 0 15px;">
 
 
 
@@ -82,10 +81,11 @@
             </div>
         </div>
 
-        <div class="bg-gray-100 w-full p-4 rounded-lg shadow-lg overflow-x-auto">
+        <div class="card p-4">
 
 
-            <table class="myTable min-w-full border border-gray-300 shadow-md text-sm"   style="direction: rtl;">
+            <table class=" myTable table-auto w-full border border-gray-300  shadow-md overflow-hidden"
+                style="direction: rtl;">
                 <thead class="bg-gray-200 text-gray-700 ">
                     <tr>
                         <!-- عمود جديد لاسم الجهة المرسلة -->

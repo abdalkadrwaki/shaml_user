@@ -34,7 +34,8 @@
         ];
     @endphp
 
-<div class="container mt-4" style="padding: 0 15px;">
+    <div class="container mt-4" style="width: 98%">
+
 
 
 
@@ -81,7 +82,7 @@
             </div>
         </div>
 
-        <div class="card p-4">
+        <div class="bg-white p-4 rounded-lg shadow-lg">
 
 
             <table class=" myTable table-auto w-full border border-gray-300  shadow-md overflow-hidden"

@@ -1,12 +1,8 @@
 <x-guest-layout>
     <x-authentication-card>
-        <x-slot name="logo">
-            <div class=" mt-8">
-            <x-authentication-card-logo />
-        </div>
-        </x-slot>
 
-        <x-validation-errors class="mb-4" />
+
+        <x-validation-errors class="mb-10" />
 
         @session('status')
             <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">

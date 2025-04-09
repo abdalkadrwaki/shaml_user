@@ -34,7 +34,7 @@
         ];
     @endphp
 
-    <div class="container mt-4" style="width:100%">
+<div class="container mx-auto p-6">
 
 
 

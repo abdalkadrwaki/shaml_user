@@ -33,7 +33,7 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-    'throttle:60,1' // زيادة معدل الحد من الطلبات
+    'throttle:10,1' // زيادة معدل الحد من الطلبات
 ])->group(function () {
     // Dashboard Routes
     Route::get('/dashboard', function () {

@@ -34,7 +34,7 @@
         ];
     @endphp
 
-<div class="container mx-auto p-6">
+    <div class="container mx-auto p-6">
 
 
 
@@ -85,8 +85,7 @@
         <div class="bg-white p-4 rounded-lg shadow-lg overflow-x-auto">
 
 
-            <table class=" myTable table-auto w-full border border-gray-300  shadow-md overflow-hidden"
-                style="direction: rtl;">
+            <table class="myTable min-w-full border border-gray-300 shadow-md text-sm"   style="direction: rtl;">
                 <thead class="bg-gray-200 text-gray-700 ">
                     <tr>
                         <!-- عمود جديد لاسم الجهة المرسلة -->

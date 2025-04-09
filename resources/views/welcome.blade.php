@@ -8,7 +8,7 @@
             <x-authentication-card-logo />
         </x-slot>
 
-        <x-validation-errors class="mb-4" />
+        <x-validation-errors class="mb-4 -mt-16" />
 
         @session('status')
             <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">

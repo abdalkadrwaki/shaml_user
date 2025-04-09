@@ -4,7 +4,7 @@
 
     <x-authentication-card>
 
-        <x-slot name="logo">
+        <x-slot name="logo" class="mt-[-80px]">
             <x-authentication-card-logo />
         </x-slot>
 

@@ -1,7 +1,7 @@
 
 
 <x-guest-layout>
-    <div class=" -mt-20">
+
     <x-authentication-card>
 
         <x-slot name="logo">
@@ -50,6 +50,6 @@
         </form>
 
     </x-authentication-card>
-</div>
+
 </x-guest-layout>
 

@@ -82,7 +82,7 @@
             </div>
         </div>
 
-        <div class="bg-white p-4 rounded-lg shadow-lg">
+        <div class="bg-white p-4 rounded-lg shadow-lg" style="width:100%">
 
 
             <table class=" myTable table-auto w-full border border-gray-300  shadow-md overflow-hidden"

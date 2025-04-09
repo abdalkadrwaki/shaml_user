@@ -34,7 +34,7 @@
         ];
     @endphp
 
-    <div class="container mt-4" style="width: 99%">
+    <div class="container mt-4" style="width:100%">
 
 
 

@@ -1,6 +1,6 @@
 <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-cover bg-center" style="background-image: url('{{ asset('images/background.jpg') }}');">
     <!-- الشعار يبقى معزوحاً لأعلى بمقدار 80 بكسل -->
-    <div class="mt-[-150px]">
+    <div class="">
         {{ $logo }}
     </div>
 

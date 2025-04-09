@@ -3,11 +3,11 @@
 <x-guest-layout>
 
     <x-authentication-card>
-
-        <x-slot name="logo" class="mt-[-80px]">
+<div class="mt-[-80px]">
+        <x-slot name="logo" >
             <x-authentication-card-logo />
         </x-slot>
-
+    </div>
         <x-validation-errors class="mb-4 " />
 
         @session('status')

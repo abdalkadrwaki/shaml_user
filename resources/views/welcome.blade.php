@@ -15,7 +15,7 @@
             </div>
         @endsession
         <div class="flex justify-center items-center mb-6">
-            <img src="{{ asset('images/image-removebg-preview (2).png') }}" alt="Logo" width="300" height="300" class="transform translate-x-10">
+            <img src="{{ asset('images/image-removebg-preview (2).png') }}" alt="Logo" width="300" height="300" class="transform translate-x-5">
         </div>
 
 

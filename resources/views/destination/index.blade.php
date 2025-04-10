@@ -95,7 +95,7 @@
                                                         {{ ($officeData->country_user ?? '') . ' - ' . ($officeData->state_user ?? '') }}
                                                     </span>
                                                     <button type="button"
-                                                        class="mt-1 text-xs  hover:text-blue-900 copy-all-balances"
+                                                        class="mt-1 text-xs  hover:text-gray-900 copy-all-balances"
                                                         data-office="{{ $officeData->Office_name ?? 'غير متوفر' }}"
                                                         data-location="{{ ($officeData->country_user ?? '') . ' - ' . ($officeData->state_user ?? '') }}"
                                                         data-balances='@json($balanceData)'

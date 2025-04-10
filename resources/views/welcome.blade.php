@@ -22,22 +22,26 @@
         <form method="POST" action="{{ route('login') }}">
             @csrf
 
-            <div>
-                <x-label for="email" value="{{ __('ايميل') }}" />
-                <x-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
-                    required autofocus autocomplete="username" />
+            <div class="relative mt-4">
+                <span class="absolute inset-y-0 start-0 flex items-center ps-3 text-gray-500">
+                    <i class="fas fa-envelope"></i>
+                </span>
+                <x-input id="email" class="block ps-10 w-full" type="email" name="email" :value="old('email')"
+                    required autofocus autocomplete="username" placeholder="ايميل" />
             </div>
 
-            <div class="mt-4">
-                <x-label for="password" value="{{ __('كليمة مرور') }}" />
-                <x-input id="password" class="block mt-1 w-full" type="password" name="password" required
-                    autocomplete="current-password" />
+            <div class="relative mt-4">
+                <span class="absolute inset-y-0 start-0 flex items-center ps-3 text-gray-500">
+                    <i class="fas fa-lock"></i>
+                </span>
+                <x-input id="password" class="block ps-10 w-full" type="password" name="password"
+                    required autocomplete="current-password" placeholder="كلمة المرور" />
             </div>
 
             <div class="block mt-4">
                 <label for="remember_me" class="flex items-center">
                     <x-checkbox id="remember_me" name="remember" />
-                    <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __(' ذكرني') }}</span>
+                    <span class="ms-2 text-sm text-gray-600 dark:text-gray-400">{{ __('ذكرني') }}</span>
                 </label>
             </div>
 
@@ -54,6 +58,7 @@
                 </x-button>
             </div>
         </form>
+
 
     </x-authentication-card>
 

@@ -14,7 +14,7 @@
                 {{ $value }}
             </div>
         @endsession
-        <div class="flex justify-center items-center -mb-3">
+        <div class="flex justify-center items-center -mb-10">
             <img src="{{ asset('images/image-removebg-preview (2).png') }}" alt="Logo" width="300" height="300" class="transform translate-x-5">
         </div>
 

@@ -26,17 +26,30 @@
                 <span class="absolute inset-y-0 start-0 flex items-center ps-3 text-gray-500">
                     <i class="fas fa-envelope text-blue-700"></i>
                 </span>
-                <x-input id="email" class="block ps-10 w-full" type="email" name="email" :value="old('email')"
-                    required autofocus autocomplete="username" placeholder="ايميل" />
+                <x-input id="email"
+                    class="block ps-10 w-full text-right placeholder:text-right"
+                    type="email"
+                    name="email"
+                    :value="old('email')"
+                    required
+                    autofocus
+                    autocomplete="username"
+                    placeholder="ادخل البريد الإلكتروني" />
             </div>
 
             <div class="relative mt-4">
                 <span class="absolute inset-y-0 start-0 flex items-center ps-3 text-gray-500">
                     <i class="fas fa-lock text-blue-700"></i>
                 </span>
-                <x-input id="password" class="block ps-10 w-full" type="password" name="password"
-                    required autocomplete="current-password" placeholder="كلمة المرور" />
+                <x-input id="password"
+                    class="block ps-10 w-full text-right placeholder:text-right"
+                    type="password"
+                    name="password"
+                    required
+                    autocomplete="current-password"
+                    placeholder="ادخل كلمة المرور" />
             </div>
+
 
             <div class="block mt-4">
                 <label for="remember_me" class="flex items-center">

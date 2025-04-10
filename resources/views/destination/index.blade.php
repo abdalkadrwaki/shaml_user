@@ -86,7 +86,7 @@
                                                 ];
                                             }
                                         @endphp
-                                        <tr class="text-sm text-center text-gray-500 hover:bg-gray-100">
+                                        <tr class="text-sm text-center text-gray-500 hover:bg-gray-100 font-bold">
                                             <td class="px-2 py-2 text-center border-b">{{ $index + 1 }}</td>
                                             <td class="px-3 py-1 font-bold text-center border-b">
                                                 <div class="flex flex-col items-center">

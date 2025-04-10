@@ -7,7 +7,7 @@
         <x-validation-errors class="mb-4 " />
 
         <x-slot name="logo" class="mt-[-80px]">
-            <x-authentication-card-logo />
+            
         </x-slot>
 
 
@@ -16,6 +16,7 @@
                 {{ $value }}
             </div>
         @endsession
+        <img src="{{ asset('images/image-removebg-preview (2).png') }}" alt="Logo" width="300" height="300">
 
         <form method="POST" action="{{ route('login') }}">
             @csrf

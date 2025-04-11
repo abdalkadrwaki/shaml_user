@@ -6,13 +6,11 @@ use App\Http\Controllers\Controller;
 use App\Models\Currency;
 use App\Models\User;
 use App\Models\Transfer;
-use App\Models\FriendRequest;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Gate;
 use App\Services\BalanceService;
 use App\Services\FriendService;
 

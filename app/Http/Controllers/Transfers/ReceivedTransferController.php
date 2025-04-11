@@ -41,7 +41,9 @@ class ReceivedTransferController extends Controller
      */
     public function index(Request $request)
     {
-        $receivedTransfers = Transfer::with(['currency', 'recipient', 'receivedCurrency'])
+        $groupedTransfers = []; // تعريف المصفوفة
+
+        Transfer::with(['currency', 'recipient', 'receivedCurrency'])
             ->where('destination', Auth::id())
             ->where('transaction_type', 'Transfer')
             ->whereIn('status', ['Pending', 'Frozen'])
@@ -52,6 +54,9 @@ class ReceivedTransferController extends Controller
                     $groupedTransfers[$key][] = $transfer;
                 }
             });
+
+        // تحويل المصفوفة إلى مجموعة
+        $groupedTransfers = collect($groupedTransfers);
 
         return view('transfers.received', compact('groupedTransfers'));
     }

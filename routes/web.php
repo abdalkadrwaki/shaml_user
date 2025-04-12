@@ -72,7 +72,9 @@ Route::middleware([
 
  // مسارات الوجهات
  Route::get('/destinations', [DestinationController::class, 'index'])->name('destinations.index');
- // حذف تعريف المسار المكرر:
+
+
+ // حذف تعريف المسار المكرر:ؤ
  // Route::get('/destination/{id}', [DestinationController::class, 'wages'])->name('destination.wages');
  Route::put('/update-limited/{id}', [DestinationController::class, 'updateLimited'])->name('update.limited');
  Route::put('/update-password/{id}', [DestinationController::class, 'updatePassword'])->name('update.password');

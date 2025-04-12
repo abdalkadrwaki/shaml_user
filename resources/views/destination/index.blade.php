@@ -34,7 +34,7 @@
                 <div class="tab-pane fade show active" id="pills-send-request" role="tabpanel"
                     aria-labelledby="pills-send-request-tab">
                     <div class="mb-4">
-                        <form method="GET" action="{{ route('destination.index') }}" class="flex flex-wrap gap-4 p-4 bg-gray-50 rounded-lg">
+                        <form method="GET" action="{{ route('destinations.index') }}" class="flex flex-wrap gap-4 p-4 bg-gray-50 rounded-lg">
                             <!-- تصفية رصيد الدولار -->
                             <div class="flex items-center gap-2">
                                 <label class="text-gray-700">رصيد الدولار:</label>

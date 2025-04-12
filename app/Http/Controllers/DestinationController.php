@@ -15,66 +15,66 @@ class DestinationController extends Controller
 {
 
     public function index()
-{
-    $currentUserId = Auth::id();
-    $usdFilter = request()->input('usd_filter', 'all');
-    $currencyFilter = request()->input('currency_filter', 'all');
+    {
+        $currentUserId = Auth::id();
+        $usdFilter = request()->input('usd_filter', 'all');
+        $currencyFilter = request()->input('currency_filter', 'all');
 
-    // جلب طلبات الصداقة المقبولة أولاً بدون تصفية
-    $friendRequests = FriendRequest::where(function ($query) use ($currentUserId) {
-        $query->where('receiver_id', $currentUserId)
-            ->orWhere('sender_id', $currentUserId);
-    })
-    ->where('status', 'accepted')
-    ->get();
+        // جلب طلبات الصداقة المقبولة أولاً بدون تصفية
+        $friendRequests = FriendRequest::where(function ($query) use ($currentUserId) {
+            $query->where('receiver_id', $currentUserId)
+                ->orWhere('sender_id', $currentUserId);
+        })
+        ->where('status', 'accepted')
+        ->get();
 
-    // تطبيق التصفيات على البيانات
-    if ($usdFilter !== 'all') {
-        $friendRequests = $friendRequests->filter(function ($request) use ($currentUserId, $usdFilter) {
-            $balance = $request->receiver_id === $currentUserId
-                ? $request->balance_in_usd_1
-                : $request->balance_in_usd_2;
-            return $usdFilter === 'positive' ? $balance > 0 : $balance < 0;
-        });
-    }
+        // تطبيق التصفيات على البيانات
+        if ($usdFilter !== 'all') {
+            $friendRequests = $friendRequests->filter(function ($request) use ($currentUserId, $usdFilter) {
+                $balance = $request->receiver_id === $currentUserId
+                    ? $request->balance_in_usd_1
+                    : $request->balance_in_usd_2;
+                return $usdFilter === 'positive' ? $balance > 0 : $balance < 0;
+            });
+        }
 
-    if ($currencyFilter !== 'all') {
-        $friendRequests = $friendRequests->filter(function ($request) use ($currentUserId, $currencyFilter) {
-            foreach (Currency::pluck('name_en') as $currency) {
-                $columnKey = $request->receiver_id === $currentUserId
-                    ? $currency . '_1'
-                    : $currency . '_2';
-                $balance = $request->{$columnKey} ?? 0;
-                if (($currencyFilter === 'positive' && $balance > 0) ||
-                    ($currencyFilter === 'negative' && $balance < 0)) {
-                    return true;
+        if ($currencyFilter !== 'all') {
+            $friendRequests = $friendRequests->filter(function ($request) use ($currentUserId, $currencyFilter) {
+                foreach (Currency::pluck('name_en') as $currency) {
+                    $columnKey = $request->receiver_id === $currentUserId
+                        ? $currency . '_1'
+                        : $currency . '_2';
+                    $balance = $request->{$columnKey} ?? 0;
+                    if (($currencyFilter === 'positive' && $balance > 0) ||
+                        ($currencyFilter === 'negative' && $balance < 0)) {
+                        return true;
+                    }
                 }
-            }
-            return false;
+                return false;
+            });
+        }
+
+        // استخراج الـ IDs بعد التصفية
+        $userIds = $friendRequests->map(function ($request) use ($currentUserId) {
+            return $request->receiver_id === $currentUserId ? $request->sender_id : $request->receiver_id;
+        })->unique();
+
+        // جلب بيانات المكاتب بناءً على الـ IDs المصفاة
+        $destinations = User::whereIn('id', $userIds)
+            ->get(['id', 'Office_name', 'state_user', 'country_user']);
+
+        // جلب بيانات العملات
+        $currencies = Currency::all();
+        $currencyNames = $currencies->pluck('name_ar', 'name_en');
+        $columns = $currencies->pluck('name_en')->map(function ($currency) {
+            return [
+                'sender_column' => $currency . '_2',
+                'receiver_column' => $currency . '_1',
+            ];
         });
+
+        return view('destination.index', compact('destinations', 'friendRequests', 'columns', 'currencyNames'));
     }
-
-    // استخراج الـ IDs بعد التصفية
-    $userIds = $friendRequests->map(function ($request) use ($currentUserId) {
-        return $request->receiver_id === $currentUserId ? $request->sender_id : $request->receiver_id;
-    })->unique();
-
-    // جلب بيانات المكاتب بناءً على الـ IDs المصفاة
-    $destinations = User::whereIn('id', $userIds)
-        ->get(['id', 'Office_name', 'state_user', 'country_user']);
-
-    // جلب بيانات العملات
-    $currencies = Currency::all();
-    $currencyNames = $currencies->pluck('name_ar', 'name_en');
-    $columns = $currencies->pluck('name_en')->map(function ($currency) {
-        return [
-            'sender_column' => $currency . '_2',
-            'receiver_column' => $currency . '_1',
-        ];
-    });
-
-    return view('destination.index', compact('destinations', 'friendRequests', 'columns', 'currencyNames'));
-}
     public function updateLimited(Request $request, $id)
     {
         $currentUserId = Auth::id();

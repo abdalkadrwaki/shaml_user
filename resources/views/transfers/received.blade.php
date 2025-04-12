@@ -62,20 +62,13 @@
                         $totalAmount = $transfers->sum('sent_amount');
                         $formattedAmount = number_format($totalAmount, 2);
 
-                        $colorClass = 'bg-gray-300 text-black border-gray-400';
-                        if ($currencyName === 'دولار') {
-                            $colorClass = 'bg-green-600 text-white border-green-700';
-                        } elseif ($currencyName === 'تركي') {
-                            $colorClass = 'bg-red-600 text-white border-red-700';
-                        } elseif ($currencyName === 'يورو') {
-                            $colorClass = 'bg-blue-600 text-white border-blue-700';
-                        }
+
                     @endphp
 
                     @if ($totalAmount > 0)
                         <div class="bg-white shadow-md rounded-md flex-shrink-0 flex flex-col items-center text-center w-64 no-underline hover:no-underline">
 
-                            <div class="w-full py-2 {{ $colorClass }} rounded-t-md">
+                            <div class="w-full py-2 rounded-t-md">
                                 <h2 class="text-xl font-bold">{{ $currencyName }}</h2>
                             </div>
 

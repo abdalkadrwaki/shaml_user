@@ -47,7 +47,7 @@
         @endif
 
 
-        <div id="currencyBoxes" class="overflow-x-auto whitespace-nowrap p-4 border-gray-800">
+        <div id="currencyBoxes" class="overflow-x-auto whitespace-nowrap p-4 border border-gray-900 ">
             <div class="flex flex-nowrap gap-6 justify-center">
                 @foreach ($groupedTransfers as $currencyName => $transfers)
                     @php

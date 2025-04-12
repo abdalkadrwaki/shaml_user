@@ -55,7 +55,7 @@
 
         <!-- محتوى البطاقة (صناديق العملات) -->
 
-        <div id="currencyBoxes" class="overflow-x-auto whitespace-nowrap p-4" style="display: none;">
+        <div id="currencyBoxes" class="overflow-x-auto whitespace-nowrap p-4">
             <div class="flex flex-nowrap gap-6 justify-center">
                 @foreach ($groupedTransfers as $currencyName => $transfers)
                     @php
@@ -357,20 +357,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-    <script>
-        // تبديل إظهار/إخفاء صناديق العملات
-        document.getElementById('toggleCurrencyBtn').addEventListener('click', function() {
-            var currencyBoxes = document.getElementById('currencyBoxes');
-            if (currencyBoxes.style.display === 'none' || currencyBoxes.style.display === '') {
-                currencyBoxes.style.display = 'block';
-                this.textContent = 'إخفاء العملات';
-            } else {
-                currencyBoxes.style.display = 'none';
-                this.textContent = 'إظهار العملات';
-            }
-        });
-    </script>
     <script>
         // المتغيرات العامة
         let selectedTransfer = null;

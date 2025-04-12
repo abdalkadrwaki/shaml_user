@@ -43,7 +43,7 @@
                                 style="direction: rtl;">
                                 <thead class="text-center text-gray-700 bg-gray-200">
                                     <tr class="text-center">
-                                        <th class="px-3 py-2 text-center border-b">#</th>
+                                        <th class="px-3 py-2 text-center border-b w-8">#</th>
                                         <th class="px-3 py-2 text-center border-b">اسم المكتب</th>
                                         <th class="px-3 py-2 text-center border-b">ميزان</th>
                                         @foreach ($columns as $column)
@@ -253,7 +253,7 @@
 
                                 setTimeout(() => {
                                     icon.className = originalClass;
-                                }, 2000);
+                                }, 1000);
                             }).catch(err => {
                                 console.error('Failed to copy:', err);
                             });

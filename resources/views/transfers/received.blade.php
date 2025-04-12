@@ -46,35 +46,35 @@
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
 
+        <div class="bg-white p-4 rounded-lg shadow-lg">
+            <div id="currencyBoxes" class="overflow-x-auto whitespace-nowrap p-4">
+                <div class="flex flex-nowrap gap-6 justify-center">
+                    @foreach ($groupedTransfers as $currencyName => $transfers)
+                        @php
+                            $totalAmount = $transfers->sum('sent_amount');
+                            $formattedAmount = number_format($totalAmount, 2);
 
-        <div id="currencyBoxes" class="overflow-x-auto whitespace-nowrap p-4">
-            <div class="flex flex-nowrap gap-6 justify-center">
-                @foreach ($groupedTransfers as $currencyName => $transfers)
-                    @php
-                        $totalAmount = $transfers->sum('sent_amount');
-                        $formattedAmount = number_format($totalAmount, 2);
+                        @endphp
 
+                        @if ($totalAmount > 0)
+                            <div
+                                class="bg-white shadow-md rounded-md flex-shrink-0 flex flex-col items-center text-center w-64 no-underline hover:no-underline">
 
-                    @endphp
+                                <div class="w-full py-1  bg-gray-100 rounded-t-md">
+                                    <h2 class="text-xl font-bold">{{ $currencyName }}</h2>
+                                </div>
 
-                    @if ($totalAmount > 0)
-                        <div class="bg-white shadow-md rounded-md flex-shrink-0 flex flex-col items-center text-center w-64 no-underline hover:no-underline">
-
-                            <div class="w-full py-1  bg-gray-100 rounded-t-md">
-                                <h2 class="text-xl font-bold">{{ $currencyName }}</h2>
+                                <div class="w-auto p-1 m-2 rounded-md">
+                                    <p class="text-2xl mt-2 text-green-700">
+                                        {{ $formattedAmount }}
+                                    </p>
+                                </div>
                             </div>
-
-                            <div class="w-auto p-1 m-2 rounded-md">
-                                <p class="text-2xl mt-2 text-green-700">
-                                    {{ $formattedAmount }}
-                                </p>
-                            </div>
-                        </div>
-                    @endif
-                @endforeach
+                        @endif
+                    @endforeach
+                </div>
             </div>
         </div>
-
 
         <div class="bg-white p-4 rounded-lg shadow-lg">
 

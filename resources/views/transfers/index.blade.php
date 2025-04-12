@@ -199,25 +199,7 @@
         @endif
     </div>
 
-    {{-- يمكنك تفعيل DataTables هنا أو في ملف جافاسكربت منفصل --}}
-<script>
-    $(document).ready(function() {
-    $('#examplee').DataTable({
-        dom: 'Bfrtip',
-        buttons: [
-            {
-                extend: 'excelHtml5',
-                text: 'تصدير إلى Excel',
-                title: 'تقرير البيانات'
-            }
-        ],
-        language: {
-            url: '//cdn.datatables.net/plug-ins/1.13.4/i18n/ar.json'
-        }
-    });
-});
-
-</script>
+ 
 
 
 </x-app-layout>

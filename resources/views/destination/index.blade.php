@@ -33,28 +33,7 @@
                 <!-- جدول إرسال طلب صداقة -->
                 <div class="tab-pane fade show active" id="pills-send-request" role="tabpanel"
                     aria-labelledby="pills-send-request-tab">
-                    <form method="GET" action="{{ route('destination.index') }}" class="mb-4">
-                        <label>تصفية الرصيد بالدولار:</label>
-                        <select name="usd_filter">
-                            <option value="">الكل</option>
-                            <option value="positive" {{ request('usd_filter') == 'positive' ? 'selected' : '' }}>أكثر من
-                                الصفر</option>
-                            <option value="negative" {{ request('usd_filter') == 'negative' ? 'selected' : '' }}>أقل من
-                                الصفر</option>
-                        </select>
-
-                        <label>تصفية رصيد العملات:</label>
-                        <select name="currency_filter">
-                            <option value="">الكل</option>
-                            <option value="positive" {{ request('currency_filter') == 'positive' ? 'selected' : '' }}>أكثر
-                                من الصفر</option>
-                            <option value="negative" {{ request('currency_filter') == 'negative' ? 'selected' : '' }}>أقل
-                                من الصفر</option>
-                        </select>
-
-                        <button type="submit">تطبيق الفلتر</button>
-                    </form>
-
+                    
                     <div class="mb-4 card">
                         <div class="text-center text-gray-100 bg-blue-500 card-header">
                             <strong class="y"> الارصدة </strong>
@@ -282,38 +261,6 @@
                         }
                     });
                 </script>
-
-                <script>
-                    $(document).ready(function() {
-                        $('#filter-button').on('click', function() {
-                            var usdFilter = $('#usd-filter').val();
-                            var currencyFilter = $('#currency-filter').val();
-
-                            $('.myTable tbody tr').each(function() {
-                                var usdBalance = parseInt($(this).find('.usd-balance').text().replace(
-                                    /[^\d\-]/g, '')); // تعديل حسب التنسيق
-                                // لنأخذ أول عمود عملة كمثال
-                                var currencyBalance = parseInt($(this).find('.currency-balance').text().replace(
-                                    /[^\d\-]/g, ''));
-                                var show = true;
-
-                                if (usdFilter === 'positive' && usdBalance <= 0) {
-                                    show = false;
-                                } else if (usdFilter === 'negative' && usdBalance >= 0) {
-                                    show = false;
-                                }
-
-                                if (currencyFilter === 'positive' && currencyBalance <= 0) {
-                                    show = false;
-                                } else if (currencyFilter === 'negative' && currencyBalance >= 0) {
-                                    show = false;
-                                }
-
-                                $(this).toggle(show);
-                            });
-                        });
-                    });
-                </script>
                 <!-- جدول الطلبات الواردة -->
                 <div class="tab-pane fade" id="pills-received-request" role="tabpanel"
                     aria-labelledby="pills-received-request-tab">
@@ -353,7 +300,7 @@
                                                 {{ $destinations->firstWhere(
                                                     'id',
                                                     $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id,
-                                                )->country_user }}
+                                                )->country_user   }}
                                             </td>
 
 

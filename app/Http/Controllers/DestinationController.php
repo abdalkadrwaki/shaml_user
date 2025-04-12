@@ -19,100 +19,75 @@ class DestinationController extends Controller
      *
      * @return \Illuminate\View\View
      */
-    public function index(Request $request)
+    public function index()
     {
+
+
         $currentUserId = Auth::id();
+
+        // التحقق من صلاحيات المستخدم
         if (!$currentUserId) {
             abort(403, 'Unauthorized action.');
         }
 
-        // جلب طلبات الصداقة المقبولة
+        // جلب طلبات الأصدقاء المقبولة فقط
         $friendRequests = FriendRequest::where(function ($query) use ($currentUserId) {
             $query->where('receiver_id', $currentUserId)
-                  ->orWhere('sender_id', $currentUserId);
+                ->orWhere('sender_id', $currentUserId);
         })
-        ->where('status', 'accepted')
-        ->get();
+            ->where('status', 'accepted') // فقط الأصدقاء المقبولين
+            ->get();
 
-        // جلب المستخدمين (الأصدقاء)
-        $userIds = $friendRequests->map(function ($req) use ($currentUserId) {
-            return $req->receiver_id === $currentUserId ? $req->sender_id : $req->receiver_id;
+        // استخراج IDs للطرف الآخر في العلاقة
+        $userIds = $friendRequests->map(function ($request) use ($currentUserId) {
+            return $request->receiver_id === $currentUserId ? $request->sender_id : $request->receiver_id;
         });
 
+        // جلب معلومات المستخدمين الآخرين (الأصدقاء) بأعمدة محددة فقط
         $destinations = User::whereIn('id', $userIds)
             ->get(['id', 'Office_name', 'state_user', 'country_user']);
 
         // جلب بيانات العملات
         $currencies = Currency::all();
-        $currencyNames = $currencies->pluck('name_ar', 'name_en');
+        $currencyNames = $currencies->pluck('name_ar', 'name_en'); // جلب name_ar واستخدام name_en كـ key
 
-        // استخراج أعمدة العملات
+        // استخراج أسماء الأعمدة المرتبطة بالعملات
         $columns = $currencies->pluck('name_en')->map(function ($currency) {
             return [
-                'sender_column'   => $currency . '_2',
+                'sender_column' => $currency . '_2',
                 'receiver_column' => $currency . '_1',
             ];
         });
 
-        // إرفاق بيانات العملات ورصيد الدولار لكل طلب
-        foreach ($friendRequests as $friendRequest) {
+        // إضافة الأعمدة المترابطة مع العملات إلى البيانات
+        foreach ($friendRequests as $request) {
             foreach ($columns as $column) {
-                $columnKey = $friendRequest->sender_id === $currentUserId
+                $columnKey = $request->sender_id === $currentUserId
                     ? $column['sender_column']
                     : $column['receiver_column'];
-                $friendRequest->{$columnKey} = $friendRequest->{$columnKey} ?? 0;
+
+                $request->{$columnKey} = $request->{$columnKey} ?? 'غير متوفر';
             }
 
-            if ($friendRequest->sender_id === $currentUserId) {
-                $friendRequest->balance_in_usd = $friendRequest->balance_in_usd_2 ?? 0;
-            } elseif ($friendRequest->receiver_id === $currentUserId) {
-                $friendRequest->balance_in_usd = $friendRequest->balance_in_usd_1 ?? 0;
+            // جلب العمود balance_in_usd_sender أو balance_in_usd_receiver بناءً على الـ ID
+            if ($request->sender_id === $currentUserId) {
+                $request->balance_in_usd = $request->balance_in_usd_2 ?? 'غير متوفر';
+            } elseif ($request->receiver_id === $currentUserId) {
+                $request->balance_in_usd = $request->balance_in_usd_1 ?? 'غير متوفر';
             }
         }
 
-        $friendRequests->each(function ($friendRequest) use ($currentUserId) {
-            $friendRequest->limited = $friendRequest->sender_id === $currentUserId
-                ? $friendRequest->Limited_1
-                : $friendRequest->Limited_2;
+        $friendRequests->each(function ($request) use ($currentUserId) {
+            if ($request->sender_id === $currentUserId) {
+                $request->limited = $request->Limited_1;
+            } elseif ($request->receiver_id === $currentUserId) {
+                $request->limited = $request->Limited_2;
+            }
         });
 
-        // تطبيق فلترة رصيد الدولار إذا تم تحديده
-        if ($request->has('usd_filter') && $request->usd_filter !== '') {
-            if ($request->usd_filter === 'positive') {
-                $friendRequests = $friendRequests->filter(function ($req) {
-                    return (int) $req->balance_in_usd > 0;
-                });
-            } elseif ($request->usd_filter === 'negative') {
-                $friendRequests = $friendRequests->filter(function ($req) {
-                    return (int) $req->balance_in_usd < 0;
-                });
-            }
-        }
-
-        // تطبيق فلترة رصيد العملات (لأحد الأعمدة كمثال)
-        if ($request->has('currency_filter') && $request->currency_filter !== '' && !$friendRequests->isEmpty()) {
-            // هنا نفترض التصفية حسب العملة الأولى في القائمة
-            $firstColumn = $columns->first();
-            // استخدام أول طلب كمرجع لمعرفة العمود المناسب حسب حالة المستخدم
-            $sampleRequest = $friendRequests->first();
-            $currencyColumnKey = $sampleRequest->sender_id === $currentUserId
-                ? $firstColumn['sender_column']
-                : $firstColumn['receiver_column'];
-
-            if ($request->currency_filter === 'positive') {
-                $friendRequests = $friendRequests->filter(function ($req) use ($currencyColumnKey) {
-                    return (int) $req->{$currencyColumnKey} > 0;
-                });
-            } elseif ($request->currency_filter === 'negative') {
-                $friendRequests = $friendRequests->filter(function ($req) use ($currencyColumnKey) {
-                    return (int) $req->{$currencyColumnKey} < 0;
-                });
-            }
-        }
-
+        // تمرير البيانات إلى صفحة العرض
         return view('destination.index', compact('destinations', 'friendRequests', 'columns', 'currencyNames'));
     }
-
     public function updateLimited(Request $request, $id)
     {
         $currentUserId = Auth::id();

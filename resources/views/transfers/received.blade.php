@@ -55,7 +55,7 @@
 
         <!-- محتوى البطاقة (صناديق العملات) -->
 
-        <div id="currencyBoxes" class="overflow-x-auto whitespace-nowrap p-4 " style="display: none;">
+        <div id="currencyBoxes" class="overflow-x-auto whitespace-nowrap p-4" style="display: none;">
             <div class="flex flex-nowrap gap-4">
                 @foreach ($groupedTransfers as $currencyName => $transfers)
                     @php
@@ -73,7 +73,8 @@
                     @endphp
 
                     @if ($totalAmount > 0)
-                        <div class="bg-white justify-center shadow-md rounded-md flex-shrink-0 flex flex-col items-center text-center w-64 no-underline hover:no-underline">
+                        <div
+                            class="bg-white shadow-md rounded-md flex-shrink-0 flex flex-col items-center text-center w-64 no-underline hover:no-underline">
                             <div class="w-full py-2 {{ $colorClass }} rounded-t-md">
                                 <h2 class="text-xl font-bold">{{ $currencyName }}</h2>
                             </div>

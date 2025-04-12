@@ -35,8 +35,8 @@ class DestinationController extends Controller
         ->get();
 
         // جلب المستخدمين (الأصدقاء)
-        $userIds = $friendRequests->map(function ($request) use ($currentUserId) {
-            return $request->receiver_id === $currentUserId ? $request->sender_id : $request->receiver_id;
+        $userIds = $friendRequests->map(function ($req) use ($currentUserId) {
+            return $req->receiver_id === $currentUserId ? $req->sender_id : $req->receiver_id;
         });
 
         $destinations = User::whereIn('id', $userIds)
@@ -55,25 +55,25 @@ class DestinationController extends Controller
         });
 
         // إرفاق بيانات العملات ورصيد الدولار لكل طلب
-        foreach ($friendRequests as $request) {
+        foreach ($friendRequests as $friendRequest) {
             foreach ($columns as $column) {
-                $columnKey = $request->sender_id === $currentUserId
+                $columnKey = $friendRequest->sender_id === $currentUserId
                     ? $column['sender_column']
                     : $column['receiver_column'];
-                $request->{$columnKey} = $request->{$columnKey} ?? 0;
+                $friendRequest->{$columnKey} = $friendRequest->{$columnKey} ?? 0;
             }
 
-            if ($request->sender_id === $currentUserId) {
-                $request->balance_in_usd = $request->balance_in_usd_2 ?? 0;
-            } elseif ($request->receiver_id === $currentUserId) {
-                $request->balance_in_usd = $request->balance_in_usd_1 ?? 0;
+            if ($friendRequest->sender_id === $currentUserId) {
+                $friendRequest->balance_in_usd = $friendRequest->balance_in_usd_2 ?? 0;
+            } elseif ($friendRequest->receiver_id === $currentUserId) {
+                $friendRequest->balance_in_usd = $friendRequest->balance_in_usd_1 ?? 0;
             }
         }
 
-        $friendRequests->each(function ($request) use ($currentUserId) {
-            $request->limited = $request->sender_id === $currentUserId
-                ? $request->Limited_1
-                : $request->Limited_2;
+        $friendRequests->each(function ($friendRequest) use ($currentUserId) {
+            $friendRequest->limited = $friendRequest->sender_id === $currentUserId
+                ? $friendRequest->Limited_1
+                : $friendRequest->Limited_2;
         });
 
         // تطبيق فلترة رصيد الدولار إذا تم تحديده
@@ -90,11 +90,12 @@ class DestinationController extends Controller
         }
 
         // تطبيق فلترة رصيد العملات (لأحد الأعمدة كمثال)
-        // يمكنك تعديل هذا الجزء ليتم الفلترة على عدة عملات حسب الحاجة
-        if ($request->has('currency_filter') && $request->currency_filter !== '') {
-            // هنا سنفترض أنه سيتم الفلترة حسب العملة الأولى الموجودة في القائمة
+        if ($request->has('currency_filter') && $request->currency_filter !== '' && !$friendRequests->isEmpty()) {
+            // هنا نفترض التصفية حسب العملة الأولى في القائمة
             $firstColumn = $columns->first();
-            $currencyColumnKey = $friendRequests->first()->sender_id === $currentUserId
+            // استخدام أول طلب كمرجع لمعرفة العمود المناسب حسب حالة المستخدم
+            $sampleRequest = $friendRequests->first();
+            $currencyColumnKey = $sampleRequest->sender_id === $currentUserId
                 ? $firstColumn['sender_column']
                 : $firstColumn['receiver_column'];
 

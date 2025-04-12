@@ -92,7 +92,7 @@
                                             </td>
                                             <td class="px-3 py-1 font-bold text-center border-b">
                                                 <div class="flex flex-col items-center">
-                                                    
+
                                                     <span class="text-sm text-gray-600">
                                                         {{ ($officeData->country_user ?? '') . ' - ' . ($officeData->Office_name ?? '') }}
                                                     </span>
@@ -295,14 +295,11 @@
                                             </td>
                                             <td class="py-0.5 px-3 border-b text-center font-bold">
                                                 {{ $destinations->firstWhere('id', $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id)->Office_name ?? 'غير متوفر' }}
-                                                <br>
+                                                
                                                 {{ $destinations->firstWhere(
                                                     'id',
                                                     $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id,
-                                                )->country_user .
-                                                    ' - ' .
-                                                    $destinations->firstWhere('id', $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id)->state_user ??
-                                                    'غير متوفر' }}
+                                                )->country_user   }}
                                             </td>
 
 

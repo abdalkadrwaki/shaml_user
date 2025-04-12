@@ -55,7 +55,7 @@
 
         <!-- محتوى البطاقة (صناديق العملات) -->
 
-        <div id="currencyBoxes" class="flex justify-center overflow-x-auto whitespace-nowrap p-4" style="display: none;">
+        <div id="currencyBoxes" class="flex items-center justify-center min-h-screen overflow-x-auto whitespace-nowrap p-4" style="display: none;">
 
             <div class="flex flex-nowrap gap-4">
                 @foreach ($groupedTransfers as $currencyName => $transfers)

@@ -14,80 +14,63 @@ use Illuminate\Support\Facades\Gate;
 class DestinationController extends Controller
 {
 
-    /**
-     * عرض صفحة جلب بيانات الأصدقاء المرتبطين.
-     *
-     * @return \Illuminate\View\View
-     */
     public function index()
-    {
+{
+    $currentUserId = Auth::id();
+    $usdFilter = request()->input('usd_filter', 'all');
+    $currencyFilter = request()->input('currency_filter', 'all');
 
+    // جلب طلبات الصداقة المقبولة
+    $friendRequests = FriendRequest::where(function ($query) use ($currentUserId) {
+        $query->where('receiver_id', $currentUserId)
+            ->orWhere('sender_id', $currentUserId);
+    })
+    ->where('status', 'accepted')
+    ->get();
 
-        $currentUserId = Auth::id();
+    // جلب أعمدة العملات
+    $currencies = Currency::all();
+    $currencyNames = $currencies->pluck('name_ar', 'name_en');
+    $columns = $currencies->pluck('name_en')->map(function ($currency) {
+        return [
+            'sender_column' => $currency . '_2',
+            'receiver_column' => $currency . '_1',
+        ];
+    });
 
-        // التحقق من صلاحيات المستخدم
-        if (!$currentUserId) {
-            abort(403, 'Unauthorized action.');
-        }
+    // تطبيق تصفية رصيد الدولار
+    if ($usdFilter !== 'all') {
+        $friendRequests = $friendRequests->filter(function ($request) use ($currentUserId, $usdFilter) {
+            $balance = $request->receiver_id === $currentUserId
+                ? $request->balance_in_usd_1
+                : $request->balance_in_usd_2;
 
-        // جلب طلبات الأصدقاء المقبولة فقط
-        $friendRequests = FriendRequest::where(function ($query) use ($currentUserId) {
-            $query->where('receiver_id', $currentUserId)
-                ->orWhere('sender_id', $currentUserId);
-        })
-            ->where('status', 'accepted') // فقط الأصدقاء المقبولين
-            ->get();
-
-        // استخراج IDs للطرف الآخر في العلاقة
-        $userIds = $friendRequests->map(function ($request) use ($currentUserId) {
-            return $request->receiver_id === $currentUserId ? $request->sender_id : $request->receiver_id;
+            return $usdFilter === 'positive' ? $balance > 0 : $balance < 0;
         });
-
-        // جلب معلومات المستخدمين الآخرين (الأصدقاء) بأعمدة محددة فقط
-        $destinations = User::whereIn('id', $userIds)
-            ->get(['id', 'Office_name', 'state_user', 'country_user']);
-
-        // جلب بيانات العملات
-        $currencies = Currency::all();
-        $currencyNames = $currencies->pluck('name_ar', 'name_en'); // جلب name_ar واستخدام name_en كـ key
-
-        // استخراج أسماء الأعمدة المرتبطة بالعملات
-        $columns = $currencies->pluck('name_en')->map(function ($currency) {
-            return [
-                'sender_column' => $currency . '_2',
-                'receiver_column' => $currency . '_1',
-            ];
-        });
-
-        // إضافة الأعمدة المترابطة مع العملات إلى البيانات
-        foreach ($friendRequests as $request) {
-            foreach ($columns as $column) {
-                $columnKey = $request->sender_id === $currentUserId
-                    ? $column['sender_column']
-                    : $column['receiver_column'];
-
-                $request->{$columnKey} = $request->{$columnKey} ?? 'غير متوفر';
-            }
-
-            // جلب العمود balance_in_usd_sender أو balance_in_usd_receiver بناءً على الـ ID
-            if ($request->sender_id === $currentUserId) {
-                $request->balance_in_usd = $request->balance_in_usd_2 ?? 'غير متوفر';
-            } elseif ($request->receiver_id === $currentUserId) {
-                $request->balance_in_usd = $request->balance_in_usd_1 ?? 'غير متوفر';
-            }
-        }
-
-        $friendRequests->each(function ($request) use ($currentUserId) {
-            if ($request->sender_id === $currentUserId) {
-                $request->limited = $request->Limited_1;
-            } elseif ($request->receiver_id === $currentUserId) {
-                $request->limited = $request->Limited_2;
-            }
-        });
-
-        // تمرير البيانات إلى صفحة العرض
-        return view('destination.index', compact('destinations', 'friendRequests', 'columns', 'currencyNames'));
     }
+
+    // تطبيق تصفية رصيد العملات
+    if ($currencyFilter !== 'all') {
+        $friendRequests = $friendRequests->filter(function ($request) use ($currentUserId, $currencyFilter, $columns) {
+            foreach ($columns as $column) {
+                $columnKey = $request->receiver_id === $currentUserId
+                    ? $column['receiver_column']
+                    : $column['sender_column'];
+
+                $balance = $request->{$columnKey} ?? 0;
+
+                if (($currencyFilter === 'positive' && $balance > 0) ||
+                    ($currencyFilter === 'negative' && $balance < 0)) {
+                    return true;
+                }
+            }
+            return false;
+        });
+    }
+
+    // بقية الكود كما هو...
+    return view('destination.index', compact('destinations', 'friendRequests', 'columns', 'currencyNames'));
+}
     public function updateLimited(Request $request, $id)
     {
         $currentUserId = Auth::id();

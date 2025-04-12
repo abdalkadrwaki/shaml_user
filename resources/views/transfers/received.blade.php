@@ -55,9 +55,8 @@
 
         <!-- محتوى البطاقة (صناديق العملات) -->
 
-        <div id="currencyBoxes" class="flex items-center justify-center min-h-screen overflow-x-auto whitespace-nowrap p-4" style="display: none;">
-
-            <div class="flex flex-nowrap gap-4">
+        <div id="currencyBoxes" class="overflow-x-auto whitespace-nowrap p-4" style="display: none;">
+            <div class="flex flex-nowrap gap-6 justify-center">
                 @foreach ($groupedTransfers as $currencyName => $transfers)
                     @php
                         $totalAmount = $transfers->sum('sent_amount');

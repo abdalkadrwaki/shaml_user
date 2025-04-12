@@ -45,42 +45,43 @@
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
-        <!-- رأس البطاقة -->
-        <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
 
-            <button id="toggleCurrencyBtn" class="btn btn-outline-primary btn-sm">
-                إظهار مجموع
-            </button>
+
+        <div id="currencyBoxes" class="flex gap-4 justify-between mt-4" style="display: none;">
+            @foreach ($groupedTransfers as $currencyName => $transfers)
+                @php
+                    $totalAmount = $transfers->sum('sent_amount');
+                    $formattedAmount = number_format($totalAmount, 2);
+
+                    // ألوان مخصصة حسب العملة
+                    $colorClass = 'bg-gray-300 text-black border-gray-400';
+                    if ($currencyName === 'دولار') {
+                        $colorClass = 'bg-green-600 text-white border-green-700';
+                    } elseif ($currencyName === 'تركي') {
+                        $colorClass = 'bg-red-600 text-white border-red-700';
+                    } elseif ($currencyName === 'يورو') {
+                        $colorClass = 'bg-blue-600 text-white border-blue-700';
+                    }
+                @endphp
+
+                @if ($totalAmount > 0)
+                    <div class="bg-white shadow-md rounded-md flex flex-col items-center text-center flex-1 mx-2 no-underline hover:no-underline">
+                        <div class="w-full py-2 {{ $colorClass }} rounded-t-md">
+                            <h2 class="text-xl font-bold">{{ $currencyName }}</h2>
+                        </div>
+                        <div class="w-full bg-custom-gray2 py-2 rounded-t-md border-b {{ Str::after($colorClass, ' ') }}">
+                            <h2 class="text-xl font-bold">{{ __('إجمالي الإرساليات') }}</h2>
+                        </div>
+                        <div class="w-auto p-1 m-2 rounded-md">
+                            <p class="text-2xl mt-2 {{ Str::contains($colorClass, 'text-white') ? 'text-black' : 'text-green-600' }}">
+                                {{ $formattedAmount }}
+                            </p>
+                        </div>
+                    </div>
+                @endif
+            @endforeach
         </div>
 
-        <!-- محتوى البطاقة (صناديق العملات) -->
-        <div id="currencyBoxes" class="p-4" style="display: none;">
-            <div class="overflow-x-auto">
-                <div class="d-flex flex-wrap gap-4 justify-content-center">
-                    @foreach ($groupedTransfers as $currencyName => $transfers)
-                        @php
-                            $totalAmount = $transfers->sum('sent_amount');
-                            // ألوان مخصصة حسب العملة
-                            $bgColor = 'bg-light text-dark';
-                            if ($currencyName === 'دولار') {
-                                $bgColor = 'bg-success text-white';
-                            } elseif ($currencyName === 'تركي') {
-                                $bgColor = 'bg-danger text-white';
-                            } elseif ($currencyName === 'يورو') {
-                                $bgColor = 'bg-primary text-white';
-                            }
-                        @endphp
-
-                        @if ($totalAmount > 0)
-                            <div class="p-4 rounded shadow-sm border {{ $bgColor }}" style="min-width: 200px;">
-                                <h3 class="h6 font-weight-bold text-center">{{ $currencyName }}</h3>
-                                <p class="mt-2 text-center">{{ number_format($totalAmount, 2) }}</p>
-                            </div>
-                        @endif
-                    @endforeach
-                </div>
-            </div>
-        </div>
 
         <div class="bg-white p-4 rounded-lg shadow-lg">
 
@@ -347,19 +348,6 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-    <script>
-        // تبديل إظهار/إخفاء صناديق العملات
-        document.getElementById('toggleCurrencyBtn').addEventListener('click', function() {
-            var currencyBoxes = document.getElementById('currencyBoxes');
-            if (currencyBoxes.style.display === 'none' || currencyBoxes.style.display === '') {
-                currencyBoxes.style.display = 'block';
-                this.textContent = 'إخفاء العملات';
-            } else {
-                currencyBoxes.style.display = 'none';
-                this.textContent = 'إظهار العملات';
-            }
-        });
-    </script>
     <script>
         // المتغيرات العامة
         let selectedTransfer = null;

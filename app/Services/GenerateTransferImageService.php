@@ -150,7 +150,7 @@ class GenerateTransferImageService
         imageline($image, 30, 266, 770, 266, $borderColor);
 
         // إضافة اللوجو إلى الصورة
-        $logoPath = public_path('images/image-removebg-preview (2).png');
+        $logoPath = public_path('#');
 
         if (file_exists($logoPath)) {
             // تحميل صورة اللوجو

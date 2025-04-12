@@ -55,40 +55,42 @@
 
         <!-- محتوى البطاقة (صناديق العملات) -->
 
-        <div id="currencyBoxes" class="flex gap-4 justify-between mt-4" style="display: none;">
-            @foreach ($groupedTransfers as $currencyName => $transfers)
-                @php
-                    $totalAmount = $transfers->sum('sent_amount');
-                    $formattedAmount = number_format($totalAmount, 2);
+        <div id="currencyBoxes" class="overflow-x-auto whitespace-nowrap p-4" style="display: none;">
+            <div class="flex flex-nowrap gap-4">
+                @foreach ($groupedTransfers as $currencyName => $transfers)
+                    @php
+                        $totalAmount = $transfers->sum('sent_amount');
+                        $formattedAmount = number_format($totalAmount, 2);
 
-                    // ألوان مخصصة حسب العملة
-                    $colorClass = 'bg-gray-300 text-black border-gray-400';
-                    if ($currencyName === 'دولار') {
-                        $colorClass = 'bg-green-600 text-white border-green-700';
-                    } elseif ($currencyName === 'تركي') {
-                        $colorClass = 'bg-red-600 text-white border-red-700';
-                    } elseif ($currencyName === 'يورو') {
-                        $colorClass = 'bg-blue-600 text-white border-blue-700';
-                    }
-                @endphp
+                        $colorClass = 'bg-gray-300 text-black border-gray-400';
+                        if ($currencyName === 'دولار') {
+                            $colorClass = 'bg-green-600 text-white border-green-700';
+                        } elseif ($currencyName === 'تركي') {
+                            $colorClass = 'bg-red-600 text-white border-red-700';
+                        } elseif ($currencyName === 'يورو') {
+                            $colorClass = 'bg-blue-600 text-white border-blue-700';
+                        }
+                    @endphp
 
-                @if ($totalAmount > 0)
-                    <div class="bg-white shadow-md rounded-md flex flex-col items-center text-center flex-1 mx-2 no-underline hover:no-underline">
-                        <div class="w-full py-2 {{ $colorClass }} rounded-t-md">
-                            <h2 class="text-xl font-bold">{{ $currencyName }}</h2>
+                    @if ($totalAmount > 0)
+                        <div class="bg-white shadow-md rounded-md flex-shrink-0 flex flex-col items-center text-center w-64 no-underline hover:no-underline">
+                            <div class="w-full py-2 {{ $colorClass }} rounded-t-md">
+                                <h2 class="text-xl font-bold">{{ $currencyName }}</h2>
+                            </div>
+                            <div class="w-full bg-custom-gray2 py-2 border-b {{ Str::after($colorClass, ' ') }}">
+                                <h2 class="text-xl font-bold">{{ __('إجمالي الإرساليات') }}</h2>
+                            </div>
+                            <div class="w-auto p-1 m-2 rounded-md">
+                                <p class="text-2xl mt-2 text-green-700">
+                                    {{ $formattedAmount }}
+                                </p>
+                            </div>
                         </div>
-                        <div class="w-full bg-custom-gray2 py-2 rounded-t-md border-b {{ Str::after($colorClass, ' ') }}">
-                            <h2 class="text-xl font-bold">{{ __('إجمالي الإرساليات') }}</h2>
-                        </div>
-                        <div class="w-auto p-1 m-2 rounded-md">
-                            <p class="text-2xl mt-2 {{ Str::contains($colorClass, 'text-white') ? 'text-black' : 'text-green-600' }}">
-                                {{ $formattedAmount }}
-                            </p>
-                        </div>
-                    </div>
-                @endif
-            @endforeach
+                    @endif
+                @endforeach
+            </div>
         </div>
+
 
         <div class="bg-white p-4 rounded-lg shadow-lg">
 

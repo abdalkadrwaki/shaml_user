@@ -221,10 +221,10 @@
                                 const balances = JSON.parse(this.dataset.balances);
                                 const totalBalance = parseFloat(this.dataset.totalBalance);
 
-                                let formattedText = `╔═══════════════════════════╗\n`;
+                                let formattedText = `╔═══════════════════╗\n`;
                                 formattedText += `   اسم المكتب: ${office}\n`;
                                 formattedText += `   الموقع: ${location}\n`;
-                                formattedText += `╚═══════════════════════════╝\n\n`;
+                                formattedText += `╚══════════════════════╝\n\n`;
 
                                 Object.entries(balances).forEach(([code, data]) => {
                                     if (data.value != 0) {
@@ -233,7 +233,7 @@
                                     }
                                 });
 
-                                formattedText += `\n═══════════════════════════\n`;
+                                formattedText += `\n════════════════════\n`;
                                 formattedText +=
                                     `الرصيد الإجمالي: ${Math.abs(totalBalance).toLocaleString()} دولار\n`;
                                 formattedText += `${totalBalance > 0 ? '(دائن لكم)' : '(دائن عليكم)'}\n\n`;
@@ -295,7 +295,7 @@
                                             </td>
                                             <td class="py-0.5 px-3 border-b text-center font-bold">
                                                 {{ $destinations->firstWhere('id', $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id)->Office_name ?? 'غير متوفر' }}
-                                                
+
                                                 {{ $destinations->firstWhere(
                                                     'id',
                                                     $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id,

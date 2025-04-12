@@ -45,15 +45,7 @@
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
-        <!-- رأس البطاقة -->
-        <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
 
-            <button id="toggleCurrencyBtn" class="btn btn-outline-primary btn-sm">
-                إظهار مجموع
-            </button>
-        </div>
-
-        <!-- محتوى البطاقة (صناديق العملات) -->
 
         <div id="currencyBoxes" class="overflow-x-auto whitespace-nowrap p-4">
             <div class="flex flex-nowrap gap-6 justify-center">
@@ -68,7 +60,7 @@
                     @if ($totalAmount > 0)
                         <div class="bg-white shadow-md rounded-md flex-shrink-0 flex flex-col items-center text-center w-64 no-underline hover:no-underline">
 
-                            <div class="w-full py-2  bg-gray-100 rounded-t-md">
+                            <div class="w-full py-1  bg-gray-100 rounded-t-md">
                                 <h2 class="text-xl font-bold">{{ $currencyName }}</h2>
                             </div>
 

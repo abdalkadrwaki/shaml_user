@@ -39,7 +39,7 @@
                         </div>
                         <div class="container mx-auto mt-3">
                             <table
-                                class="w-full overflow-hidden border border-gray-300 rounded-lg shadow-md table-auto tebl"
+                                class="myTable w-full overflow-hidden border border-gray-300 rounded-lg shadow-md table-auto tebl"
                                 style="direction: rtl;">
                                 <thead class="text-center text-gray-700 bg-gray-200">
                                     <tr class="text-center">
@@ -267,7 +267,7 @@
                         </div>
                         <div class="container mx-auto mt-3">
                             <table
-                                class="w-full overflow-hidden border border-gray-300 rounded-lg shadow-md table-auto tebl"
+                                class="myTable w-full overflow-hidden border border-gray-300 rounded-lg shadow-md table-auto tebl"
                                 style="direction: rtl;">
                                 <thead class="text-center text-gray-700 bg-gray-200">
                                     <tr class="text-center">

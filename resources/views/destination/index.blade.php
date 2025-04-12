@@ -33,33 +33,7 @@
                 <!-- جدول إرسال طلب صداقة -->
                 <div class="tab-pane fade show active" id="pills-send-request" role="tabpanel"
                     aria-labelledby="pills-send-request-tab">
-                    <div class="mb-4">
-                        <form method="GET" action="{{ route('destinations.index') }}" class="flex flex-wrap gap-4 p-4 bg-gray-50 rounded-lg">
-                            <!-- تصفية رصيد الدولار -->
-                            <div class="flex items-center gap-2">
-                                <label class="text-gray-700">رصيد الدولار:</label>
-                                <select name="usd_filter" class="px-3 py-2 border rounded-md">
-                                    <option value="all" {{ request('usd_filter') == 'all' ? 'selected' : '' }}>الكل</option>
-                                    <option value="positive" {{ request('usd_filter') == 'positive' ? 'selected' : '' }}>موجب</option>
-                                    <option value="negative" {{ request('usd_filter') == 'negative' ? 'selected' : '' }}>سالب</option>
-                                </select>
-                            </div>
-
-                            <!-- تصفية رصيد العملات -->
-                            <div class="flex items-center gap-2">
-                                <label class="text-gray-700">رصيد العملات:</label>
-                                <select name="currency_filter" class="px-3 py-2 border rounded-md">
-                                    <option value="all" {{ request('currency_filter') == 'all' ? 'selected' : '' }}>الكل</option>
-                                    <option value="positive" {{ request('currency_filter') == 'positive' ? 'selected' : '' }}>موجب</option>
-                                    <option value="negative" {{ request('currency_filter') == 'negative' ? 'selected' : '' }}>سالب</option>
-                                </select>
-                            </div>
-
-                            <button type="submit" class="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600">
-                                تطبيق التصفية
-                            </button>
-                        </form>
-                    </div>
+                    
                     <div class="mb-4 card">
                         <div class="text-center text-gray-100 bg-blue-500 card-header">
                             <strong class="y"> الارصدة </strong>

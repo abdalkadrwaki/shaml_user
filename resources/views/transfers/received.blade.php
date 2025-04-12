@@ -45,7 +45,15 @@
         @if (session('success'))
             <div class="alert alert-success">{{ session('success') }}</div>
         @endif
+        <!-- رأس البطاقة -->
+        <div class="d-flex justify-content-between align-items-center p-3 border-bottom">
 
+            <button id="toggleCurrencyBtn" class="btn btn-outline-primary btn-sm">
+                إظهار مجموع
+            </button>
+        </div>
+
+        <!-- محتوى البطاقة (صناديق العملات) -->
 
         <div id="currencyBoxes" class="flex gap-4 justify-between mt-4" style="display: none;">
             @foreach ($groupedTransfers as $currencyName => $transfers)
@@ -81,7 +89,6 @@
                 @endif
             @endforeach
         </div>
-
 
         <div class="bg-white p-4 rounded-lg shadow-lg">
 
@@ -348,6 +355,19 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
+    <script>
+        // تبديل إظهار/إخفاء صناديق العملات
+        document.getElementById('toggleCurrencyBtn').addEventListener('click', function() {
+            var currencyBoxes = document.getElementById('currencyBoxes');
+            if (currencyBoxes.style.display === 'none' || currencyBoxes.style.display === '') {
+                currencyBoxes.style.display = 'block';
+                this.textContent = 'إخفاء العملات';
+            } else {
+                currencyBoxes.style.display = 'none';
+                this.textContent = 'إظهار العملات';
+            }
+        });
+    </script>
     <script>
         // المتغيرات العامة
         let selectedTransfer = null;

@@ -60,7 +60,7 @@
                     @if ($totalAmount > 0)
                         <div class="bg-white shadow-md rounded-md flex-shrink-0 flex flex-col items-center text-center w-64 no-underline hover:no-underline">
 
-                            <div class="w-full py-1  bg-gray-100 rounded-t-md">
+                            <div class="w-full py-1  text-white bg-blue-500 rounded-t-md">
                                 <h2 class="text-xl font-bold">{{ $currencyName }}</h2>
                             </div>
 

@@ -65,7 +65,7 @@
                             </div>
 
                             <div class="w-auto p-1 m-2 rounded-md">
-                                <p class="text-2xl mt-2 text-green-700">
+                                <p class="text-2xl mt-2 text-black font-bold">
                                     {{ $formattedAmount }}
                                 </p>
                             </div>

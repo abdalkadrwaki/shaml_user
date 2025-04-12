@@ -78,9 +78,7 @@
                             <div class="w-full py-2 {{ $colorClass }} rounded-t-md">
                                 <h2 class="text-xl font-bold">{{ $currencyName }}</h2>
                             </div>
-                            <div class="w-full bg-custom-gray py-2 border-b {{ Str::after($colorClass, ' ') }}">
-                                <h2 class="text-xl font-bold">{{ __('إجمالي الإرساليات') }}</h2>
-                            </div>
+            
                             <div class="w-auto p-1 m-2 rounded-md">
                                 <p class="text-2xl mt-2 text-green-700">
                                     {{ $formattedAmount }}

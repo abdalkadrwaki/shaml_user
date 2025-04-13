@@ -64,7 +64,12 @@ class TransfersypController extends Controller
             Log::debug("No active exchange rate found for destination ID: {$destinationId}");
             return response()->json(['success' => false, 'message' => 'تم إيقاف سعر الصرف']);
         }
-
+        if (
+            ($friendRequest->sender_id == Auth::id() && !$friendRequest->stop_syp_2) ||
+            ($friendRequest->receiver_id == Auth::id() && !$friendRequest->stop_syp_1)
+        ) {
+            throw new \Exception('تم إيقاف العملة السورية. يرجى مراجعة المكتب.');
+        }
         // التحقق من وقت توفر الخدمة لسعر الصرف
         $startTime   = Carbon::parse($exchangeRate->exchange_rate_start_time)->format('H:i');
         $endTime     = Carbon::parse($exchangeRate->exchange_rate_end_time)->format('H:i');

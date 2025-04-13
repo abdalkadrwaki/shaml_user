@@ -52,7 +52,7 @@
                     </div>
 
                     <!-- قسم البطاقة الرئيسية -->
-                    <div class=" mt-4 card">
+                    <div class="w-1/2 mt-4 card">
                         <div class="card-body">
                             <!-- قائمة التبويبات -->
                             <ul class="p-1 mt-1 mb-3 nav nav-pills justify-content-center" id="pills-tab" role="tablist"

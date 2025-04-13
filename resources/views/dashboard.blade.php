@@ -45,75 +45,97 @@
 @endif
 
 <!-- Main Content Section -->
-<div class="d-flex flex-wrap gap-3 justify-content-between">
+<div class="flex-wrap -p-8 d-flex justify-content-between">
     <!-- Currency Rates Section -->
-    <div wire:poll.600ms class="flex-grow-1 flex-shrink-1" style="min-width: 300px; flex-basis: 100%;">
+    <div wire:poll.600ms style="flex: 2 8 45%;">
         <livewire:currency-rates />
     </div>
 
     <!-- Main Card Container -->
-    <div class="flex-grow-1 flex-shrink-1 card mt-3" style="min-width: 300px; flex-basis: 100%;">
+    <div class="w-1/2 mt-4 card">
         <div class="card-body">
-            <!-- Navigation Tabs -->
-            <ul class="nav nav-pills justify-content-center mb-3 flex-wrap gap-2" id="pills-tab" role="tablist">
-                <!-- New Transfer Tab -->
-                <li class="nav-item flex-fill text-center" role="presentation">
-                    <a class="nav-link text-white bg-blue-900" id="pills-send-request-tab" data-bs-toggle="pill"
-                        href="#pills-send-request" role="tab" aria-controls="pills-send-request" aria-selected="true">
+
+            <!-- Navigation Tabs (يمكنك حذفها أو تركها كما هي، لن تؤثر) -->
+            <ul class="p-1 mt-1 mb-3 nav nav-pills justify-content-center" id="pills-tab"
+                role="tablist"
+                style="display: flex; width: 100%; justify-content: space-between;">
+                <li class="nav-item" role="presentation" style="flex: 1; margin: 0 5px;">
+                    <a class="px-2 py-2 text-center text-white bg-blue-900 nav-link"
+                        id="pills-send-request-tab"
+                        data-bs-toggle="pill"
+                        href="#pills-send-request"
+                        role="tab"
+                        aria-controls="pills-send-request"
+                        aria-selected="true"
+                        style="width: 100%;">
                         حوالة جديدة
                     </a>
                 </li>
-
-                <!-- SYP Tab -->
-                <li class="nav-item flex-fill text-center" role="presentation">
-                    <a class="nav-link text-white bg-blue-900" id="pills-SYP-tab" data-bs-toggle="pill"
-                        href="#pills-SYP" role="tab" aria-controls="pills-SYP" aria-selected="false">
+                <li class="nav-item" role="presentation" style="flex: 1; margin: 0 5px;">
+                    <a class="px-2 py-2 text-center text-white bg-blue-900 nav-link"
+                        id="pills-SYP-tab"
+                        data-bs-toggle="pill"
+                        href="#pills-SYP"
+                        role="tab"
+                        aria-controls="pills-SYP"
+                        aria-selected="true"
+                        style="width: 100%;">
                         سوري
                     </a>
                 </li>
-
-                <!-- Payment Voucher Tab -->
-                <li class="nav-item flex-fill text-center" role="presentation">
-                    <a class="nav-link text-white bg-blue-900" id="pills-payment-voucher-tab" data-bs-toggle="pill"
-                        href="#pills-payment-voucher" role="tab" aria-controls="pills-payment-voucher"
-                        aria-selected="false">
+                <li class="nav-item" role="presentation" style="flex: 1; margin: 0 5px;">
+                    <a class="px-2 py-2 text-center text-white bg-blue-900 nav-link"
+                        id="pills-payment-voucher-tab"
+                        data-bs-toggle="pill"
+                        href="#pills-payment-voucher"
+                        role="tab"
+                        aria-controls="pills-payment-voucher"
+                        aria-selected="false"
+                        style="width: 100%;">
                         سند صرف
                         <span class="badge bg-danger ms-1"></span>
                     </a>
                 </li>
-
-                <!-- Approval Tab -->
-                <li class="nav-item flex-fill text-center" role="presentation">
-                    <a class="nav-link text-white bg-blue-900" id="pills-approval-tab" data-bs-toggle="pill"
-                        href="#pills-approval" role="tab" aria-controls="pills-approval" aria-selected="false">
+                <li class="nav-item" role="presentation" style="flex: 1; margin: 0 5px;">
+                    <a class="px-2 py-2 text-center text-white bg-blue-900 nav-link"
+                        id="pills-approval-tab"
+                        data-bs-toggle="pill"
+                        href="#pills-approval"
+                        role="tab"
+                        aria-controls="pills-approval"
+                        aria-selected="false"
+                        style="width: 100%;">
                         اعتماد
                         <span class="badge bg-danger ms-1"></span>
                     </a>
                 </li>
             </ul>
 
-            <!-- Tab Content -->
+            <!-- Tab Content - جميع التابات ظاهرة -->
             <div class="tab-content" id="pills-tabContent" style="direction: rtl;">
-                <div class="tab-pane fade" id="pills-send-request" role="tabpanel" aria-labelledby="pills-send-request-tab">
+                <!-- حوالة جديدة -->
+                <div class="tab-pane show active" id="pills-send-request">
                     <x-transfer-form :currencies="$currencies" :destinations="$destinations" />
                 </div>
 
-                <div class="tab-pane fade" id="pills-payment-voucher" role="tabpanel" aria-labelledby="pills-payment-voucher-tab">
+                <!-- سند صرف -->
+                <div class="tab-pane show active" id="pills-payment-voucher">
                     <x-transfer-form-exchange :currencies="$currencies" :destinations="$destinations"/>
                 </div>
 
-                <div class="tab-pane fade" id="pills-approval" role="tabpanel" aria-labelledby="pills-approval-tab">
+                <!-- اعتماد -->
+                <div class="tab-pane show active" id="pills-approval">
                     <x-TransferFormapproval :currencies="$currencies" :destinations="$destinations" />
                 </div>
 
-                <div class="tab-pane fade" id="pills-SYP" role="tabpanel" aria-labelledby="pills-SYP-tab">
+                <!-- سوري -->
+                <div class="tab-pane show active" id="pills-SYP">
                     <x-transfer-form-syp :destinations="$destinations" :currencies="$currencies" :exchangeRate="$exchangeRate" />
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 

@@ -44,99 +44,83 @@
     </div>
 @endif
 
-<!-- Main Content Section -->
 <div class="flex-wrap -p-8 d-flex justify-content-between">
-    <!-- Currency Rates Section -->
+    <!-- قسم أسعار العملات -->
     <div wire:poll.600ms style="flex: 2 8 45%;">
         <livewire:currency-rates />
     </div>
 
-    <!-- Main Card Container -->
+    <!-- المحتوى الرئيسي -->
     <div class="w-1/2 mt-4 card">
         <div class="card-body">
+            <!-- شبكة عرض النماذج -->
+            <div style="display: grid;
+                      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+                      gap: 1.5rem;
+                      direction: rtl;
+                      align-items: start;">
 
-            <!-- Navigation Tabs (يمكنك حذفها أو تركها كما هي، لن تؤثر) -->
-            <ul class="p-1 mt-1 mb-3 nav nav-pills justify-content-center" id="pills-tab"
-                role="tablist"
-                style="display: flex; width: 100%; justify-content: space-between;">
-                <li class="nav-item" role="presentation" style="flex: 1; margin: 0 5px;">
-                    <a class="px-2 py-2 text-center text-white bg-blue-900 nav-link"
-                        id="pills-send-request-tab"
-                        data-bs-toggle="pill"
-                        href="#pills-send-request"
-                        role="tab"
-                        aria-controls="pills-send-request"
-                        aria-selected="true"
-                        style="width: 100%;">
-                        حوالة جديدة
-                    </a>
-                </li>
-                <li class="nav-item" role="presentation" style="flex: 1; margin: 0 5px;">
-                    <a class="px-2 py-2 text-center text-white bg-blue-900 nav-link"
-                        id="pills-SYP-tab"
-                        data-bs-toggle="pill"
-                        href="#pills-SYP"
-                        role="tab"
-                        aria-controls="pills-SYP"
-                        aria-selected="true"
-                        style="width: 100%;">
-                        سوري
-                    </a>
-                </li>
-                <li class="nav-item" role="presentation" style="flex: 1; margin: 0 5px;">
-                    <a class="px-2 py-2 text-center text-white bg-blue-900 nav-link"
-                        id="pills-payment-voucher-tab"
-                        data-bs-toggle="pill"
-                        href="#pills-payment-voucher"
-                        role="tab"
-                        aria-controls="pills-payment-voucher"
-                        aria-selected="false"
-                        style="width: 100%;">
-                        سند صرف
-                        <span class="badge bg-danger ms-1"></span>
-                    </a>
-                </li>
-                <li class="nav-item" role="presentation" style="flex: 1; margin: 0 5px;">
-                    <a class="px-2 py-2 text-center text-white bg-blue-900 nav-link"
-                        id="pills-approval-tab"
-                        data-bs-toggle="pill"
-                        href="#pills-approval"
-                        role="tab"
-                        aria-controls="pills-approval"
-                        aria-selected="false"
-                        style="width: 100%;">
-                        اعتماد
-                        <span class="badge bg-danger ms-1"></span>
-                    </a>
-                </li>
-            </ul>
-
-            <!-- Tab Content - جميع التابات ظاهرة -->
-            <div class="tab-content" id="pills-tabContent" style="direction: rtl;">
                 <!-- حوالة جديدة -->
-                <div class="tab-pane show active" id="pills-send-request">
+                <div class="border border-blue-200 rounded-lg p-4 bg-white shadow-sm">
+                    <h4 class="text-lg font-semibold mb-4 text-blue-800 border-b pb-2">
+                        <i class="fas fa-exchange-alt mr-2"></i>
+                        حوالة جديدة
+                    </h4>
                     <x-transfer-form :currencies="$currencies" :destinations="$destinations" />
                 </div>
 
-                <!-- سند صرف -->
-                <div class="tab-pane show active" id="pills-payment-voucher">
+                <!-- النموذج السوري -->
+                <div class="border border-green-200 rounded-lg p-4 bg-white shadow-sm">
+                    <h4 class="text-lg font-semibold mb-4 text-green-800 border-b pb-2">
+                        <i class="fas fa-lira-sign mr-2"></i>
+                        حوالة ليرة سورية
+                    </h4>
+                    <x-transfer-form-syp :destinations="$destinations" :currencies="$currencies" :exchangeRate="$exchangeRate" />
+                </div>
+
+                <!-- سند الصرف -->
+                <div class="border border-purple-200 rounded-lg p-4 bg-white shadow-sm">
+                    <h4 class="text-lg font-semibold mb-4 text-purple-800 border-b pb-2">
+                        <i class="fas fa-receipt mr-2"></i>
+                        سند صرف
+                    </h4>
                     <x-transfer-form-exchange :currencies="$currencies" :destinations="$destinations"/>
                 </div>
 
-                <!-- اعتماد -->
-                <div class="tab-pane show active" id="pills-approval">
+                <!-- الاعتماد -->
+                <div class="border border-orange-200 rounded-lg p-4 bg-white shadow-sm">
+                    <h4 class="text-lg font-semibold mb-4 text-orange-800 border-b pb-2">
+                        <i class="fas fa-stamp mr-2"></i>
+                        اعتماد الحوالات
+                    </h4>
                     <x-TransferFormapproval :currencies="$currencies" :destinations="$destinations" />
                 </div>
 
-                <!-- سوري -->
-                <div class="tab-pane show active" id="pills-SYP">
-                    <x-transfer-form-syp :destinations="$destinations" :currencies="$currencies" :exchangeRate="$exchangeRate" />
-                </div>
             </div>
         </div>
     </div>
 </div>
 
+<style>
+/* تأثيرات مرئية بسيطة */
+.border-b {
+    border-bottom: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.shadow-sm {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.rounded-lg {
+    border-radius: 12px;
+}
+
+@media (max-width: 768px) {
+    .card-body > div {
+        grid-template-columns: 1fr !important;
+    }
+}
+</style>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 

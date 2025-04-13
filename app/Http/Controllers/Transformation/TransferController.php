@@ -115,12 +115,7 @@ class TransferController extends Controller
             ) {
                 throw new \Exception('تم إيقاف الحوالة. يرجى مراجعة المكتب.');
             }
-            if (
-                ($friendRequest->sender_id == Auth::id() && !$friendRequest->stop_syp_2) ||
-                ($friendRequest->receiver_id == Auth::id() && !$friendRequest->stop_syp_1)
-            ) {
-                throw new \Exception('تم إيقاف العملة السورية. يرجى مراجعة المكتب.');
-            }
+            
 
 
             // تحديث رصيد الصداقة

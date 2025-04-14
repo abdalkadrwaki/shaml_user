@@ -139,7 +139,7 @@
                     </div>
 
                     <!-- قسم أسعار العملات -->
-                    <div class="w-full" wire:poll.600ms style="flex: 2 4 45%;">
+                    <div class="w-full" wire:poll.600ms style="flex: 2 4 35%;">
                         <livewire:currency-rates />
                     </div>
                 </div>

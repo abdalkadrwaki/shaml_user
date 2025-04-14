@@ -77,7 +77,7 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6" style="direction: rtl;">
 
                     <!-- بطاقة التبويبات -->
-                    <div class="card shadow-lg p-2 rounded-md bg-white">
+                    <div class="card shadow-lg p-1 rounded-md bg-white">
 
                         <div class="card-body">
                             <!-- قائمة التبويبات -->
@@ -141,7 +141,7 @@
                     </div>
 
                     <!-- قسم أسعار العملات -->
-                    <div class="bg-white shadow-lg p-2 rounded-md" wire:poll.600ms>
+                    <div class="bg-white shadow-lg p-1 rounded-md" wire:poll.600ms>
 
                         <livewire:currency-rates />
                     </div>

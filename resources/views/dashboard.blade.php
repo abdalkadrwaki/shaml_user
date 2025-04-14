@@ -3,7 +3,7 @@
 
     </x-slot>
 
-        <div class="container p-6">
+        <div class="container p-6 mt-4">
             @php
                 $broadcastMessages = \App\Models\BroadcastMessage::where('is_active', true)->get();
             @endphp
@@ -75,7 +75,7 @@
                 }
             </style>
 
-            <div class="container my-4">
+            <div class="container mt-4">
                 <div class="flex-wrap -p-8 d-flex justify-content-between" style="direction: rtl">
 
                     <div class="w-1/2 mt-4 card">

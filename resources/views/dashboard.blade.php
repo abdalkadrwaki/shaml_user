@@ -3,7 +3,7 @@
 
     </x-slot>
     <div class="container mt-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="py-6 bg-gray-100 mt-4">
+
             <div class="container p-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
                 @php
                     $broadcastMessages = \App\Models\BroadcastMessage::where('is_active', true)->get();
@@ -164,7 +164,7 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
-        </div>
+    
 
     </div>
     <script>

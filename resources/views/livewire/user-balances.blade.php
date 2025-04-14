@@ -15,9 +15,9 @@
                     'from_date' => request('from_date', now()->format('Y-m-d')),
                     'to_date' => request('to_date', now()->format('Y-m-d')),
                 ]) }}"
-                    class="bg-white min-w-[240px] rounded-2xl shadow-md hover:shadow-lg transition duration-300 flex-shrink-0 flex flex-col items-center text-center overflow-hidden">
+                    class="bg-white w-auto rounded-2xl shadow-md hover:shadow-lg transition duration-300 flex-shrink-0 flex flex-col items-center text-center overflow-hidden">
 
-                    <div class="w-full bg-blue-800 py-3">
+                    <div class="w-full bg-blue-800 py-1">
                         <h2 class="text-lg font-semibold text-white">{{ $currency->name_ar }}</h2>
                     </div>
 
@@ -47,17 +47,17 @@
                 'from_date' => request('from_date', now()->format('Y-m-d')),
                 'to_date' => request('to_date', now()->format('Y-m-d')),
             ]) }}"
-                class="bg-white min-w-[180px] rounded-2xl shadow-md hover:shadow-lg transition duration-300 flex-shrink-0 flex flex-col items-center text-center overflow-hidden">
+                class="bg-white w-auto rounded-2xl shadow-md hover:shadow-lg transition duration-300 flex-shrink-0 flex flex-col items-center text-center overflow-hidden">
 
-                <div class="w-full bg-blue-800 py-3">
+                <div class="w-full bg-blue-800 py-1">
                     <h2 class="text-lg font-semibold text-white">ميزان</h2>
                 </div>
 
-                <div class="w-full bg-gray-100 py-2 border-b border-blue-800">
+                <div class="w-full bg-gray-100 py-1 border-b border-blue-800">
                     <h3 class="text-md font-medium {{ $usdTextColor }}">{{ $usdTextStatus }}</h3>
                 </div>
 
-                <div class="py-4">
+                <div class="py-1">
                     <p class="text-2xl font-bold {{ $usdTextColor }}">
                         {{ $balance_in_usd_ < 0 ? '-' : '' }}{{ $formattedUSD }}
                     </p>

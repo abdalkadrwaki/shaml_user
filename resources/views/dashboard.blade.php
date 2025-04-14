@@ -4,7 +4,7 @@
     </x-slot>
 
     <div class="container mt-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
-        <div class="py-6 bg-gray-100 mt-4">
+        <div class="py-3 mt-4">
             <div class="container p-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
                 @php
                     // جلب رسائل النشرة الإخبارية النشطة

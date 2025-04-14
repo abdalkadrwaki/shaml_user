@@ -50,7 +50,7 @@
                             style="direction: rtl;">
                             <thead class="bg-blue-900">
                                 <tr>
-                                    <th colspan="4"  class="py-3 px-4  text-center bg-red-400">إدارة السوري</th>
+                                    <th colspan="4"  class="py-3 px-4  text-center bg-blue-900 ">إدارة السوري</th>
 
 
                                 </tr>

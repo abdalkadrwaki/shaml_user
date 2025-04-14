@@ -73,10 +73,7 @@
 
             <div class="container my-4">
                 <div class="flex-wrap -p-8 d-flex justify-content-between" style="direction: rtl">
-                    <!-- قسم أسعار العملات -->
-
-
-                    <!-- قسم البطاقة الرئيسية -->
+             
                     <div class="w-1/2 mt-4 card">
                         <div class="card-body">
                             <!-- قائمة التبويبات -->

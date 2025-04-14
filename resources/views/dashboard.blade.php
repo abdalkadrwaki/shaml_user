@@ -48,7 +48,7 @@
             <style>
                 @media (max-width: 767px) {
                     #pills-tab {
-                        width: 99% !important;
+                        width: 100% !important;
                         margin: 0 auto;
                     }
 

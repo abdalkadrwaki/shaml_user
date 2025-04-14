@@ -74,9 +74,11 @@
                 </style>
 
                 <!-- القسم الرئيسي للمحتوى -->
-                <div class="d-flex flex-wrap justify-content-between" style="direction: rtl;">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6" style="direction: rtl;">
+
                     <!-- بطاقة التبويبات -->
-                    <div class="w-1/2 mt-4 card">
+                    <div class="card shadow-lg p-4 rounded-md bg-white">
+
                         <div class="card-body">
                             <!-- قائمة التبويبات -->
                             <ul id="pills-tab" class="nav nav-pills p-1 mt-1 mb-3 justify-content-center" role="tablist" style="display: flex; width: 100%; justify-content: space-between;">
@@ -139,7 +141,8 @@
                     </div>
 
                     <!-- قسم أسعار العملات -->
-                    <div class="flex-grow-2 flex-shrink-4 basis-[35%]" wire:poll.600ms>
+                    <div class="bg-white shadow-lg p-4 rounded-md" wire:poll.600ms>
+
                         <livewire:currency-rates />
                     </div>
 

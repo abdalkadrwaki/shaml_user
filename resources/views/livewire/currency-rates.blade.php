@@ -10,7 +10,7 @@
                     {{ $error }}
                 </div>
             @else
-                <div class="bg-custom-gray2 p-4 rounded border border-gray-900">
+
                     <div class="table-responsive">
                         <table class="w-full  table table-bordered table-hover table-striped text-center"
                             style="direction: rtl;">
@@ -143,7 +143,7 @@
                             </tbody>
                         </table>
                     </div>
-                </div>
+          
             @endif
         </div>
     </div>

@@ -72,7 +72,7 @@
             </style>
 
             <div class="container my-4">
-                <div class="flex-wrap -p-8 d-flex justify-content-between">
+                <div class="flex-wrap -p-8 d-flex justify-content-between" style="direction: rtl">
                     <!-- قسم أسعار العملات -->
 
 

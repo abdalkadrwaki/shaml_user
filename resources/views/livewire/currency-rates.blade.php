@@ -1,4 +1,4 @@
-<div class="container mt-4">
+
     <div class="card bg-light shadow-sm ">
         <div class="card-body">
             <div class="w-full bg-blue-900 py-2 rounded-t-md mt-1">
@@ -147,4 +147,4 @@
             @endif
         </div>
     </div>
-</div>
+

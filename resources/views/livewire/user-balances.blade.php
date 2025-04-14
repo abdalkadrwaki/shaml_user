@@ -1,5 +1,5 @@
-<div class="mt-6">
-    <div class="flex flex-wrap justify-center gap-6">
+<div class="mt-6 overflow-x-auto">
+    <div class="flex flex-nowrap gap-4 px-2">
         @foreach ($balances as $key => $balanceData)
             @php
                 $currency = $balanceData['currency'];
@@ -15,7 +15,7 @@
                     'from_date' => request('from_date', now()->format('Y-m-d')),
                     'to_date' => request('to_date', now()->format('Y-m-d')),
                 ]) }}"
-                    class="bg-white w-64 rounded-2xl shadow-lg hover:shadow-xl transition duration-300 flex flex-col items-center text-center overflow-hidden">
+                    class="bg-white min-w-[240px] rounded-2xl shadow-md hover:shadow-lg transition duration-300 flex-shrink-0 flex flex-col items-center text-center overflow-hidden">
 
                     <div class="w-full bg-blue-800 py-3">
                         <h2 class="text-lg font-semibold text-white">{{ $currency->name_ar }}</h2>
@@ -47,7 +47,7 @@
                 'from_date' => request('from_date', now()->format('Y-m-d')),
                 'to_date' => request('to_date', now()->format('Y-m-d')),
             ]) }}"
-                class="bg-white w-64 rounded-2xl shadow-lg hover:shadow-xl transition duration-300 flex flex-col items-center text-center overflow-hidden">
+                class="bg-white min-w-[240px] rounded-2xl shadow-md hover:shadow-lg transition duration-300 flex-shrink-0 flex flex-col items-center text-center overflow-hidden">
 
                 <div class="w-full bg-blue-800 py-3">
                     <h2 class="text-lg font-semibold text-white">ميزان</h2>

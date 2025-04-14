@@ -2,8 +2,8 @@
     <x-slot name="header">
 
     </x-slot>
-
-        <div class="container p-6 mt-8">
+    <div class="py-6 mt-1">
+        <div class="container p-6">
             @php
                 $broadcastMessages = \App\Models\BroadcastMessage::where('is_active', true)->get();
             @endphp
@@ -164,7 +164,7 @@
 
         </div>
 
-
+    </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const messages = document.querySelectorAll('.message');

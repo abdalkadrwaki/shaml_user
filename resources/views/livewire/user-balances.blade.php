@@ -1,5 +1,6 @@
 <div>
-    <div class="flex gap-4 justify-between mt-4">
+  
+        <div class="flex flex-wrap gap-4 justify-between mt-4">
         @foreach ($balances as $key => $balanceData)
             @php
                 $currency = $balanceData['currency'];

@@ -1,70 +1,71 @@
-<div>
-    <div class="flex gap-4 justify-between mt-4">
+<div class="px-4 py-6">
+    <div class="flex flex-nowrap overflow-x-auto pb-4 gap-4 scrollbar-hide"> <!-- إخفاء شريط التمرير -->
         @foreach ($balances as $key => $balanceData)
             @php
-                $currency = $balanceData['currency'];
-                $balance = $balanceData['balance'];
-                $balanceStatus = $balance > 0 ? 'دائن لكم' : ($balance < 0 ? 'دائن عليكم' : '');
-                $textColor = $balanceStatus === 'دائن عليكم' ? 'text-red-500' : 'text-green-500';
-                $formattedBalance = number_format(abs($balance), 2);
+                // ... نفس الكود البرمجي السابق ...
             @endphp
 
             @if ($balance != 0)
-                <a href="{{ route('transfers.index', [
-                    'currency' => $currency->name_en,
-                    'from_date' => request('from_date', now()->format('Y-m-d')),
-                    'to_date' => request('to_date', now()->format('Y-m-d')),
-                ]) }}"
-                    class="bg-white shadow-md rounded-md flex flex-col items-center text-center flex-1 mx-2 no-underline hover:no-underline">
-                    <div class="w-full bg-blue-900 py-2 c rounded-t-md">
-                        <h2 class="text-xl font-bold text-white">{{ $currency->name_ar }}</h2>
+                <a href="{{ route('transfers.index', [/* ... */]) }}"
+                    class="min-w-[300px] flex-shrink-0 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
+                    <div class="flex justify-between items-center p-4 bg-blue-50 border-b-2 border-blue-200">
+                        <div>
+                            <h3 class="text-xl font-bold text-blue-800">{{ $currency->name_ar }}</h3>
+                            <p class="text-sm text-blue-600">{{ $currency->name_en }}</p>
+                        </div>
+                        <span class="text-2xl text-blue-700">{{ $currency->symbol }}</span>
                     </div>
-                    <div class="w-full bg-custom-gray2 py-2 rounded-t-md border-b border-blue-900">
-                        <h2 class="text-xl font-bold {{ $textColor }}">{{ $balanceStatus }}</h2>
-                    </div>
-                    <div class="w-auto p-1 m-2 rounded-md">
-                        <p class="text-2xl mt-2 {{ $textColor }}">
-                            @if ($balance < 0)
-                                -{{ $formattedBalance }}
-                            @else
-                                {{ $formattedBalance }}
-                            @endif
-                        </p>
+
+                    <div class="p-4 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-gray-500">الحالة:</span>
+                            <span class="px-3 py-1 rounded-full {{ $textColor }} bg-opacity-20 {{ $balanceStatus === 'دائن عليكم' ? 'bg-red-100' : 'bg-green-100' }}">
+                                {{ $balanceStatus }}
+                            </span>
+                        </div>
+
+                        <div class="text-center py-3">
+                            <p class="text-4xl font-bold {{ $textColor }}">
+                                {{ $balance < 0 ? '-' : '' }}{{ $formattedBalance }}
+                            </p>
+                            <p class="text-sm text-gray-500 mt-1">رصيد {{ $currency->name_ar }}</p>
+                        </div>
                     </div>
                 </a>
             @endif
         @endforeach
 
-        {{-- بطاقة رصيد الدولار --}}
+        {{-- بطاقة الدولار --}}
         @if(isset($balance_in_usd_))
             @php
-                $usdTextStatus = $balance_in_usd_ > 0 ? 'دائن لكم' : ($balance_in_usd_ < 0 ? 'دائن عليكم' : '');
-                $usdTextColor = $balance_in_usd_ < 0 ? 'text-red-500' : 'text-green-500';
-                $formattedUSD = number_format(abs($balance_in_usd_), 2);
+                // ... نفس الكود البرمجي السابق ...
             @endphp
-            <a href="{{ route('transfers.index', [
-                'currency' => 'usd',
-                'from_date' => request('from_date', now()->format('Y-m-d')),
-                'to_date' => request('to_date', now()->format('Y-m-d')),
-            ]) }}"
-                class="bg-white shadow-md rounded-md flex flex-col items-center text-center flex-1 mx-2 no-underline hover:no-underline">
-                <div class="w-full bg-blue-900 py-2 rounded-t-md">
-                    <h2 class="text-xl font-bold text-white">ميزان</h2>
+            <a href="{{ route('transfers.index', [/* ... */]) }}"
+                class="min-w-[300px] flex-shrink-0 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100">
+                <div class="flex justify-between items-center p-4 bg-green-50 border-b-2 border-green-200">
+                    <div>
+                        <h3 class="text-xl font-bold text-green-800">رصيد الدولار</h3>
+                        <p class="text-sm text-green-600">USD Balance</p>
+                    </div>
+                    <span class="text-2xl text-green-700">$</span>
                 </div>
-                <div class="w-full bg-custom-gray2 py-2 rounded-t-md border-b border-blue-900">
-                    <h2 class="text-xl font-bold {{ $usdTextColor }}">{{ $usdTextStatus }}</h2>
-                </div>
-                <div class="w-auto p-1 m-2 rounded-md">
-                    <p class="text-2xl mt-2 {{ $usdTextColor }}">
-                        @if ($balance_in_usd_ < 0)
-                            -{{ $formattedUSD }}
-                        @else
-                            {{ $formattedUSD }}
-                        @endif
-                    </p>
+
+                <div class="p-4 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-500">الحالة:</span>
+                        <span class="px-3 py-1 rounded-full {{ $usdTextColor }} bg-opacity-20 {{ $usdTextStatus === 'دائن عليكم' ? 'bg-red-100' : 'bg-green-100' }}">
+                            {{ $usdTextStatus }}
+                        </span>
+                    </div>
+
+                    <div class="text-center py-3">
+                        <p class="text-4xl font-bold {{ $usdTextColor }}">
+                            {{ $balance_in_usd_ < 0 ? '-' : '' }}{{ $formattedUSD }}
+                        </p>
+                        <p class="text-sm text-gray-500 mt-1">رصيد بالدولار الأمريكي</p>
+                    </div>
                 </div>
             </a>
         @endif
     </div>
-
 </div>

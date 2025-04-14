@@ -2,83 +2,80 @@
     <x-slot name="header">
 
     </x-slot>
-    <div class="py-6 bg-gray-100 mt-4">
-        <div class="container p-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
-            @php
-                $broadcastMessages = \App\Models\BroadcastMessage::where('is_active', true)->get();
-            @endphp
-            <!-- قسم رسائل الأخبار -->
-            @if ($broadcastMessages->count() > 0)
-                <div class="items-center flex-1 mx-2 -mt-8 text-center d-flex align-items-center">
-                    <div class="mt-0 overflow-hidden shadow-xl position-relative bg-light"
-                        style="flex-grow: 1; height: 35px;  border-radius: 5px 0px 0px 5px;">
-                        <div class=" position-absolute w-100 d-flex flex-column" id="broadcastWrapper">
-                            @foreach ($broadcastMessages as $index => $message)
-                                <div class="py-2 text-center message  bg-white " style="height: 35px; display: none;">
-                                    <span class="text-black  text-secondary text-center  font-bold "
-                                        style="font-size: 1rem;">{{ $message->content }}</span>
-                                </div>
-                            @endforeach
+    <div class="container mt-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="py-6 bg-gray-100 mt-4">
+            <div class="container p-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
+                @php
+                    $broadcastMessages = \App\Models\BroadcastMessage::where('is_active', true)->get();
+                @endphp
+                <!-- قسم رسائل الأخبار -->
+                @if ($broadcastMessages->count() > 0)
+                    <div class="items-center flex-1 mx-2 -mt-8 text-center d-flex align-items-center">
+                        <div class="mt-0 overflow-hidden shadow-xl position-relative bg-light"
+                            style="flex-grow: 1; height: 35px;  border-radius: 5px 0px 0px 5px;">
+                            <div class=" position-absolute w-100 d-flex flex-column" id="broadcastWrapper">
+                                @foreach ($broadcastMessages as $index => $message)
+                                    <div class="py-2 text-center message  bg-white "
+                                        style="height: 35px; display: none;">
+                                        <span class="text-black  text-secondary text-center  font-bold "
+                                            style="font-size: 1rem;">{{ $message->content }}</span>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                        <div class="news-container bg-primary d-flex justify-content-center align-items-center"
+                            style="width: 150px; height: 35px; border-radius: 0px 5px 5px 0px; margin-right: 0px;">
+                            <span class="text-white" style="font-size: 1rem;">أخبار الشركة</span>
                         </div>
                     </div>
-                    <div class="news-container bg-primary d-flex justify-content-center align-items-center"
-                        style="width: 150px; height: 35px; border-radius: 0px 5px 5px 0px; margin-right: 0px;">
-                        <span class="text-white" style="font-size: 1rem;">أخبار الشركة</span>
+                @endif
+
+
+
+                <livewire:user-balances />
+
+
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
                     </div>
-                </div>
-            @endif
+                @endif
 
+                <!-- إضافة CSS خاص للتجاوب على الشاشات الصغيرة بدون تغيير أسماء الكلاسات أو الـ IDs -->
+                <style>
+                    @media (max-width: 767px) {
+                        #pills-tab {
+                            width: 100% !important;
+                            margin: 0 auto;
+                        }
 
+                        /* تغيير اتجاه عناصر flex إلى عمودي */
+                        .d-flex {
+                            flex-direction: column !important;
+                        }
 
+                        /* جعل القسم الأول (أسعار العملات) بعرض كامل */
+                        [wire\:poll\.600ms] {
+                            flex: 0 0 100% !important;
+                            max-width: 100% !important;
+                        }
 
+                        /* جعل القسم الثاني (البطاقة الرئيسية) بعرض كامل */
+                        .w-1\/2 {
+                            width: 100% !important;
+                        }
 
-
-
-            @if ($errors->any())
-                <div class="alert alert-danger">
-                    <ul>
-                        @foreach ($errors->all() as $error)
-                            <li>{{ $error }}</li>
-                        @endforeach
-                    </ul>
-                </div>
-            @endif
-
-            <!-- إضافة CSS خاص للتجاوب على الشاشات الصغيرة بدون تغيير أسماء الكلاسات أو الـ IDs -->
-            <style>
-                @media (max-width: 767px) {
-                    #pills-tab {
-                        width: 100% !important;
-                        margin: 0 auto;
+                        /* في حال الحاجة لضبط المسافات بين الأعمدة */
+                        .justify-content-between {
+                            justify-content: center !important;
+                        }
                     }
-
-                    /* تغيير اتجاه عناصر flex إلى عمودي */
-                    .d-flex {
-                        flex-direction: column !important;
-                    }
-
-                    /* جعل القسم الأول (أسعار العملات) بعرض كامل */
-                    [wire\:poll\.600ms] {
-                        flex: 0 0 100% !important;
-                        max-width: 100% !important;
-                    }
-
-                    /* جعل القسم الثاني (البطاقة الرئيسية) بعرض كامل */
-                    .w-1\/2 {
-                        width: 100% !important;
-                    }
-
-                    /* في حال الحاجة لضبط المسافات بين الأعمدة */
-                    .justify-content-between {
-                        justify-content: center !important;
-                    }
-                }
-            </style>
-
-            <div class="container mt-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="flex flex-wrap -p-8 d-flex justify-content-between" style="direction: rtl">
-
-                    <livewire:user-balances />
+                </style>
 
 
                 <div class="flex-wrap -p-8 d-flex justify-content-between" style="direction: rtl">

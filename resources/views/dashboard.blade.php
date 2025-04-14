@@ -30,7 +30,7 @@
 
 
 
-            <livewire:user-balances />
+
 
 
 
@@ -76,6 +76,11 @@
             </style>
 
             <div class="container mt-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="flex flex-wrap -p-8 d-flex justify-content-between" style="direction: rtl">
+
+                    <livewire:user-balances />
+
+
                 <div class="flex-wrap -p-8 d-flex justify-content-between" style="direction: rtl">
 
                     <div class="w-1/2 mt-4 card">

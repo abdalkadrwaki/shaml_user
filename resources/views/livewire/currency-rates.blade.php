@@ -46,7 +46,7 @@
                     </div>
 
                     <div class="table-responsive">
-                        <table class=" w-full table table-bordered table-hover table-striped text-center"
+                        <table class=" table table-bordered table-hover table-striped text-center"
                             style="direction: rtl;">
                             <thead class="bg-blue-900">
                                 <tr>

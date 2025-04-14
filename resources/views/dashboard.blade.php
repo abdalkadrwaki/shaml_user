@@ -3,7 +3,7 @@
 
     </x-slot>
 
-        <div class="container p-6 mt-4">
+        <div class="container p-6 mt-8">
             @php
                 $broadcastMessages = \App\Models\BroadcastMessage::where('is_active', true)->get();
             @endphp

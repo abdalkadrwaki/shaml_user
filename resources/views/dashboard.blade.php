@@ -154,10 +154,9 @@
                             </div>
                         </div>
                     </div>
-
-                </div>
-                <div class=" w-full" wire:poll.600ms style="flex: 2 8 45%;">
-                    <livewire:currency-rates />
+                    <div class=" w-full" wire:poll.600ms style="flex: 2 4 45%;">
+                        <livewire:currency-rates />
+                    </div>
                 </div>
             </div>
 

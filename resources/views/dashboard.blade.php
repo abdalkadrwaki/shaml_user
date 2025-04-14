@@ -153,18 +153,19 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+
                     <div class=" w-full" wire:poll.600ms style="flex: 2 8 45%;">
                         <livewire:currency-rates />
                     </div>
                 </div>
+            </div>
             </div>
 
 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
-    
+
 
     </div>
     <script>

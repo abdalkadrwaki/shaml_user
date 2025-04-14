@@ -74,9 +74,7 @@
             <div class="container my-4">
                 <div class="flex-wrap -p-8 d-flex justify-content-between">
                     <!-- قسم أسعار العملات -->
-                    <div wire:poll.600ms style="flex: 2 8 45%;">
-                        <livewire:currency-rates />
-                    </div>
+
 
                     <!-- قسم البطاقة الرئيسية -->
                     <div class="w-1/2 mt-4 card">
@@ -152,6 +150,9 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div wire:poll.600ms style="flex: 2 8 45%;">
+                        <livewire:currency-rates />
                     </div>
                 </div>
             </div>

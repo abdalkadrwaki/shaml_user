@@ -47,7 +47,7 @@
                 'from_date' => request('from_date', now()->format('Y-m-d')),
                 'to_date' => request('to_date', now()->format('Y-m-d')),
             ]) }}"
-                class="bg-white min-w-[240px] rounded-2xl shadow-md hover:shadow-lg transition duration-300 flex-shrink-0 flex flex-col items-center text-center overflow-hidden">
+                class="bg-white min-w-[180px] rounded-2xl shadow-md hover:shadow-lg transition duration-300 flex-shrink-0 flex flex-col items-center text-center overflow-hidden">
 
                 <div class="w-full bg-blue-800 py-3">
                     <h2 class="text-lg font-semibold text-white">ميزان</h2>

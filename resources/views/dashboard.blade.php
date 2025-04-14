@@ -2,7 +2,7 @@
     <x-slot name="header">
 
     </x-slot>
-    <div class="container mt-4 max-w-7xl mx-auto sm:px-6 lg:px-8">
+    <div class="container mt-8 max-w-7xl mx-auto sm:px-6 lg:px-8">
 
             <div class="container p-6 max-w-7xl mx-auto sm:px-6 lg:px-8">
                 @php
@@ -153,19 +153,18 @@
                                 </div>
                             </div>
                         </div>
-
+                    </div>
                     <div class=" w-full" wire:poll.600ms style="flex: 2 8 45%;">
                         <livewire:currency-rates />
                     </div>
                 </div>
-            </div>
             </div>
 
 
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 
-
+       
 
     </div>
     <script>

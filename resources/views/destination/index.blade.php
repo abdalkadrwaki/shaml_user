@@ -2,6 +2,7 @@
     <x-slot name="header">
         <!-- العنوان يمكن أن يكون هنا -->
     </x-slot>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css">
 
     <div class="container mt-4 " style="width: 98%">
         <div class="card-body">
@@ -204,6 +205,7 @@
                         </div>
                     </div>
                 </div>
+                <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {

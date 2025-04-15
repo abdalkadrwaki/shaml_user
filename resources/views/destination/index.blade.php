@@ -2,7 +2,6 @@
     <x-slot name="header">
         <!-- العنوان يمكن أن يكون هنا -->
     </x-slot>
-  
 
     <div class="container mt-4 " style="width: 98%">
         <div class="card-body">
@@ -39,26 +38,8 @@
                         <div class="text-center text-gray-100 bg-blue-500 card-header">
                             <strong class="y"> الارصدة </strong>
                         </div>
-                        <!-- فلترات التصفية -->
-                        <div class="filters">
-                            <label for="balanceFilter">تصفية الرصيد:</label>
-                            <select id="balanceFilter">
-                                <option value="">الكل</option>
-                                <option value="positive">أكبر من صفر</option>
-                                <option value="negative">أقل من صفر</option>
-                            </select>
-
-                            <label for="currencyFilter">تصفية حسب العملة:</label>
-                            <select id="currencyFilter">
-                                <option value="">الكل</option>
-                                <!-- يُفترض أن $currencyNames عبارة عن مجموعة (Collection) تحتوي على رموز العملات وأسمائها -->
-                                @foreach ($currencyNames as $code => $name)
-                                    <option value="{{ $code }}">{{ $name }}</option>
-                                @endforeach
-                            </select>
-                        </div>
                         <div class="container mx-auto mt-3">
-                            <table id="myTable"
+                            <table
                                 class="myTable w-full overflow-hidden border border-gray-300 rounded-lg shadow-md table-auto tebl"
                                 style="direction: rtl;">
                                 <thead class="text-center text-gray-700 bg-gray-200">
@@ -206,7 +187,6 @@
                     </div>
                 </div>
 
-
                 <script>
                     document.addEventListener('DOMContentLoaded', function() {
                         // نسخ الرصيد الإجمالي
@@ -281,62 +261,6 @@
                         }
                     });
                 </script>
-
-                <script>
-                    $(document).ready(function() {
-                        // تهيئة DataTables على الجدول
-                        var table = $('#myTable').DataTable({
-                            order: [
-                                [0, "asc"]
-                            ],
-                            language: {
-                                url: "//cdn.datatables.net/plug-ins/1.13.4/i18n/ar.json"
-                            }
-                        });
-
-                        // إضافة دالة التصفية بناءً على الرصيد
-                        $.fn.dataTable.ext.search.push(
-                            function(settings, data, dataIndex) {
-                                // نفترض أن عمود الرصيد هو الثالث (index 2)
-                                var balanceText = data[2] || '';
-                                // إزالة النصوص غير الرقمية مثل الفواصل والتعليقات
-                                var balance = parseInt(balanceText.replace(/[^0-9\-]/g, '')) || 0;
-                                var filterVal = $('#balanceFilter').val();
-
-                                if (filterVal === "positive" && balance <= 0) {
-                                    return false;
-                                } else if (filterVal === "negative" && balance >= 0) {
-                                    return false;
-                                }
-                                return true;
-                            }
-                        );
-
-                        // إضافة دالة التصفية بناءً على العملة
-                        $.fn.dataTable.ext.search.push(
-                            function(settings, data, dataIndex) {
-                                var selectedCurrency = $('#currencyFilter').val();
-                                if (selectedCurrency === "") {
-                                    return true;
-                                }
-                                // نفترض أن أعمدة العملات تبدأ من العمود الرابع (index 3)
-                                var found = false;
-                                for (var i = 3; i < data.length; i++) {
-                                    if (data[i].toLowerCase().indexOf(selectedCurrency.toLowerCase()) !== -1) {
-                                        found = true;
-                                        break;
-                                    }
-                                }
-                                return found;
-                            }
-                        );
-
-                        // إعادة رسم الجدول عند تغيير قيمة الفلاتر
-                        $('#balanceFilter, #currencyFilter').on('change', function() {
-                            table.draw();
-                        });
-                    });
-                </script>
                 <!-- جدول الطلبات الواردة -->
                 <div class="tab-pane fade" id="pills-received-request" role="tabpanel"
                     aria-labelledby="pills-received-request-tab">
@@ -376,7 +300,7 @@
                                                 {{ $destinations->firstWhere(
                                                     'id',
                                                     $request->receiver_id === Auth::id() ? $request->sender_id : $request->receiver_id,
-                                                )->country_user }}
+                                                )->country_user   }}
                                             </td>
 
 

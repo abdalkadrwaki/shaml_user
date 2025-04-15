@@ -58,7 +58,7 @@
                             </select>
                         </div>
                         <div class="container mx-auto mt-3">
-                            <table
+                            <table id="myTable"
                                 class="myTable w-full overflow-hidden border border-gray-300 rounded-lg shadow-md table-auto tebl"
                                 style="direction: rtl;">
                                 <thead class="text-center text-gray-700 bg-gray-200">
@@ -285,7 +285,7 @@
                 <script>
                     $(document).ready(function() {
                         // تهيئة DataTables على الجدول
-                        var table = $('.myTable').DataTable({
+                        var table = $('#myTable').DataTable({
                             order: [
                                 [0, "asc"]
                             ],

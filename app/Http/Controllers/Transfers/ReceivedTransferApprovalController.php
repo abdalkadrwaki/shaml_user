@@ -71,11 +71,11 @@ class ReceivedTransferApprovalController extends Controller
         $friendRequest = DB::table('friend_requests')
             ->where(function ($query) use ($transfer) {
                 $query->where('sender_id', $transfer->user_id)
-                      ->where('receiver_id', $transfer->destination);
+                    ->where('receiver_id', $transfer->destination);
             })
             ->orWhere(function ($query) use ($transfer) {
                 $query->where('receiver_id', $transfer->user_id)
-                      ->where('sender_id', $transfer->destination);
+                    ->where('sender_id', $transfer->destination);
             })
             ->first();
 
@@ -163,6 +163,7 @@ class ReceivedTransferApprovalController extends Controller
             $totalAmount = $transfer->sent_amount + ($transfer->fees ?? 0);
 
             // تحديد اتجاه التحديث بناءً على كون المستخدم الحالي هو المرسل أم المستقبل
+            // تحديد اتجاه التحديث بناءً على كون المستخدم الحالي هو المرسل أم المستقبل
             $isSenderInContext = ($friendRequest->sender_id == Auth::id());
 
             // تحديث الرصيد بالعملة الأصلية
@@ -170,13 +171,15 @@ class ReceivedTransferApprovalController extends Controller
             $currencyColumn1 = $currency . '_1';
             $currencyColumn2 = $currency . '_2';
 
+            // عكس العملية: إذ كان المستخدم في سياق المرسل فإنه سيتم طرح المبلغ من حسابه وإضافته للطرف الآخر والعكس صحيح
             if ($isSenderInContext) {
-                $friendRequest->increment($currencyColumn1, $totalAmount);
-                $friendRequest->decrement($currencyColumn2, $totalAmount);
-            } else {
-                $friendRequest->increment($currencyColumn2, $totalAmount);
                 $friendRequest->decrement($currencyColumn1, $totalAmount);
+                $friendRequest->increment($currencyColumn2, $totalAmount);
+            } else {
+                $friendRequest->decrement($currencyColumn2, $totalAmount);
+                $friendRequest->increment($currencyColumn1, $totalAmount);
             }
+
 
             // تحديث الرصيد بالدولار مع التصحيح
             BalanceService::updateBalanceInUSD(
@@ -193,7 +196,6 @@ class ReceivedTransferApprovalController extends Controller
                 'success' => true,
                 'message' => 'تم تسليم الحوالة بنجاح.'
             ]);
-
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error("فشل التسليم: {$e->getMessage()}", [

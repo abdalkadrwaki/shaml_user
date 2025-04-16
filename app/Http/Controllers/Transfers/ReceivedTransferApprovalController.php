@@ -19,7 +19,7 @@ class ReceivedTransferApprovalController extends Controller
     public function index(Request $request)
     {
 
-       
+
         $receivedTransfers = Transfer::with(['currency', 'sender'])
             ->where('destination', Auth::id())
             ->where('transaction_type', 'Credit')
@@ -106,7 +106,7 @@ class ReceivedTransferApprovalController extends Controller
     /**
      * تسليم الحوالة بأمان مع منع التسليم المكرر وتحديث رصيد علاقة الصداقة.
      */
-    public function deliverTransfer(Transfer $transfer, Request $request)
+    public function deliverTransferr(Transfer $transfer, Request $request)
     {
         if (in_array($transfer->status, ['Delivered', 'Cancelled'])) {
             return response()->json([

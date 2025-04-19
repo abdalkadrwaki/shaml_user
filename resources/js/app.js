@@ -35,20 +35,6 @@ function initializeSelect2(container = document) {
     });
 }
 
-
-// في ملف JavaScript
-Echo.private(`transfers.${userId}`)
-    .listen('TransferCompleted', (data) => {
-        Swal.fire({
-            icon: 'info',
-            title: 'حوالة جديدة',
-            text: `تم استلام حوالة رقم ${data.transfer.movement_number}`,
-        });
-    });
-
-
-
-
 document.addEventListener('DOMContentLoaded', function() {
     // التأكد من جعل jQuery متاحًا عالميًا
     if (window.$ === undefined || window.jQuery === undefined) {

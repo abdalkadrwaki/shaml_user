@@ -66,39 +66,7 @@
         }
 
     </script>
-<script>
-    // مثال باستخدام Axios في ملف JavaScript
-document.getElementById('transferForm').addEventListener('submit', function(e) {
-    e.preventDefault();
 
-    const formData = new FormData(this);
-
-    axios.post('/transfer', formData)
-        .then(response => {
-            if (response.data.success) {
-                // عرض الإشعار باستخدام SweetAlert
-                Swal.fire({
-                    icon: response.data.notification.icon,
-                    title: response.data.notification.title,
-                    text: response.data.notification.body,
-                    showConfirmButton: false,
-                    timer: 3000
-                });
-
-                // تحديث أي عناصر أخرى في الصفحة (اختياري)
-                updateTransfersList(response.data.transfer_id);
-            }
-        })
-        .catch(error => {
-            // معالجة الأخطاء
-            Swal.fire({
-                icon: 'error',
-                title: 'خطأ',
-                text: error.response.data.error || 'حدث خطأ غير متوقع',
-            });
-        });
-});
-</script>
 </body>
 
 </html>

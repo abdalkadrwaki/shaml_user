@@ -179,20 +179,14 @@ if ($validated['sent_currency'] === 'SYP') {
                 'movement_number' => $transfer->movement_number,
                 'recipient_name'  => $transfer->recipient_name,
                 'sent_amount'     => $transfer->sent_amount,
-                'sent_currency'   => ' (' . $transfer->currency->name_ar . ')',
+                'sent_currency' => ' (' . $transfer->currency->name_ar . ')',
                 'password'        => $transfer->password,
                 'destination'     => optional($transfer->destinationUser)->state_user . ' - ' . optional($transfer->destinationUser)->country_user,
                 'Office_name'     => optional($transfer->destinationUser)->Office_name,
                 'user_address'    => optional($transfer->destinationUser)->user_address,
-                'receipt_image'   => $imageData,
-                'message'         => 'تم إنشاء الحوالة بنجاح',
-                'notification'    => [
-                    'title' => 'حوالة ناجحة',
-                    'body'  => 'تم إرسال الحوالة رقم ' . $transfer->movement_number . ' بنجاح',
-                    'icon'  => 'success'
-                ]
+                'receipt_image' => $imageData,
+                'message'         => 'تم إنشاء الحوالة بنجاح'
             ]);
-
         } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json(['error' => 'خطأ في التحقق', 'details' => $e->errors()], 422);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {

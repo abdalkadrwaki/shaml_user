@@ -64,29 +64,41 @@
                     .catch(error => console.log('ServiceWorker failed:', error));
             });
         }
+
     </script>
-    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
-    <script src="/js/echo.js"></script> {{-- أو المسار الذي تضمّنه للإيكو --}}
+<script>
+    // مثال باستخدام Axios في ملف JavaScript
+document.getElementById('transferForm').addEventListener('submit', function(e) {
+    e.preventDefault();
 
-    <script>
-        // مثال على إعداد Echo مع Pusher
-        window.Echo = new Echo({
-            broadcaster: 'pusher',
-            key:     '{{ config('broadcasting.connections.pusher.key') }}',
-            cluster: '{{ config('broadcasting.connections.pusher.options.cluster') }}',
-            encrypted: true,
-            authEndpoint: '/broadcasting/auth',
-        });
+    const formData = new FormData(this);
 
-        // استمع للقناة الخاصة بالمستخدم الحالي
-        Echo.private(`App.Models.User.{{ Auth::id() }}`)
-            .notification((notification) => {
-                // هنا يمكنك عرض الإشعار بأي مكتبة Toastr أو Modal
-                // مثال بسيط:
-                alert(notification.message + "\nالمبلغ: " + notification.amount + " " + notification.currency);
+    axios.post('/transfer', formData)
+        .then(response => {
+            if (response.data.success) {
+                // عرض الإشعار باستخدام SweetAlert
+                Swal.fire({
+                    icon: response.data.notification.icon,
+                    title: response.data.notification.title,
+                    text: response.data.notification.body,
+                    showConfirmButton: false,
+                    timer: 3000
+                });
+
+                // تحديث أي عناصر أخرى في الصفحة (اختياري)
+                updateTransfersList(response.data.transfer_id);
+            }
+        })
+        .catch(error => {
+            // معالجة الأخطاء
+            Swal.fire({
+                icon: 'error',
+                title: 'خطأ',
+                text: error.response.data.error || 'حدث خطأ غير متوقع',
             });
-    </script>
-
+        });
+});
+</script>
 </body>
 
 </html>

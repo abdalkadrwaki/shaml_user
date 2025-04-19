@@ -14,6 +14,7 @@ use App\Models\FriendRequest;
 use App\Services\BalanceService;
 use App\Services\GenerateTransferImageService;
 use App\Services\FriendService;
+use App\Notifications\TransferSucceeded;
 
 use App\Events\UndefinedErrorOccurred;
 // عند تحديث العداد (مثلاً بعد حفظ عملية جديدة في قاعدة البيانات)
@@ -170,6 +171,8 @@ if ($validated['sent_currency'] === 'SYP') {
             // إنشاء صورة الحوالة
             $imageService = new GenerateTransferImageService();
             $imageData    = $imageService->generateTransferImage($transfer->id);
+         // بعد توليد صورة الحوالة وقبل الـ DB::commit():
+Auth::user()->notify(new TransferSucceeded($transfer));
 
             DB::commit();
 

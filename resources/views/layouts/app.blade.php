@@ -65,6 +65,28 @@
             });
         }
     </script>
+    <script src="https://js.pusher.com/7.0/pusher.min.js"></script>
+    <script src="/js/echo.js"></script> {{-- أو المسار الذي تضمّنه للإيكو --}}
+
+    <script>
+        // مثال على إعداد Echo مع Pusher
+        window.Echo = new Echo({
+            broadcaster: 'pusher',
+            key:     '{{ config('broadcasting.connections.pusher.key') }}',
+            cluster: '{{ config('broadcasting.connections.pusher.options.cluster') }}',
+            encrypted: true,
+            authEndpoint: '/broadcasting/auth',
+        });
+
+        // استمع للقناة الخاصة بالمستخدم الحالي
+        Echo.private(`App.Models.User.{{ Auth::id() }}`)
+            .notification((notification) => {
+                // هنا يمكنك عرض الإشعار بأي مكتبة Toastr أو Modal
+                // مثال بسيط:
+                alert(notification.message + "\nالمبلغ: " + notification.amount + " " + notification.currency);
+            });
+    </script>
+
 </body>
 
 </html>

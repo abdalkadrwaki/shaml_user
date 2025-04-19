@@ -34,7 +34,7 @@ class User extends Authenticatable
         'state_user',
         'link_number',
         'Office_name',
-        'parent_id' 
+        'parent_id'
 
     ];
 

@@ -31,7 +31,7 @@
             <div  class="col-md-12" >
                 <label for="destination_transfer" class="form-label">الجهة</label>
                 <select id="destination_transfer" name="destination"
-                    class="form-select js-example-basic-single rounded-md  border-gray-300" required>
+                    class="form-select js-example-basic-single select2 rounded-md  border-gray-300" required>
                     <option value="">اختر الجهة</option>
                     @foreach ($destinations as $destination)
                         <option value="{{ $destination['id'] }}"

@@ -486,38 +486,7 @@ $(document).ready(function () {
     });
 });
 
-$(document).ready(function () {
-    // تفعيل Select2
-    $('.js-example-basic-single').select2({
-        placeholder: "اختر الخيار",
-        allowClear: true
-    });
 
-    // تفعيل Select2 بعد التحديثات Livewire
-    Livewire.on('refreshSelect2', () => {
-        $('.js-example-basic-single').select2({
-            placeholder: "اختر الخيار",
-            allowClear: true
-        });
-    });
-
-    // تفعيل DataTables
-    $('.tebl').DataTable({
-        // تخصيصات DataTable إذا كنت بحاجة إليها
-        responsive: true,
-        language: {
-            search: "بحث:",
-            lengthMenu: "عرض _MENU_ مدخلات",
-            info: "إظهار _START_ إلى _END_ من _TOTAL_ مدخلات",
-            paginate: {
-                previous: "السابق",
-                next: "التالي"
-            }
-        },
-
-    });
-
-});
 
 /*
 function detectDevTools() {

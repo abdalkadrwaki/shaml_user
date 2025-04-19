@@ -34,7 +34,18 @@ function initializeSelect2(container = document) {
         }
     });
 }
+$('.js-example-basic-single').select2({
+    placeholder: "اختر الخيار",
+    allowClear: true
+});
 
+// تفعيل Select2 بعد التحديثات Livewire
+Livewire.on('refreshSelect2', () => {
+    $('.js-example-basic-single').select2({
+        placeholder: "اختر الخيار",
+        allowClear: true
+    });
+});
 document.addEventListener('DOMContentLoaded', function() {
     // التأكد من جعل jQuery متاحًا عالميًا
     if (window.$ === undefined || window.jQuery === undefined) {

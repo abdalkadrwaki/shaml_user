@@ -102,39 +102,25 @@
 
                             <!-- محتوى التبويبات -->
                             <div class="tab-content" id="pills-tabContent" style="direction: rtl;">
-                                <div
-                                    class="tab-pane fade show active"
-                                    id="pills-send-request"
-                                    role="tabpanel"
+                                <!-- محتوى تبويب "حوالة جديدة" -->
+                                <div class="tab-pane fade" id="pills-send-request" role="tabpanel"
                                     aria-labelledby="pills-send-request-tab">
                                     <x-transfer-form :currencies="$currencies" :destinations="$destinations" />
                                 </div>
-
-                                <div
-                                    class="tab-pane fade"
-                                    id="pills-SYP"
-                                    role="tabpanel"
-                                    aria-labelledby="pills-SYP-tab">
-                                    <x-transfer-form-syp
-                                        :currencies="$currencies"
-                                        :destinations="$destinations"
-                                        :exchangeRate="$exchangeRate" />
-                                </div>
-
-                                <div
-                                    class="tab-pane fade"
-                                    id="pills-payment-voucher"
-                                    role="tabpanel"
+                                <!-- محتوى تبويب "سند صرف" -->
+                                <div class="tab-pane fade" id="pills-payment-voucher" role="tabpanel"
                                     aria-labelledby="pills-payment-voucher-tab">
                                     <x-transfer-form-exchange :currencies="$currencies" :destinations="$destinations" />
                                 </div>
-
-                                <div
-                                    class="tab-pane fade"
-                                    id="pills-approval"
-                                    role="tabpanel"
+                                <!-- محتوى تبويب "اعتماد" -->
+                                <div class="tab-pane fade" id="pills-approval" role="tabpanel"
                                     aria-labelledby="pills-approval-tab">
-                                    <x-transfer-form-approval :currencies="$currencies" :destinations="$destinations" />
+                                    <x-TransferFormapproval :currencies="$currencies" :destinations="$destinations" />
+                                </div>
+                                <!-- محتوى تبويب "سوري" -->
+                                <div class="tab-pane fade" id="pills-SYP" role="tabpanel"
+                                    aria-labelledby="pills-SYP-tab">
+                                    <x-transfer-form-syp :destinations="$destinations" :currencies="$currencies" :exchangeRate="$exchangeRate" />
                                 </div>
                             </div>
                         </div>

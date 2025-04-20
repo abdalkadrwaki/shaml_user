@@ -56,116 +56,107 @@
                     <div class="card shadow-lg p-1 rounded-md bg-white">
 
                         <div class="card-body">
+                            <!-- قائمة التبويبات -->
+                            <ul id="pills-tab" class="nav nav-pills p-1 mt-1 mb-3 justify-content-center"
+                                role="tablist">
+                                <!-- تبويب "حوالة جديدة" -->
+                                <li class="nav-item" role="presentation" style="flex: 1; margin: 0 5px;">
+                                    <a class="nav-link active px-2 py-2 text-center text-white bg-blue-900"
+                                        id="pills-send-request-tab" data-bs-toggle="pill" href="#pills-send-request"
+                                        role="tab" aria-selected="true">
+                                        حوالة جديدة
+                                    </a>
+                                </li>
 
-                                <div class="card-body" wire:ignore.self>
-                                    <!-- قائمة التبويبات -->
-                                    <ul id="pills-tab" class="nav nav-pills p-1 mt-1 mb-3 justify-content-center"
-                                        role="tablist"
-                                        style="display: flex; width: 100%; justify-content: space-between;">
+                                <!-- تبويب "سوري" -->
+                                <li class="nav-item" role="presentation" style="flex: 1; margin: 0 5px;">
+                                    <a class="nav-link px-2 py-2 text-center text-white bg-blue-900" id="pills-SYP-tab"
+                                        data-bs-toggle="pill" href="#pills-SYP" role="tab" aria-selected="false">
+                                        سوري
+                                    </a>
+                                </li>
 
-                                        <!-- تبويب "حوالة جديدة" (افتراضي) -->
-                                        <li class="nav-item" role="presentation" style="flex: 1; margin: 0 5px;">
-                                            <a class="nav-link px-2 py-2 text-center text-white bg-blue-900 show active"
-                                                id="pills-send-request-tab" data-bs-toggle="pill"
-                                                href="#pills-send-request" role="tab"
-                                                aria-controls="pills-send-request" aria-selected="true">
-                                                حوالة جديدة
-                                            </a>
-                                        </li>
+                                <!-- تبويب "سند صرف" -->
+                                <li class="nav-item" role="presentation" style="flex: 1; margin: 0 5px;">
+                                    <a class="nav-link px-2 py-2 text-center text-white bg-blue-900"
+                                        id="pills-payment-voucher-tab" data-bs-toggle="pill"
+                                        href="#pills-payment-voucher" role="tab" aria-selected="false">
+                                        سند صرف
+                                        <span class="badge bg-danger ms-1"></span>
+                                    </a>
+                                </li>
 
-                                        <!-- تبويب "سوري" -->
-                                        <li class="nav-item" role="presentation" style="flex: 1; margin: 0 5px;">
-                                            <a class="nav-link px-2 py-2 text-center text-white bg-blue-900"
-                                                id="pills-SYP-tab" data-bs-toggle="pill" href="#pills-SYP"
-                                                role="tab" aria-controls="pills-SYP" aria-selected="false">
-                                                سوري
-                                            </a>
-                                        </li>
+                                <!-- تبويب "اعتماد" -->
+                                <li class="nav-item" role="presentation" style="flex: 1; margin: 0 5px;">
+                                    <a class="nav-link px-2 py-2 text-center text-white bg-blue-900"
+                                        id="pills-approval-tab" data-bs-toggle="pill" href="#pills-approval"
+                                        role="tab" aria-selected="false">
+                                        اعتماد
+                                        <span class="badge bg-danger ms-1"></span>
+                                    </a>
+                                </li>
+                            </ul>
 
-                                        <!-- تبويب "سند صرف" -->
-                                        <li class="nav-item" role="presentation" style="flex: 1; margin: 0 5px;">
-                                            <a class="nav-link px-2 py-2 text-center text-white bg-blue-900"
-                                                id="pills-payment-voucher-tab" data-bs-toggle="pill"
-                                                href="#pills-payment-voucher" role="tab"
-                                                aria-controls="pills-payment-voucher" aria-selected="false">
-                                                سند صرف
-                                                <span class="badge bg-danger ms-1"></span>
-                                            </a>
-                                        </li>
+                            <!-- محتوى التبويبات -->
+                            <div class="tab-content" id="pills-tabContent">
+                                <!-- محتوى تبويب "حوالة جديدة" -->
+                                <div class="tab-pane fade show active" id="pills-send-request" role="tabpanel">
+                                    محتوى الحوالة الجديدة
+                                </div>
 
-                                        <!-- تبويب "اعتماد" -->
-                                        <li class="nav-item" role="presentation" style="flex: 1; margin: 0 5px;">
-                                            <a class="nav-link px-2 py-2 text-center text-white bg-blue-900"
-                                                id="pills-approval-tab" data-bs-toggle="pill" href="#pills-approval"
-                                                role="tab" aria-controls="pills-approval" aria-selected="false">
-                                                اعتماد
-                                                <span class="badge bg-danger ms-1"></span>
-                                            </a>
-                                        </li>
-                                    </ul>
+                                <!-- محتوى تبويب "سوري" -->
+                                <div class="tab-pane fade" id="pills-SYP" role="tabpanel">
+                                    محتوى التبويب السوري
+                                </div>
 
-                                    <!-- محتوى التبويبات -->
-                                    <div class="tab-content" id="pills-tabContent" style="direction: rtl;">
-                                        <div class="tab-pane fade show active" id="pills-send-request" role="tabpanel"
-                                            aria-labelledby="pills-send-request-tab">
-                                            <x-transfer-form :currencies="$currencies" :destinations="$destinations" />
-                                        </div>
+                                <!-- محتوى تبويب "سند صرف" -->
+                                <div class="tab-pane fade" id="pills-payment-voucher" role="tabpanel">
+                                    محتوى سند الصرف
+                                </div>
 
-                                        <div class="tab-pane fade" id="pills-SYP" role="tabpanel"
-                                            aria-labelledby="pills-SYP-tab">
-                                            <x-transfer-form-syp :currencies="$currencies" :destinations="$destinations"
-                                                :exchangeRate="$exchangeRate" />
-                                        </div>
-
-                                        <div class="tab-pane fade" id="pills-payment-voucher" role="tabpanel"
-                                            aria-labelledby="pills-payment-voucher-tab">
-                                            <x-transfer-form-exchange :currencies="$currencies" :destinations="$destinations" />
-                                        </div>
-
-                                        <div class="tab-pane fade" id="pills-approval" role="tabpanel"
-                                            aria-labelledby="pills-approval-tab">
-                                            <x-transfer-form-approval :currencies="$currencies" :destinations="$destinations" />
-                                        </div>
-                                    </div>
+                                <!-- محتوى تبويب "اعتماد" -->
+                                <div class="tab-pane fade" id="pills-approval" role="tabpanel">
+                                    محتوى الاعتماد
                                 </div>
                             </div>
                         </div>
-
-                        <!-- قسم أسعار العملات -->
-                        <div class="bg-white shadow-lg p-1 rounded-md" wire:poll.600ms>
-
-                            <livewire:currency-rates />
-                        </div>
-
                     </div>
+
+                    <!-- قسم أسعار العملات -->
+                    <div class="bg-white shadow-lg p-1 rounded-md" wire:poll.600ms>
+
+                        <livewire:currency-rates />
+                    </div>
+
                 </div>
-
-                <!-- تضمين مكتبة Bootstrap JS -->
-                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
             </div>
+
+            <!-- تضمين مكتبة Bootstrap JS -->
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
         </div>
+    </div>
 
-        <!-- سكربت لتناوب الرسائل الإخبارية -->
-        <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const messages = document.querySelectorAll('.message');
-                if (messages.length === 0) {
-                    return;
-                }
-                let currentMessageIndex = 0;
+    <!-- سكربت لتناوب الرسائل الإخبارية -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const messages = document.querySelectorAll('.message');
+            if (messages.length === 0) {
+                return;
+            }
+            let currentMessageIndex = 0;
 
-                function showNextMessage() {
-                    // إخفاء الرسالة الحالية
-                    messages[currentMessageIndex].style.display = 'none';
-                    // تحديث الفهرس وإظهار الرسالة التالية
-                    currentMessageIndex = (currentMessageIndex + 1) % messages.length;
-                    messages[currentMessageIndex].style.display = 'block';
-                }
-
-                // عرض الرسالة الأولى فوراً
+            function showNextMessage() {
+                // إخفاء الرسالة الحالية
+                messages[currentMessageIndex].style.display = 'none';
+                // تحديث الفهرس وإظهار الرسالة التالية
+                currentMessageIndex = (currentMessageIndex + 1) % messages.length;
                 messages[currentMessageIndex].style.display = 'block';
-                // تغيير الرسائل كل 3 ثواني
-                setInterval(showNextMessage, 3000);
-            });
-        </script>
+            }
+
+            // عرض الرسالة الأولى فوراً
+            messages[currentMessageIndex].style.display = 'block';
+            // تغيير الرسائل كل 3 ثواني
+            setInterval(showNextMessage, 3000);
+        });
+    </script>
 </x-app-layout>

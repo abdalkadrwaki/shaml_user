@@ -22,25 +22,10 @@ import './bootstrap'; // إذا كان لديك تهيئات إضافية
 window.Swal = Swal;
 let table = new DataTable('.myTable');
 
-// تعريف دالة تهيئة Select2
-function initializeSelect2(container = document) {
-    $(container).find('.select2').each(function() {
-        if (!$(this).hasClass("select2-hidden-accessible")) {
-            $(this).select2({
-                placeholder: "اختر الخيار",
-                allowClear: true,
-                language: "ar" // إضافة الدعم العربي
-            });
-        }
-    });
-}
 
 
 
 // حدث مخصص لإعادة التهيئة على المحتوى الديناميكي
-window.reloadDynamicContent = function(content) {
-    document.dispatchEvent(new CustomEvent('contentLoaded', { detail: { content } }));
-};
 
 // إضافة الحدث لجميع الحقول التي تحتوي على الكلاس 'number-only'
 document.querySelectorAll('.number-only').forEach(function (input) {

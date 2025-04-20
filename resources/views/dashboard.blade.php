@@ -137,24 +137,6 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            // استعادة التبويب النشط من localStorage
-            var activeTab = localStorage.getItem('activeTab');
-            if (activeTab) {
-                var tabTrigger = new bootstrap.Tab(document.querySelector(activeTab));
-                tabTrigger.show();
-            }
-
-            // حفظ التبويب النشط عند التغيير
-            document.querySelectorAll('[data-bs-toggle="pill"]').forEach(function(tab) {
-                tab.addEventListener('shown.bs.tab', function(event) {
-                    localStorage.setItem('activeTab', event.target.getAttribute('href'));
-                });
-            });
-        });
-        </script>
-    <!-- سكربت لتناوب الرسائل الإخبارية -->
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
             const messages = document.querySelectorAll('.message');
             if (messages.length === 0) {
                 return;

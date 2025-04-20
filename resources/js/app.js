@@ -1,25 +1,17 @@
-// jQuery أولاً (أساسي لمعظم المكتبات)
+// app.js (في الأعلى)
 import $ from 'jquery';
-window.$ = window.jQuery = $; // جعله متاحًا عالميًا
+window.$ = window.jQuery = $;  // الآن jQuery جاهز للعالمية
 
-// Bootstrap CSS + JS
+// بعد ذلك استورد كل المكوّنات المرتبطة به
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // يحتوي على Popper.js
-
-// Select2 (يعتمد على jQuery)
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import 'select2/dist/css/select2.min.css';
-import 'select2/dist/js/select2.min.js';
-
-// DataTables (يعتمد على jQuery و Bootstrap 5)
-
-import DataTable from 'datatables.net-dt';
-
+import 'select2/dist/js/select2.min.js';  // سيجد الآن window.jQuery
+import 'datatables.net-bs5/css/dataTables.bootstrap5.min.css';
 import 'datatables.net-bs5';
 import Swal from 'sweetalert2';
+// … بقية الكود
 
-// ملفاتك الخاصة
-import './bootstrap'; // إذا كان لديك تهيئات إضافية
-window.Swal = Swal;
 let table = new DataTable('.myTable');
 
 

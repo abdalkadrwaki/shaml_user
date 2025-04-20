@@ -7,7 +7,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>{{ config('app.name', 'Laravel') }}</title>
-<!-- داخل وسم <head> -->
+    <!-- داخل وسم <head> -->
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#3f51b5">
     <meta name="mobile-web-app-capable" content="yes">
@@ -22,7 +22,7 @@
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js' ,'resources/js/sw.js'])
+    @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/sw.js'])
     <style>
         [x-cloak] {
             display: none !important;
@@ -64,7 +64,9 @@
                     .catch(error => console.log('ServiceWorker failed:', error));
             });
         }
-
+        $(document).ready(function() {
+            $('.js-example-basic-single').select2();
+        });
     </script>
 
 </body>

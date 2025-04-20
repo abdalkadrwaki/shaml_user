@@ -101,22 +101,22 @@
                             <div class="tab-content" id="pills-tabContent">
                                 <!-- محتوى تبويب "حوالة جديدة" -->
                                 <div class="tab-pane fade show active" id="pills-send-request" role="tabpanel">
-                                    محتوى الحوالة الجديدة
+                                    <x-transfer-form :currencies="$currencies" :destinations="$destinations" />
                                 </div>
 
                                 <!-- محتوى تبويب "سوري" -->
                                 <div class="tab-pane fade" id="pills-SYP" role="tabpanel">
-                                    محتوى التبويب السوري
+                                    <x-transfer-form-syp :destinations="$destinations" :currencies="$currencies" :exchangeRate="$exchangeRate" />
                                 </div>
 
                                 <!-- محتوى تبويب "سند صرف" -->
                                 <div class="tab-pane fade" id="pills-payment-voucher" role="tabpanel">
-                                    محتوى سند الصرف
+                                    <x-transfer-form-exchange :currencies="$currencies" :destinations="$destinations" />
                                 </div>
 
                                 <!-- محتوى تبويب "اعتماد" -->
                                 <div class="tab-pane fade" id="pills-approval" role="tabpanel">
-                                    محتوى الاعتماد
+                                    <x-TransferFormapproval :currencies="$currencies" :destinations="$destinations" />
                                 </div>
                             </div>
                         </div>

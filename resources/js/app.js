@@ -1,67 +1,29 @@
 // ==============================
-// الواردات/imports
+// imports
 // ==============================
-
 import $ from 'jquery';
-window.$ = window.jQuery = $; // جعل jQuery متاحًا عالميًا
+window.$ = window.jQuery = $;
 
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // شامل Popper.js
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 import 'select2/dist/css/select2.min.css';
-import 'select2/dist/js/select2.min.js';
+import 'select2/dist/js/select2.full.min.js';
 
-import DataTable from 'datatables.net-dt';
-import 'datatables.net-bs5'; // التكامل مع Bootstrap 5
+import DataTable from 'datatables.net-bs5';
 
 import Swal from 'sweetalert2';
 window.Swal = Swal;
 
-import './bootstrap'; // إعدادات Laravel الإضافية (إن وجدت)
+import './bootstrap'; // إعدادات Laravel الإضافية
 
 
 // ==============================
-// الوظائف المساعدة/helpers
+// document ready
 // ==============================
-
-/**
- * تجلب العنوان الخاص بالوجهة وتعرضه أو تخفي الحاوية
- * @param {string} selectSel - مُحدِّد عنصر الـ <select>
- * @param {string} addrSel   - مُحدِّد عنصر عرض العنوان
- * @param {string} contSel   - مُحدِّد حاوية العنصر
- * @param {string} url       - رابط النداء (افتراضي '/get-destination-address')
- */
-const fetchAddress = (
-  selectSel,
-  addrSel,
-  contSel,
-  url = '/get-destination-address'
-) => {
-  const destinationId = $(selectSel).val();
-  if (destinationId && destinationId !== '#') {
-    $.get(url, { destination_id: destinationId })
-      .done(response => {
-        const text = response.address || 'لم يتم العثور على العنوان.';
-        $(addrSel).text(text);
-        $(contSel).show();
-      })
-      .fail(() => {
-        alert('حدث خطأ في جلب العنوان. يرجى المحاولة لاحقًا.');
-      });
-  } else {
-    $(contSel).hide();
-  }
-};
-
-
-// ==============================
-// التهيئة عند تحميل الوثيقة
-// ==============================
-
 $(document).ready(() => {
-
   // تهيئة DataTable
-  const table = new DataTable('.myTable');
+  new DataTable('.myTable');
 
   // تهيئة Select2
   $('.js-example-basic-single').select2();
@@ -71,9 +33,26 @@ $(document).ready(() => {
     this.value = this.value.replace(/[^0-9.]/g, '');
   });
 
+  // دالة مساعدة لجلب وعرض العنوان
+  const fetchAddress = (selectSel, addrSel, contSel, url = '/get-destination-address') => {
+    const id = $(selectSel).val();
+    if (id && id !== '#') {
+      $.get(url, { destination_id: id })
+        .done(res => {
+          $(addrSel).text(res.address || 'لم يتم العثور على العنوان.');
+          $(contSel).show();
+        })
+        .fail(() => {
+          alert('حدث خطأ في جلب العنوان. يرجى المحاولة لاحقًا.');
+        });
+    } else {
+      $(contSel).hide();
+    }
+  };
+
   // عند تغيير وجهة التحويل الرئيسي
-  $('#destination_transfer').on('change', () => {
-    console.log('Destination Transfer ID:', $('#destination_transfer').val());
+  $('#destination_transfer').on('change', function() {
+    console.log('Destination Transfer ID:', $(this).val());
     fetchAddress(
       '#destination_transfer',
       '#destination_address',
@@ -81,25 +60,23 @@ $(document).ready(() => {
     );
   });
 
-  // عند تغيير وجهة التحويل بالـ SYP (سعر الصرف + العنوان)
-  $('#destination_syp').on('change', () => {
-    const id = $('#destination_syp').val();
+  // عند تغيير وجهة SYP (سعر الصرف + عنوان)
+  $('#destination_syp').on('change', function() {
+    const id = $(this).val();
     console.log('Destination SYP ID:', id);
 
     // جلب سعر الصرف
     if (id) {
       $.get('/get-exchange-rate', { destination_id: id })
-        .done(response => {
-          if (response.success) {
-            $('#exchange_rate_syp').val(response.exchange_rate);
+        .done(res => {
+          if (res.success) {
+            $('#exchange_rate_syp').val(res.exchange_rate);
           } else {
             $('#exchange_rate_syp').val('');
-            alert(response.message);
+            alert(res.message);
           }
         })
-        .fail(() => {
-          alert('حدث خطأ أثناء جلب سعر الصرف.');
-        });
+        .fail(() => alert('حدث خطأ أثناء جلب سعر الصرف.'));
     }
 
     // جلب العنوان
@@ -110,14 +87,13 @@ $(document).ready(() => {
     );
   });
 
-  // زر تعديل المبلغ (limited)
+  // تعديل المبلغ المحدود
   $('.update-btn').on('click', function() {
     const $btn = $(this);
     const $input = $btn.prev('.limited-input');
     const value = $input.val();
     const requestId = $btn.data('id');
 
-    // تحقق أولي
     if (!value || isNaN(value) || value < 0) {
       return Swal.fire({
         title: 'خطأ!',
@@ -127,56 +103,53 @@ $(document).ready(() => {
       });
     }
 
-    // تأكيد المستخدم
     Swal.fire({
       title: 'هل أنت متأكد؟',
       text: 'سيتم تعديل المبلغ!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
       confirmButtonText: 'نعم، قم بالتعديل!',
       cancelButtonText: 'إلغاء'
     }).then(result => {
-      if (!result.isConfirmed) return;
-
-      const csrfToken = $('meta[name="csrf-token"]').attr('content');
-      $.ajax({
-        url: `/update-limited/${requestId}`,
-        method: 'PUT',
-        headers: { 'X-CSRF-TOKEN': csrfToken },
-        data: { limited: value }
-      })
-        .done(response => {
-          if (response.success) {
+      if (result.isConfirmed) {
+        const csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+          url: `/update-limited/${requestId}`,
+          method: 'PUT',
+          headers: { 'X-CSRF-TOKEN': csrfToken },
+          data: { limited: value }
+        })
+          .done(res => {
+            if (res.success) {
+              Swal.fire({
+                title: 'تم التعديل بنجاح!',
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false
+              });
+              $input.val(value);
+            } else {
+              Swal.fire({
+                title: 'خطأ!',
+                text: 'حدث خطأ، يرجى المحاولة مرة أخرى.',
+                icon: 'error',
+                confirmButtonText: 'حسناً'
+              });
+            }
+          })
+          .fail(() => {
             Swal.fire({
-              title: 'تم التعديل بنجاح!',
-              icon: 'success',
-              timer: 1500,
-              showConfirmButton: false
-            });
-            $input.val(value);
-          } else {
-            Swal.fire({
-              title: 'خطأ!',
-              text: 'حدث خطأ، يرجى المحاولة مرة أخرى.',
+              title: 'خطأ في الاتصال!',
+              text: 'حدث خطأ في الاتصال.',
               icon: 'error',
               confirmButtonText: 'حسناً'
             });
-          }
-        })
-        .fail(() => {
-          Swal.fire({
-            title: 'خطأ في الاتصال!',
-            text: 'حدث خطأ في الاتصال.',
-            icon: 'error',
-            confirmButtonText: 'حسناً'
           });
-        });
+      }
     });
   });
 
-  // زر تحديث كلمة المرور
+  // تحديث كلمة المرور
   $('.update-password-btn').on('click', function() {
     const $btn = $(this);
     const $input = $btn.prev('.password-input');
@@ -197,128 +170,120 @@ $(document).ready(() => {
       text: 'سيتم تحديث كلمة المرور!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
       confirmButtonText: 'نعم، قم بالتحديث!',
       cancelButtonText: 'إلغاء'
     }).then(result => {
-      if (!result.isConfirmed) return;
-
-      const csrfToken = $('meta[name="csrf-token"]').attr('content');
-      $.ajax({
-        url: `/update-password/${requestId}`,
-        method: 'PUT',
-        headers: { 'X-CSRF-TOKEN': csrfToken },
-        data: { password: pwd }
-      })
-        .done(response => {
-          if (response.success) {
+      if (result.isConfirmed) {
+        const csrf = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+          url: `/update-password/${requestId}`,
+          method: 'PUT',
+          headers: { 'X-CSRF-TOKEN': csrf },
+          data: { password: pwd }
+        })
+          .done(res => {
+            if (res.success) {
+              Swal.fire({
+                title: 'تم التحديث بنجاح!',
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false
+              });
+              $input.attr('value', pwd);
+            } else {
+              Swal.fire({
+                title: 'خطأ!',
+                text: 'حدث خطأ، يرجى المحاولة مرة أخرى.',
+                icon: 'error',
+                confirmButtonText: 'حسناً'
+              });
+            }
+          })
+          .fail(() => {
             Swal.fire({
-              title: 'تم التحديث بنجاح!',
-              icon: 'success',
-              timer: 1500,
-              showConfirmButton: false
-            });
-            $input.attr('value', pwd);
-          } else {
-            Swal.fire({
-              title: 'خطأ!',
-              text: 'حدث خطأ، يرجى المحاولة مرة أخرى.',
+              title: 'خطأ في الاتصال!',
+              text: 'حدث خطأ في الاتصال.',
               icon: 'error',
               confirmButtonText: 'حسناً'
             });
-          }
-        })
-        .fail(() => {
-          Swal.fire({
-            title: 'خطأ في الاتصال!',
-            text: 'حدث خطأ في الاتصال.',
-            icon: 'error',
-            confirmButtonText: 'حسناً'
           });
-        });
+      }
     });
   });
 
-  // زر التفعيل/الإلغاء (toggle stop)
+  // تفعيل/إلغاء التوقف
   $('.toggle-stop-btn').on('click', function() {
     const $btn = $(this);
     const field = $btn.data('field') || $btn.data('field2');
     const requestId = $btn.data('id');
-    const csrfToken = $('meta[name="csrf-token"]').attr('content');
 
     Swal.fire({
       title: 'هل أنت متأكد؟',
       text: 'سيتم تحديث الحالة!',
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
-      cancelButtonColor: '#d33',
       confirmButtonText: 'نعم، حدث التحديث!',
       cancelButtonText: 'إلغاء'
     }).then(result => {
-      if (!result.isConfirmed) return;
-
-      $.ajax({
-        url: `/toggle-stop-movements/${requestId}`,
-        method: 'PUT',
-        headers: { 'X-CSRF-TOKEN': csrfToken },
-        data: { field }
-      })
-        .done(response => {
-          if (response.success) {
-            Swal.fire({
-              title: 'تم التحديث بنجاح!',
-              icon: 'success',
-              timer: 1500,
-              showConfirmButton: false,
-              width: '300px',
-              padding: '10px',
-              backdrop: 'rgba(0,0,0,0.4)',
-              customClass: { popup: 'animated bounceIn' }
-            });
-
-            // تحديث نص الزر وألوانه
-            let newText;
-            if (['Slice_type_1','Slice_type_2'].includes(field)) {
-              newText = response[field] ? 'الشريحة الثانية' : 'الشريحة الأولى';
+      if (result.isConfirmed) {
+        const csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+          url: `/toggle-stop-movements/${requestId}`,
+          method: 'PUT',
+          headers: { 'X-CSRF-TOKEN': csrfToken },
+          data: { field }
+        })
+          .done(res => {
+            if (res.success) {
+              Swal.fire({
+                title: 'تم التحديث بنجاح!',
+                icon: 'success',
+                timer: 1500,
+                showConfirmButton: false,
+                width: '300px',
+                padding: '10px',
+                backdrop: 'rgba(0,0,0,0.4)',
+                customClass: { popup: 'animated bounceIn' }
+              });
+              let newText;
+              if (['Slice_type_1','Slice_type_2'].includes(field)) {
+                newText = res[field] ? 'الشريحة الثانية' : 'الشريحة الأولى';
+              } else {
+                newText = res[field] ? 'مفعل' : 'غير مفعل';
+              }
+              $btn.text(newText)
+                .toggleClass('bg-green-500 hover:bg-green-600 focus:ring-green-600', res[field])
+                .toggleClass('bg-red-500 hover:bg-red-600 focus:ring-red-600', !res[field]);
             } else {
-              newText = response[field] ? 'مفعل' : 'غير مفعل';
+              Swal.fire({
+                title: 'خطأ!',
+                text: 'حدث خطأ، يرجى المحاولة مرة أخرى.',
+                icon: 'error',
+                timer: 1500,
+                showConfirmButton: false,
+                width: '300px',
+               	padding: '10px',
+                backdrop: 'rgba(0,0,0,0.4)',
+                customClass: { popup: 'animated shake' }
+              });
             }
-            $btn.text(newText)
-                .toggleClass('bg-green-500 hover:bg-green-600 focus:ring-green-600', response[field])
-                .toggleClass('bg-red-500 hover:bg-red-600 focus:ring-red-600', !response[field]);
-
-          } else {
+          })
+          .fail(() => {
             Swal.fire({
-              title: 'خطأ!',
-              text: 'حدث خطأ، يرجى المحاولة مرة أخرى.',
+              title: 'خطأ في الاتصال!',
+              text: 'حدث خطأ في الاتصال بالخادم.',
               icon: 'error',
-              timer: 1500,
+              timer: 1000,
               showConfirmButton: false,
               width: '300px',
               padding: '10px',
               backdrop: 'rgba(0,0,0,0.4)',
               customClass: { popup: 'animated shake' }
             });
-          }
-        })
-        .fail(() => {
-          Swal.fire({
-            title: 'خطأ في الاتصال!',
-            text: 'حدث خطأ في الاتصال بالخادم.',
-            icon: 'error',
-            timer: 1000,
-            showConfirmButton: false,
-            width: '300px',
-            padding: '10px',
-            backdrop: 'rgba(0,0,0,0.4)',
-            customClass: { popup: 'animated shake' }
           });
-        });
+      }
     });
   });
-
 });
 
 

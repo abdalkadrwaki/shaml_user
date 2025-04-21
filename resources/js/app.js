@@ -287,6 +287,7 @@ $(document).ready(() => {
 });
 
 
+
 /*
 function detectDevTools() {
     const devToolsOpened = () => {

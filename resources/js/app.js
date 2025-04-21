@@ -1,34 +1,25 @@
-// ✅ تحميل jQuery وتعيينه في window (مطلوب لـ Select2 و DataTables)
+// jQuery أولاً (أساسي لمعظم المكتبات)
 import $ from 'jquery';
-window.$ = window.jQuery = $;
+window.$ = window.jQuery = $; // جعله متاحًا عالميًا
 
-// ✅ Bootstrap CSS و JS (bundle يحتوي على Popper.js)
+// Bootstrap CSS + JS
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // يحتوي على Popper.js
 
-// ✅ Select2 (يعتمد على jQuery)
+// Select2 (يعتمد على jQuery)
 import 'select2/dist/css/select2.min.css';
 import 'select2/dist/js/select2.min.js';
 
-// ✅ DataTables
-import 'datatables.net-dt/css/jquery.dataTables.css'; // تأكد من نوع التصميم اللي تريده
+// DataTables (يعتمد على jQuery و Bootstrap 5)
+
 import DataTable from 'datatables.net-dt';
-import 'datatables.net-bs5'; // لدعم Bootstrap 5 (اختياري حسب التنسيق)
 
-// ✅ SweetAlert2
+import 'datatables.net-bs5';
 import Swal from 'sweetalert2';
+
+// ملفاتك الخاصة
+import './bootstrap'; // إذا كان لديك تهيئات إضافية
 window.Swal = Swal;
-
-// ✅ ملفات المشروع الخاصة
-import './bootstrap'; // تهيئات إضافية، مثل إعدادات Axios أو Laravel Echo
-
-// ✅ مثال: تهيئة Select2 و DataTable (اختياري)
-$(document).ready(function () {
-    $('.select2').select2();
-
-    $('.datatable').DataTable(); // تأكد أنك تستخدم الكلاس datatable على الجدول
-});
-
 let table = new DataTable('.myTable');
 
 

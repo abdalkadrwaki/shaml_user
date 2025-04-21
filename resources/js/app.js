@@ -19,10 +19,13 @@ import Swal from 'sweetalert2';
 
 // ملفاتك الخاصة
 import './bootstrap'; // إذا كان لديك تهيئات إضافية
+import Swal from 'sweetalert2';
 window.Swal = Swal;
 let table = new DataTable('.myTable');
 
-
+$(document).ready(function() {
+    $('.js-example-basic-single').select2();
+});
 // إضافة الحدث لجميع الحقول التي تحتوي على الكلاس 'number-only'
 document.querySelectorAll('.number-only').forEach(function (input) {
     input.addEventListener('input', function () {

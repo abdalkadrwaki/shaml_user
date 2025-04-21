@@ -1,380 +1,327 @@
-// jQuery أولاً (أساسي لمعظم المكتبات)
+// ==============================
+// الواردات/imports
+// ==============================
+
 import $ from 'jquery';
-window.$ = window.jQuery = $; // جعله متاحًا عالميًا
+window.$ = window.jQuery = $; // جعل jQuery متاحًا عالميًا
 
-// Bootstrap CSS + JS
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // يحتوي على Popper.js
+import 'bootstrap/dist/js/bootstrap.bundle.min.js'; // شامل Popper.js
 
-// Select2 (يعتمد على jQuery)
 import 'select2/dist/css/select2.min.css';
 import 'select2/dist/js/select2.min.js';
 
-// DataTables (يعتمد على jQuery و Bootstrap 5)
-
 import DataTable from 'datatables.net-dt';
+import 'datatables.net-bs5'; // التكامل مع Bootstrap 5
 
-import 'datatables.net-bs5';
 import Swal from 'sweetalert2';
-
-// ملفاتك الخاصة
-import './bootstrap'; // إذا كان لديك تهيئات إضافية
 window.Swal = Swal;
-let table = new DataTable('.myTable');
+
+import './bootstrap'; // إعدادات Laravel الإضافية (إن وجدت)
 
 
-// إضافة الحدث لجميع الحقول التي تحتوي على الكلاس 'number-only'
-document.querySelectorAll('.number-only').forEach(function (input) {
-    input.addEventListener('input', function () {
-        this.value = this.value.replace(/[^0-9.]/g, '');
-    });
-});
+// ==============================
+// الوظائف المساعدة/helpers
+// ==============================
+
+/**
+ * تجلب العنوان الخاص بالوجهة وتعرضه أو تخفي الحاوية
+ * @param {string} selectSel - مُحدِّد عنصر الـ <select>
+ * @param {string} addrSel   - مُحدِّد عنصر عرض العنوان
+ * @param {string} contSel   - مُحدِّد حاوية العنصر
+ * @param {string} url       - رابط النداء (افتراضي '/get-destination-address')
+ */
+const fetchAddress = (
+  selectSel,
+  addrSel,
+  contSel,
+  url = '/get-destination-address'
+) => {
+  const destinationId = $(selectSel).val();
+  if (destinationId && destinationId !== '#') {
+    $.get(url, { destination_id: destinationId })
+      .done(response => {
+        const text = response.address || 'لم يتم العثور على العنوان.';
+        $(addrSel).text(text);
+        $(contSel).show();
+      })
+      .fail(() => {
+        alert('حدث خطأ في جلب العنوان. يرجى المحاولة لاحقًا.');
+      });
+  } else {
+    $(contSel).hide();
+  }
+};
 
 
-// عند تغيير الخيار في الـ Select
-$('#destination_transfer').change(function () {
-    var destinationId = $(this).val();
-    console.log(destinationId);  // إضافة هذا السطر للتحقق من القيمة
+// ==============================
+// التهيئة عند تحميل الوثيقة
+// ==============================
 
-    if (destinationId && destinationId !== '#') {  // تحقق من القيمة بشكل صحيح
-        $.ajax({
-            url: '/get-destination-address',
-            method: 'GET',
-            data: { destination_id: destinationId },
-            success: function (response) {
-                if (response.address) {
-                    $('#destination_address').text(response.address);
-                    $('#destination_address_container').show();
-                } else {
-                    $('#destination_address').text('لم يتم العثور على العنوان.');
-                    $('#destination_address_container').show();
-                }
-            },
-            error: function () {
-                alert('حدث خطأ في جلب العنوان. يرجى المحاولة لاحقًا.');
-            }
+$(document).ready(() => {
+
+  // تهيئة DataTable
+  const table = new DataTable('.myTable');
+
+  // تهيئة Select2
+  $('.js-example-basic-single').select2();
+
+  // حصر الإدخال على الأرقام والنقطة فقط
+  $('.number-only').on('input', function() {
+    this.value = this.value.replace(/[^0-9.]/g, '');
+  });
+
+  // عند تغيير وجهة التحويل الرئيسي
+  $('#destination_transfer').on('change', () => {
+    console.log('Destination Transfer ID:', $('#destination_transfer').val());
+    fetchAddress(
+      '#destination_transfer',
+      '#destination_address',
+      '#destination_address_container'
+    );
+  });
+
+  // عند تغيير وجهة التحويل بالـ SYP (سعر الصرف + العنوان)
+  $('#destination_syp').on('change', () => {
+    const id = $('#destination_syp').val();
+    console.log('Destination SYP ID:', id);
+
+    // جلب سعر الصرف
+    if (id) {
+      $.get('/get-exchange-rate', { destination_id: id })
+        .done(response => {
+          if (response.success) {
+            $('#exchange_rate_syp').val(response.exchange_rate);
+          } else {
+            $('#exchange_rate_syp').val('');
+            alert(response.message);
+          }
+        })
+        .fail(() => {
+          alert('حدث خطأ أثناء جلب سعر الصرف.');
         });
-    } else {
-        $('#destination_address_container').hide();
     }
-});
 
-$(document).ready(function () {
-    $('#destination_syp').on('change', function () {
-        var destinationId = $(this).val();
-        console.log("Destination ID: ", destinationId);  // تحقق من الـ ID
+    // جلب العنوان
+    fetchAddress(
+      '#destination_syp',
+      '#destination_address_syp',
+      '#destination_address_container_syp'
+    );
+  });
 
-        if (destinationId) {
-            $.ajax({
-                url: '/get-exchange-rate',
-                method: 'GET',
-                data: { destination_id: destinationId },
-                success: function (response) {
-                    if (response.success) {
-                        $('#exchange_rate_syp').val(response.exchange_rate);
-                    } else {
-                        $('#exchange_rate_syp').val('');
-                        alert(response.message);
-                    }
-                },
-                error: function () {
-                    alert('حدث خطأ أثناء جلب البيانات');
-                }
-            });
-        }
-    });
-});
+  // زر تعديل المبلغ (limited)
+  $('.update-btn').on('click', function() {
+    const $btn = $(this);
+    const $input = $btn.prev('.limited-input');
+    const value = $input.val();
+    const requestId = $btn.data('id');
 
-$('#destination_syp').change(function () {
-    var destinationId = $(this).val();
-    console.log(destinationId);  // إضافة هذا السطر للتحقق من القيمة
-
-    if (destinationId && destinationId !== '#') {  // تحقق من القيمة بشكل صحيح
-        $.ajax({
-            url: '/get-destination-address',
-            method: 'GET',
-            data: { destination_id: destinationId },
-            success: function (response) {
-                if (response.address) {
-                    $('#destination_address_syp').text(response.address);
-                    $('#destination_address_container_syp').show();
-                } else {
-                    $('#destination_address_syp').text('لم يتم العثور على العنوان.');
-                    $('#destination_address_container_syp').show();
-                }
-            },
-            error: function () {
-                alert('حدث خطأ في جلب العنوان. يرجى المحاولة لاحقًا.');
-            }
-        });
-    } else {
-        $('#destination_address_container_syp').hide();
+    // تحقق أولي
+    if (!value || isNaN(value) || value < 0) {
+      return Swal.fire({
+        title: 'خطأ!',
+        text: 'يرجى إدخال مبلغ صحيح.',
+        icon: 'error',
+        confirmButtonText: 'حسناً'
+      });
     }
-});
 
-$(document).ready(function () {
-    // عند الضغط على زر تعديل المبلغ
-    $('.update-btn').click(function () {
-        var button = $(this);
-        var input = button.prev('.limited-input'); // حقل الإدخال السابق
-        var limitedValue = input.val(); // قيمة المبلغ المدخل
-        var requestId = button.data('id'); // ID الطلب
+    // تأكيد المستخدم
+    Swal.fire({
+      title: 'هل أنت متأكد؟',
+      text: 'سيتم تعديل المبلغ!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'نعم، قم بالتعديل!',
+      cancelButtonText: 'إلغاء'
+    }).then(result => {
+      if (!result.isConfirmed) return;
 
-        // التحقق من صحة القيمة المدخلة
-        if (!limitedValue || isNaN(limitedValue) || limitedValue < 0) {
+      const csrfToken = $('meta[name="csrf-token"]').attr('content');
+      $.ajax({
+        url: `/update-limited/${requestId}`,
+        method: 'PUT',
+        headers: { 'X-CSRF-TOKEN': csrfToken },
+        data: { limited: value }
+      })
+        .done(response => {
+          if (response.success) {
             Swal.fire({
-                title: 'خطأ!',
-                text: 'يرجى إدخال مبلغ صحيح.',
-                icon: 'error',
-                confirmButtonText: 'حسناً'
+              title: 'تم التعديل بنجاح!',
+              icon: 'success',
+              timer: 1500,
+              showConfirmButton: false
             });
-            return;
-        }
-
-        // عرض رسالة التأكيد قبل المتابعة
-        Swal.fire({
-            title: 'هل أنت متأكد؟',
-            text: "سيتم تعديل المبلغ!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'نعم، قم بالتعديل!',
-            cancelButtonText: 'إلغاء'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // الحصول على CSRF Token من الـ meta
-                var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-                // إرسال الطلب عبر AJAX
-                $.ajax({
-                    url: '/update-limited/' + requestId,
-                    type: 'PUT',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,  // استخدام Token من الـ meta
-                    },
-                    data: {
-                        limited: limitedValue,  // قيمة المبلغ
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            Swal.fire({
-                                title: 'تم التعديل بنجاح!',
-                                text: 'تم تعديل المبلغ بنجاح!',
-                                icon: 'success',
-                                timer: 1500,
-                                showConfirmButton: false
-                            });
-                            // تحديث قيمة المبلغ في الواجهة
-                            input.val(limitedValue);
-                        } else {
-                            Swal.fire({
-                                title: 'خطأ!',
-                                text: 'حدث خطأ، يرجى المحاولة مرة أخرى.',
-                                icon: 'error',
-                                confirmButtonText: 'حسناً'
-                            });
-                        }
-                    },
-                    error: function () {
-                        Swal.fire({
-                            title: 'خطأ في الاتصال!',
-                            text: 'حدث خطأ في الاتصال.',
-                            icon: 'error',
-                            confirmButtonText: 'حسناً'
-                        });
-                    }
-                });
-            }
-        });
-    });
-
-    // عند الضغط على زر تحديث كلمة المرور
-    $('.update-password-btn').click(function () {
-        var button = $(this);
-        var input = button.prev('.password-input'); // الحقل المرتبط
-        var passwordValue = input.val(); // قيمة كلمة المرور المدخلة
-        var requestId = button.data('id'); // ID الطلب
-
-        // التحقق من صحة كلمة المرور
-        if (!passwordValue || passwordValue.length < 6) {
+            $input.val(value);
+          } else {
             Swal.fire({
-                title: 'خطأ!',
-                text: 'يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل.',
-                icon: 'error',
-                confirmButtonText: 'حسناً'
+              title: 'خطأ!',
+              text: 'حدث خطأ، يرجى المحاولة مرة أخرى.',
+              icon: 'error',
+              confirmButtonText: 'حسناً'
             });
-            return;
-        }
-
-        // عرض رسالة التأكيد قبل المتابعة
-        Swal.fire({
-            title: 'هل أنت متأكد؟',
-            text: "سيتم تحديث كلمة المرور!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'نعم، قم بالتحديث!',
-            cancelButtonText: 'إلغاء'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // الحصول على CSRF Token من الـ meta
-                var csrfToken = $('meta[name="csrf-token"]').attr('content');
-
-                // إرسال الطلب عبر AJAX
-                $.ajax({
-                    url: '/update-password/' + requestId,
-                    type: 'PUT',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                    },
-                    data: {
-                        password: passwordValue, // إرسال كلمة المرور الجديدة
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            Swal.fire({
-                                title: 'تم التحديث بنجاح!',
-                                text: 'تم تحديث كلمة المرور بنجاح!',
-                                icon: 'success',
-                                timer: 1500,
-                                showConfirmButton: false
-                            });
-                            // تحديث قيمة الحقل يدويًا بعد التحديث
-                            input.attr('value', passwordValue);
-                        } else {
-                            Swal.fire({
-                                title: 'خطأ!',
-                                text: 'حدث خطأ، يرجى المحاولة مرة أخرى.',
-                                icon: 'error',
-                                confirmButtonText: 'حسناً'
-                            });
-                        }
-                    },
-                    error: function () {
-                        Swal.fire({
-                            title: 'خطأ في الاتصال!',
-                            text: 'حدث خطأ في الاتصال.',
-                            icon: 'error',
-                            confirmButtonText: 'حسناً'
-                        });
-                    }
-                });
-            }
+          }
+        })
+        .fail(() => {
+          Swal.fire({
+            title: 'خطأ في الاتصال!',
+            text: 'حدث خطأ في الاتصال.',
+            icon: 'error',
+            confirmButtonText: 'حسناً'
+          });
         });
     });
-});
+  });
 
-$(document).ready(function () {
-    // عند الضغط على زر التفعيل/الإلغاء
-    $('.toggle-stop-btn').click(function () {
-        var button = $(this);
-        // استخراج الحقل سواء من data-field أو data-field2
-        var field = button.data('field') || button.data('field2');
-        var requestId = button.data('id'); // رقم الطلب
-        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+  // زر تحديث كلمة المرور
+  $('.update-password-btn').on('click', function() {
+    const $btn = $(this);
+    const $input = $btn.prev('.password-input');
+    const pwd = $input.val();
+    const requestId = $btn.data('id');
 
-        // عرض رسالة التأكيد قبل المتابعة
-        Swal.fire({
-            title: 'هل أنت متأكد؟',
-            text: "سيتم تحديث الحالة!",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#3085d6',
-            cancelButtonColor: '#d33',
-            confirmButtonText: 'نعم، حدث التحديث!',
-            cancelButtonText: 'إلغاء'
-        }).then((result) => {
-            if (result.isConfirmed) {
-                // إرسال الطلب عبر AJAX بعد التأكيد
-                $.ajax({
-                    url: '/toggle-stop-movements/' + requestId,
-                    type: 'PUT',
-                    headers: {
-                        'X-CSRF-TOKEN': csrfToken,
-                    },
-                    data: {
-                        field: field // إرسال الحقل المراد تغييره
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            // عرض رسالة النجاح باستخدام SweetAlert2
-                            Swal.fire({
-                                title: 'تم التحديث بنجاح!',
-                                text: 'تم تحديث الحالة بنجاح.',
-                                icon: 'success',
-                                timer: 1500,
-                                timerProgressBar: true,
-                                showConfirmButton: false,
-                                width: '300px',
-                                padding: '10px',
-                                backdrop: 'rgba(0,0,0,0.4)',
-                                customClass: {
-                                    popup: 'animated bounceIn'
-                                }
-                            });
+    if (!pwd || pwd.length < 6) {
+      return Swal.fire({
+        title: 'خطأ!',
+        text: 'يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل.',
+        icon: 'error',
+        confirmButtonText: 'حسناً'
+      });
+    }
 
-                            // تحديد النص الجديد بناءً على نوع الحقل
-                            var newText;
-                            if (field === 'Slice_type_1' || field === 'Slice_type_2') {
-                                newText = response[field] ? 'الشريحة الثانية' : 'الشريحة الاولى';
-                            } else {
-                                newText = response[field] ? ' مفعل ' : 'غير مفعل';
-                            }
-                            button.text(newText);
+    Swal.fire({
+      title: 'هل أنت متأكد؟',
+      text: 'سيتم تحديث كلمة المرور!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'نعم، قم بالتحديث!',
+      cancelButtonText: 'إلغاء'
+    }).then(result => {
+      if (!result.isConfirmed) return;
 
-                            // تحديث لون الزر بناءً على القيمة الجديدة
-                            if (response[field]) {
-                                button.removeClass('bg-red-500 hover:bg-red-600 focus:ring-red-600')
-                                    .addClass('bg-green-500 hover:bg-green-600 focus:ring-green-600');
-                            } else {
-                                button.removeClass('bg-green-500 hover:bg-green-600 focus:ring-green-600')
-                                    .addClass('bg-red-500 hover:bg-red-600 focus:ring-red-600');
-                            }
-                        } else {
-                            // في حالة عدم نجاح العملية
-                            Swal.fire({
-                                title: 'خطأ!',
-                                text: 'حدث خطأ، يرجى المحاولة مرة أخرى.',
-                                icon: 'error',
-                                timer: 1500,
-                                timerProgressBar: true,
-                                showConfirmButton: false,
-                                width: '300px',
-                                padding: '10px',
-                                backdrop: 'rgba(0,0,0,0.4)',
-                                customClass: {
-                                    popup: 'animated shake'
-                                }
-                            });
-                        }
-                    },
-                    error: function () {
-                        // في حالة حدوث خطأ في الاتصال بالخادم
-                        Swal.fire({
-                            title: 'خطأ في الاتصال!',
-                            text: 'حدث خطأ في الاتصال بالخادم.',
-                            icon: 'error',
-                            timer: 1000,
-                            timerProgressBar: true,
-                            showConfirmButton: false,
-                            width: '300px',
-                            padding: '10px',
-                            backdrop: 'rgba(0,0,0,0.4)',
-                            customClass: {
-                                popup: 'animated shake'
-                            }
-                        });
-                    }
-                });
-            }
+      const csrfToken = $('meta[name="csrf-token"]').attr('content');
+      $.ajax({
+        url: `/update-password/${requestId}`,
+        method: 'PUT',
+        headers: { 'X-CSRF-TOKEN': csrfToken },
+        data: { password: pwd }
+      })
+        .done(response => {
+          if (response.success) {
+            Swal.fire({
+              title: 'تم التحديث بنجاح!',
+              icon: 'success',
+              timer: 1500,
+              showConfirmButton: false
+            });
+            $input.attr('value', pwd);
+          } else {
+            Swal.fire({
+              title: 'خطأ!',
+              text: 'حدث خطأ، يرجى المحاولة مرة أخرى.',
+              icon: 'error',
+              confirmButtonText: 'حسناً'
+            });
+          }
+        })
+        .fail(() => {
+          Swal.fire({
+            title: 'خطأ في الاتصال!',
+            text: 'حدث خطأ في الاتصال.',
+            icon: 'error',
+            confirmButtonText: 'حسناً'
+          });
         });
     });
+  });
+
+  // زر التفعيل/الإلغاء (toggle stop)
+  $('.toggle-stop-btn').on('click', function() {
+    const $btn = $(this);
+    const field = $btn.data('field') || $btn.data('field2');
+    const requestId = $btn.data('id');
+    const csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+    Swal.fire({
+      title: 'هل أنت متأكد؟',
+      text: 'سيتم تحديث الحالة!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'نعم، حدث التحديث!',
+      cancelButtonText: 'إلغاء'
+    }).then(result => {
+      if (!result.isConfirmed) return;
+
+      $.ajax({
+        url: `/toggle-stop-movements/${requestId}`,
+        method: 'PUT',
+        headers: { 'X-CSRF-TOKEN': csrfToken },
+        data: { field }
+      })
+        .done(response => {
+          if (response.success) {
+            Swal.fire({
+              title: 'تم التحديث بنجاح!',
+              icon: 'success',
+              timer: 1500,
+              showConfirmButton: false,
+              width: '300px',
+              padding: '10px',
+              backdrop: 'rgba(0,0,0,0.4)',
+              customClass: { popup: 'animated bounceIn' }
+            });
+
+            // تحديث نص الزر وألوانه
+            let newText;
+            if (['Slice_type_1','Slice_type_2'].includes(field)) {
+              newText = response[field] ? 'الشريحة الثانية' : 'الشريحة الأولى';
+            } else {
+              newText = response[field] ? 'مفعل' : 'غير مفعل';
+            }
+            $btn.text(newText)
+                .toggleClass('bg-green-500 hover:bg-green-600 focus:ring-green-600', response[field])
+                .toggleClass('bg-red-500 hover:bg-red-600 focus:ring-red-600', !response[field]);
+
+          } else {
+            Swal.fire({
+              title: 'خطأ!',
+              text: 'حدث خطأ، يرجى المحاولة مرة أخرى.',
+              icon: 'error',
+              timer: 1500,
+              showConfirmButton: false,
+              width: '300px',
+              padding: '10px',
+              backdrop: 'rgba(0,0,0,0.4)',
+              customClass: { popup: 'animated shake' }
+            });
+          }
+        })
+        .fail(() => {
+          Swal.fire({
+            title: 'خطأ في الاتصال!',
+            text: 'حدث خطأ في الاتصال بالخادم.',
+            icon: 'error',
+            timer: 1000,
+            showConfirmButton: false,
+            width: '300px',
+            padding: '10px',
+            backdrop: 'rgba(0,0,0,0.4)',
+            customClass: { popup: 'animated shake' }
+          });
+        });
+    });
+  });
+
 });
 
 
-$('.js-example-basic-single').select2();
 /*
 function detectDevTools() {
     const devToolsOpened = () => {

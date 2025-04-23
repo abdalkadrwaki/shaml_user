@@ -54,7 +54,7 @@
     @stack('modals')
 
     @livewireScripts
-
+ <!--   <li class="select2-results__option" id="select2-ACID-result-qvvn-634-1-1" role="treeitem" aria-selected="false">634 - شركة  تواصل</li>-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <script>

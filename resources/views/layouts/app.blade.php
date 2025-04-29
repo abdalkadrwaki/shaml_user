@@ -21,7 +21,7 @@
 
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    
 
     @vite(['resources/css/app.css', 'resources/js/app.js', 'resources/js/sw.js'])
     <style>
@@ -56,7 +56,7 @@
     @livewireScripts
  <!--   <li class="select2-results__option" id="select2-ACID-result-qvvn-634-1-1" role="treeitem" aria-selected="false">634 - شركة  تواصل</li>-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', () => {

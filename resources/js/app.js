@@ -25,8 +25,6 @@ $(document).ready(() => {
   // تهيئة DataTable
   new DataTable('.myTable');
 
-  // تهيئة Select2
-  $('.js-example-basic-single').select2();
 
   // حصر الإدخال على الأرقام والنقطة فقط
   $('.number-only').on('input', function() {
